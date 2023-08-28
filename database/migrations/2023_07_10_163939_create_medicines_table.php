@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('storage');
-            $table->string('stock');
-            $table->bigInteger('unit_id');
-            $table->bigInteger('category_id');
-            $table->date('expired');
-            $table->string('description');
-            $table->bigInteger('purchase_price');
-            $table->bigInteger('selling_price');
-            $table->bigInteger('supplier_id');
+            $table->string('name')->required();
+            $table->string('storage')->required();
+            $table->integer('stock')->default(0)->required();
+            $table->foreignId('unit_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->date('expired')->required();
+            $table->string('description')->required();
+            $table->float('purchase_price')->required();
+            $table->float('selling_price')->required();
+            $table->foreignId('supplier_id')->required()->constrained()->cascadeOnDelete();
 
 
             $table->timestamps();
