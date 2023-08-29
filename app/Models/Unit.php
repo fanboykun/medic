@@ -13,4 +13,10 @@ class Unit extends Model
         'name',
 
     ];
+
+    public function medicines () : \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Medicine::class);
+    }
+
 }
