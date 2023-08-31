@@ -1,7 +1,7 @@
-<header class="bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 sticky top-0 z-50 w-full h-[3.3rem] flex-none">
+<header class="bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 sticky top-0 z-20 w-full h-[3.3rem] flex-none">
     <div class="max-w-[90rem] px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
         <div class="flex items-center h-[3.3rem] gap-4">
-            <button type="button"
+            <button type="button" @click="mobilemenu = ! mobilemenu"
                 class="md:hidden text-gray-600 dark:text-gray-400"><span class="sr-only">Navigation</span><svg
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" aria-hidden="true" class="flex-shrink-0 w-6">
@@ -18,10 +18,11 @@
                 <img class="flex-shrink-0 h-[24px] text-gray-500 dark:text-white hidden dark:block" alt="logo" src="/docs/logo-dark.svg"> --}}
             </a>
             <div class="ml-auto md:flex items-center md:divide-x md:divide-gray-200 md:dark:divide-gray-700">
-                <div class="hidden sm:flex sm:items-center sm:ml-6">
+                {{-- <div class="hidden sm:flex sm:items-center sm:ml-6"> --}}
+                <div class="flex items-center ml-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-slate-600 dark:text-gray-500  bg-gray-200 dark:bg-white hover:bg-gray-400/20 dark:hover:bg-gray-100 dark:hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <button class="inline-flex items-center px-2 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md text-slate-600 dark:text-gray-500  bg-gray-200 dark:bg-white hover:bg-gray-400/20 dark:hover:bg-gray-100 dark:hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ml-1">
@@ -54,3 +55,5 @@
         </div>
     </div>
 </header>
+@include('components.layouts.mobile-sidebar')
+
