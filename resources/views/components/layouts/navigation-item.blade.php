@@ -1,7 +1,7 @@
 <ul class="flex flex-col space-y-1">
     <li class="px-5">
         <div class="flex flex-row items-center h-8">
-            <div class="text-sm font-light tracking-wide text-gray-500 dark:text-white">Main</div>
+            <div class="text-xs font-light tracking-wide text-gray-500 dark:text-white">Main</div>
         </div>
     </li>
     <li>
@@ -14,7 +14,7 @@
     </li>
     <li class="px-5">
         <div class="flex flex-row items-center h-8">
-            <div class="text-sm font-light tracking-wide text-gray-500 dark:text-white">Items</div>
+            <div class="text-xs font-light tracking-wide text-gray-500 dark:text-white">Items</div>
         </div>
     </li>
     <li>
@@ -53,7 +53,7 @@
     </li>
     <li class="px-5">
         <div class="flex flex-row items-center h-8">
-            <div class="text-sm font-light tracking-wide text-gray-500 dark:text-white">Trancastions</div>
+            <div class="text-xs font-light tracking-wide text-gray-500 dark:text-white">Trancastions</div>
         </div>
     </li>
     <li>
@@ -81,7 +81,7 @@
     </li>
     <li class="px-5">
         <div class="flex flex-row items-center h-8">
-            <div class="text-sm font-light tracking-wide text-gray-500 dark:text-white">Partner</div>
+            <div class="text-xs font-light tracking-wide text-gray-500 dark:text-white">Partner</div>
         </div>
     </li>
     <li>
