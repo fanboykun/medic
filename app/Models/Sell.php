@@ -18,4 +18,9 @@ class Sell extends Model
         'sell_date',
         'total_sell',
     ];
+
+    public function medicines () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price']);
+    }
 }

@@ -15,4 +15,9 @@ class Purchase extends Model
         'purchase_date',
         'total_purchase',
     ];
+
+    public function medicines () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price']);
+    }
 }
