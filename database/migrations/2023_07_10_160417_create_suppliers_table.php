@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->required();
             $table->string('address')->required();
-            $table->integer('phone')->required();
+            $table->string('phone')->required();
             $table->timestamps();
         });
     }

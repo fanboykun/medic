@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Medicines extends Model
+class Medicine extends Model
 {
     use HasFactory;
 
@@ -22,14 +22,14 @@ class Medicines extends Model
         'supplier_id',
     ];
 
-    public function unit () : \Illuminate\Database\Eloquent\Relations\HasOne
+    public function unit () : \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(Unit::class);
+        return $this->BelongsTo(Unit::class);
     }
 
-    public function category () : \Illuminate\Database\Eloquent\Relations\HasOne
+    public function category () : \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(Category::class);
+        return $this->BelongsTo(Category::class);
     }
 
     public function supplier () : \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -44,7 +44,7 @@ class Medicines extends Model
 
     public function purchases () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Purchases::class)->withPivot(['quantity', 'purchase_price']);
+        return $this->belongsToMany(Purchase::class)->withPivot(['quantity', 'purchase_price']);
     }
 
 
