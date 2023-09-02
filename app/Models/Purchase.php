@@ -20,4 +20,11 @@ class Purchase extends Model
     {
         return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price']);
     }
+
+
+    public function supplier () : \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
 }
