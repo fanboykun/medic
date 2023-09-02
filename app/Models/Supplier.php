@@ -14,4 +14,9 @@ class Supplier extends Model
         'address',
         'phone',
     ];
+
+    public function medicines () : \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Supplier::class);
+    }
 }
