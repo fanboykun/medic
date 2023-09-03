@@ -34,7 +34,12 @@ class DatabaseSeeder extends Seeder
         ->for($category)
         ->for($supplier)->create();
 
-        Purchase::factory()->count(1)
+        Purchase::factory()
+        ->state(function (array $attributes) use($medicine){
+            return [
+                'total_purchase' => (float) 5 * 150000
+            ];
+        })
         ->for($supplier)
         ->hasAttached($medicine,
         ['quantity' => 5, 'purchase_price' => 150000]
