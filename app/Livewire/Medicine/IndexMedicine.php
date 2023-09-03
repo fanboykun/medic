@@ -9,11 +9,14 @@ use App\Models\Medicine;
 class IndexMedicine extends Component
 {
     public Collection $medicines;
+    public $search;
 
     public function render()
     {
         $this->medicines = Medicine::with('supplier', 'unit', 'category')->get();
 
         return view('livewire.medicine.index-medicine');
+
+
     }
 }
