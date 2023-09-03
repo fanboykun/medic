@@ -11,14 +11,18 @@
             </button>
             <div style="position:fixed;top:1;left:1;width:1;height:0;padding:0;margin:-1;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0;display:none;">
             </div>
-            <a href="{{ route('dashboard') }}" class="flex-shrink-0 h-[24px] text-gray-600 dark:text-white"
+            <a href="{{ route('dashboard') }}" wire:navigate class="flex-shrink-0 h-[24px] text-gray-600 dark:text-white"
                 alt="Pharmacy App">
                 Pharmacy App
                 {{-- <img class="flex-shrink-0 h-[24px] text-gray-500 dark:text-white block dark:hidden" alt="logo" src="/docs/logo.svg">
                 <img class="flex-shrink-0 h-[24px] text-gray-500 dark:text-white hidden dark:block" alt="logo" src="/docs/logo-dark.svg"> --}}
             </a>
-            <div class="ml-auto md:flex items-center md:divide-x md:divide-gray-200 md:dark:divide-gray-700">
-                {{-- <div class="hidden sm:flex sm:items-center sm:ml-6"> --}}
+            @if(isset($header))
+                <div class="items-start hidden sm:flex ml-28 text-gray-600 dark:text-gray-200 font-semibold text-lg">
+                    {{ $header }}
+                </div>
+            @endif
+            <div class="ml-auto md:flex items-center justify-between md:divide-x md:divide-gray-200 md:dark:divide-gray-700">
                 <div class="flex items-center ml-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -34,7 +38,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
+                            <x-dropdown-link :href="route('profile.edit')" wire:navigate>
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
