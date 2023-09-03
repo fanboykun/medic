@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Dashboard;
+use App\Livewire\Medicine\IndexMedicine;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/medicines', IndexMedicine::class)->name('medicines.index');
 });
 
 Route::middleware('auth')->group(function () {
