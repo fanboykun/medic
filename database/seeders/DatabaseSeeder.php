@@ -10,7 +10,6 @@ use App\Models\Medicine;
 use App\Models\Purchase;
 use App\Models\Sell;
 use App\Models\Unit;
-use App\Models\Sell;
 
 
 class DatabaseSeeder extends Seeder
