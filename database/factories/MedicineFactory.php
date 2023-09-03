@@ -19,7 +19,7 @@ class MedicineFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'storage' => $this->faker->text(),
-            'stock' => $this->faker->randomNumber(),
+            // 'stock' => $this->faker->randomNumber(),
             'expired' => $this->faker->date(),
             'description' => $this->faker->text(),
             'purchase_price' => $this->faker->randomNumber(5),

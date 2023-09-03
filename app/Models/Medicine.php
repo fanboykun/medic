@@ -39,12 +39,12 @@ class Medicine extends Model
 
     public function sales () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Sell::class)->withPivot(['selling_price', 'quantity']);
+        return $this->belongsToMany(Sell::class)->withPivot(['selling_price', 'quantity'])->withTimestamps();
     }
 
     public function purchases () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Purchase::class)->withPivot(['quantity', 'purchase_price']);
+        return $this->belongsToMany(Purchase::class)->withPivot(['quantity', 'purchase_price',])->withTimestamps();
     }
 
 
