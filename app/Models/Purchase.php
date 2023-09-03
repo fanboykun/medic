@@ -18,7 +18,7 @@ class Purchase extends Model
 
     public function medicines () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price']);
+        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price'])->withTimestamps();
     }
 
 

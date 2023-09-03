@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('invoice')->required();
             $table->string('saler_name')->required();
-            $table->date('purchase_date')->required();
             $table->date('sell_date')->required();
             $table->bigInteger('total_sell')->required();
             $table->timestamps();
