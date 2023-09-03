@@ -124,7 +124,7 @@
                             Money Receive on Sales
                         </div>
                         <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
-                            {{ $money_receive_on_sales }}
+                           Rp {{ number_format($money_receive_on_sales, 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                             Money Spent on Purchases
                         </div>
                         <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
-                            {{ $money_spent_on_purchases }}
+                            Rp {{ number_format($money_spent_on_purchases, 0, ',', '.') }}
                         </div>
                     </div>
                 </div>

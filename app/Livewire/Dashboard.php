@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Medicine, App\Models\Sell, App\Models\Purchase;
 use App\Models\Supplier;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 
 class Dashboard extends Component
 {
@@ -17,7 +19,7 @@ class Dashboard extends Component
     public float $money_spent_on_purchases;
     public int $total_items_sold;
 
-    public function render()
+    public function render() : View
     {
         $this->medicine_in_stock = Medicine::sum('stock');
         $this->total_sales = Sell::count();
@@ -26,7 +28,7 @@ class Dashboard extends Component
         $this->total_medicine_items = Medicine::count();
         $this->money_receive_on_sales = Sell::sum('total_sell');
         $this->money_spent_on_purchases = Purchase::sum('total_purchase');
-        // $this->total_items_sold = Sell::withSum('medicines','quantity')->get();
+        $this->total_items_sold = DB::table('medicine_sell')->sum('quantity');
         return view('livewire.dashboard');
     }
 }
