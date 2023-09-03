@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Medicine;
 use App\Models\Purchase;
 use App\Models\Unit;
+use App\Models\Sell;
 
 
 class DatabaseSeeder extends Seeder
@@ -21,14 +22,39 @@ class DatabaseSeeder extends Seeder
         $unit = Unit::factory()->create();
         $category = Category::factory()->create();
         $supplier = Supplier::factory()->create();
+        $medicine = Medicine::factory()->count(10)->state(function (array $attributes){
+            return [
+                'stock' => 5,
+                'purchase_price' => 150000,
+                'selling_price' => 200000,
+            ];
+        })
+        ->for($unit)
+        ->for($category)
+        ->for($supplier)->create();
 
         Purchase::factory()->count(1)
         ->for($supplier)
-        ->hasAttached(Medicine::factory()->count(10)
-        ->for($unit)
-        ->for($category)
-        ->for($supplier),
+        ->hasAttached($medicine,
         ['quantity' => 5, 'purchase_price' => 150000]
         )->create();
+
+        Sell::factory()
+        ->state(function (array $attributes) use($medicine){
+            return [
+                'total_sell' => (float) 2 * $medicine->first()->selling_price
+            ];
+        })
+        ->hasAttached($medicine->first(),
+            [
+                'selling_price' => $medicine->first()->selling_price,
+                'quantity' => 2
+            ])->create();
+
+        $medicine->first()->update([
+            'stock' => 3
+        ]);
+
     }
+
 }
