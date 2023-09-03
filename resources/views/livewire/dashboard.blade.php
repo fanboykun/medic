@@ -1,7 +1,7 @@
 <div>
     <div class="w-full">
-        <div class="bg-slate-700 text-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="bg-slate-800 grid grid-cols-2 py-4 border-spacing-1">
+        <div class="bg-white dark:bg-slate-700 dark:text-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="dark:bg-slate-800 grid grid-cols-2 py-4 border-spacing-1">
                 <div class="flex justify-start px-4 py-2">
                     <div class="block">
                         <div class="flex">
@@ -10,15 +10,15 @@
                             </div>
                             <span class="inline-block -mt-0.5 ml-2">Store Status</span>
                         </div>
-                        <span class="block text-xs text-gray-200">The current store status</span>
+                        <span class="block text-xs text-gray-600 dark:text-gray-200">The current store status</span>
                     </div>
                 </div>
                 <div class="flex justify-end px-4 py-2 items-center">
                     <span class="bg-indigo-100 text-indigo-800 text-xs mr-2 px-3 py-0.5 rounded-full dark:bg-gray-700/30 font-bold dark:text-indigo-600 border border-indigo-400">Active</span>
                 </div>
             </div>
-            <div class="bg-slate-600/80 grid grid-cols-4 border-y border-gray-500">
-                <div class="flex border-r border-gray-500 px-2 py-4">
+            <div class="bg-gray-200 dark:bg-slate-600/80 grid grid-cols-4 border-y border-gray-100 dark:border-gray-500">
+                <div class="flex border-r border-slate-400 dark:border-gray-500 px-2 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -28,15 +28,15 @@
                                 <path d="M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 001.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 001.897 1.384C6.809 19.664 9.315 20.25 12 20.25z" />
                               </svg>
                         </div>
-                        <div class=" font-semibold text-sm text-slate-200">
+                        <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
                             Total Medicine In Stock
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-white">
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
                             1000
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-gray-500 px-2 py-4">
+                <div class="flex border-r border-slate-400 dark:border-gray-500 px-2 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -46,15 +46,15 @@
                                 <path d="M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 001.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 001.897 1.384C6.809 19.664 9.315 20.25 12 20.25z" />
                               </svg>
                         </div>
-                        <div class=" font-semibold text-sm text-slate-200">
+                        <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
                             Total Sales
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-white">
-                            700
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
+                            70
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-gray-500 px-2 py-4">
+                <div class="flex border-r border-slate-400 dark:border-gray-500 px-2 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -64,15 +64,15 @@
                                 <path d="M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 001.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 001.897 1.384C6.809 19.664 9.315 20.25 12 20.25z" />
                               </svg>
                         </div>
-                        <div class=" font-semibold text-sm text-slate-200">
+                        <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
                             Total Purchases
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-white">
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
                             50
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-gray-500 px-2 py-4">
+                <div class="flex dark:border-gray-500 px-2 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -82,10 +82,10 @@
                                 <path d="M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 001.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 001.897 1.384C6.809 19.664 9.315 20.25 12 20.25z" />
                               </svg>
                         </div>
-                        <div class=" font-semibold text-sm text-slate-200">
-                            Count of Suppliers
+                        <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
+                            Count of Splliers
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-white">
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
                             10
                         </div>
                     </div>
