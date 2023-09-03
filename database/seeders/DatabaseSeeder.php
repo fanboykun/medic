@@ -10,7 +10,7 @@ use App\Models\Medicine;
 use App\Models\Purchase;
 use App\Models\Sell;
 use App\Models\Unit;
-
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->create();
         $unit = Unit::factory()->create();
         $category = Category::factory()->create();
         $supplier = Supplier::factory()->create();
@@ -33,7 +34,12 @@ class DatabaseSeeder extends Seeder
         ->for($category)
         ->for($supplier)->create();
 
-        Purchase::factory()->count(1)
+        Purchase::factory()
+        ->state(function (array $attributes) use($medicine){
+            return [
+                'total_purchase' => (float) 5 * 150000
+            ];
+        })
         ->for($supplier)
         ->hasAttached($medicine,
         ['quantity' => 5, 'purchase_price' => 150000]
