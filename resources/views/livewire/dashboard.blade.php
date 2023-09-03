@@ -1,4 +1,7 @@
 <div>
+    <x-slot name="header">
+        Dashboard
+    </x-slot>
     <div class="w-full">
         <div class="bg-white dark:bg-slate-700 dark:text-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="dark:bg-slate-800 grid grid-cols-2 py-4 border-spacing-1">
