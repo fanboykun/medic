@@ -10,7 +10,7 @@ use App\Models\Medicine;
 use App\Models\Purchase;
 use App\Models\Sell;
 use App\Models\Unit;
-
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->create();
         $unit = Unit::factory()->create();
         $category = Category::factory()->create();
         $supplier = Supplier::factory()->create();

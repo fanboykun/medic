@@ -18,7 +18,7 @@ class SellFactory extends Factory
     {
         return [
             'invoice'       => $this->faker->randomNumber(),
-            'saler_name'    => $this->faker->name(),
+            'seller_name'    => $this->faker->name(),
             'sell_date'     => now(),
             'total_sell'    => $this->faker->randomNumber(),
         ];

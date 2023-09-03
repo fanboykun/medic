@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('invoice')->required();
-            $table->string('saler_name')->required();
+            $table->string('seller_name')->required();
             $table->date('sell_date')->required();
             $table->bigInteger('total_sell')->required();
             $table->timestamps();

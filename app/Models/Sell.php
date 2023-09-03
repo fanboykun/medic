@@ -13,7 +13,7 @@ class Sell extends Model
 
     protected $fillable = [
         'invoice',
-        'saler_name',
+        'seller_name',
         'purchase_date',
         'sell_date',
         'total_sell',
