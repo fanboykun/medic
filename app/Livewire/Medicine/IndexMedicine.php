@@ -2,21 +2,34 @@
 
 namespace App\Livewire\Medicine;
 
+use Illuminate\Contracts\View\View;
+use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 use Livewire\Component;
-use Illuminate\Database\Eloquent\Collection;
 use App\Models\Medicine;
 
 class IndexMedicine extends Component
 {
-    public Collection $medicines;
+    use WithPagination;
+
+    #[Url]
     public $search;
+
+    protected $queryString = ['search'];
+    public int $perPage = 10;
 
     public function render()
     {
-        $this->medicines = Medicine::with('supplier', 'unit', 'category')->get();
+        return view('livewire.medicine.index-medicine',
+        [
+            'medicines' => Medicine::where('name', 'like', '%'.$this->search.'%')
+            ->with('supplier', 'unit', 'category')
+            ->paginate($this->perPage)
+        ]);
+    }
 
-        return view('livewire.medicine.index-medicine');
-
-
+    public function loadMore() : void
+    {
+        $this->perPage += 10;
     }
 }
