@@ -25,25 +25,21 @@ class IndexMedicine extends Component
     public $filter_category;
     public $filter_expired;
 
-    public function render()
+    public function render() : View
     {
-
-
         $this->units = Unit::all();
         $this->categories = Category::all();
-        $today = today()->format('Y-m-d');
+        $today = $this->filter_expired != null ? today()->format('Y-m-d') : '';
 
         return view('livewire.medicine.index-medicine',
         [
             'medicines' => Medicine::where('name', 'like', '%'.$this->search.'%')
             ->where('unit_id', 'like', '%'.$this->filter_unit. '%')
             ->where('category_id', 'like', '%'.$this->filter_category. '%')
-            ->when($this->filter_expired, function ($query) use($today){
-                return $query->whereDate('expired', '<=', $today);
-            }, function ($query) use($today){
-                return $query->whereDate('expired', '>=', $today);
+            ->when($today != '', function ($q) use($today){
+                return $this->filter_expired ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
             })
-            ->with('supplier', 'unit', 'category')->latest()
+            ->with('supplier', 'unit', 'category')
             ->paginate($this->perPage)
         ]);
     }

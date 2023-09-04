@@ -3,7 +3,7 @@
         Medicines
     </x-slot>
 
-    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+    <div class="flex flex-col pt-4 px-4 rounded-lg md:flex-row items-center dark:bg-gray-800 justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
         <div class="w-full md:w-1/2">
             <form class="flex items-center">
                 <label for="simple-search" class="sr-only">Search</label>
@@ -24,19 +24,19 @@
                 </svg>
                 Add product
             </button>
-            <select wire:model.live="filter_unit">
+            <select wire:model.live="filter_unit" class="py-2 dark:bg-gray-700 dark:text-white rounded-full">
                 <option value=""> Filter Unit </option>
                 @foreach ($units as $unit)
                 <option value="{{ $unit->id }}"> {{ $unit->name }} </option>
                 @endforeach
             </select>
-            <select wire:model.live="filter_category">
+            <select wire:model.live="filter_category" class="py-2 dark:bg-gray-700 dark:text-white rounded-full">
                 <option value=""> Filter Category </option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}"> {{ $category->name }} </option>
                 @endforeach
             </select>
-            <select wire:model.live="filter_expired">
+            <select wire:model.live="filter_expired" class="py-2 dark:bg-gray-700 dark:text-white rounded-full">
                 <option value=""> Filter Expired </option>
                 <option value="1"> Expired </option>
                 <option value="0"> Not Expired </option>
@@ -126,7 +126,7 @@
         </div>
     </div> --}}
     <div class="mt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="min-h-[35rem] max-h-[40rem]">
+        <div class="min-h-[75vh] max-h-[80vh]">
             <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
