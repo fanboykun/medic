@@ -12,11 +12,11 @@ class IndexMedicine extends Component
 {
     use WithPagination;
 
-    #[Url]
-    public $search;
+    #[Url(as : 'q')]
+    public $search = '';
 
-    protected $queryString = ['search'];
-    public int $perPage = 10;
+    protected $queryString = ['q'];
+    public int $perPage = 5;
 
     public function render()
     {
