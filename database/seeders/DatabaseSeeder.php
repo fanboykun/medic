@@ -61,6 +61,8 @@ class DatabaseSeeder extends Seeder
             'stock' => 3
         ]);
 
+        Unit::factory()->create();
+        Category::factory()->create();
     }
 
 }
