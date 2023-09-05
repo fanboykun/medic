@@ -50,6 +50,7 @@ class IndexCategory extends Component
 
     public function updateCategory() : void
     {
+        $this->dispatch('close-modal');
         $this->validate([
             'selectedCategory.name' => 'required|string|max:50',
             'selectedCategory.description' => 'nullable|string|max:100',
@@ -59,8 +60,6 @@ class IndexCategory extends Component
             'description' => $this->selectedCategory['description']
         ]);
         $this->reset('selectedCategory');
-        $this->dispatch('close');
-
     }
 
     public function deleteCategory(array $category) : void
@@ -72,7 +71,7 @@ class IndexCategory extends Component
     public function destroyCategory() : void
     {
         Category::where('id',$this->selectedCategory)->delete();
-        $this->dispatch('close');
+        $this->dispatch('close-modal');
         $this->reset('selectedCategory');
     }
 

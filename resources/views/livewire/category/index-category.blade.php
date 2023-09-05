@@ -77,12 +77,12 @@
         </div>
     </div>
 
-    <x-modal name="edit-category" focusable>
+    <x-modal x-data name="edit-category" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
                 Edit Category Form
             </div>
-            <form class="p-4" wire:submit="updateCategory">
+            <form class="p-4" wire:submit="updateCategory" @submit.prevent="show = false">
                 <div class="relative z-0 w-full mb-6 group p-2">
                     <input type="text" name="name" wire:model="selectedCategory.name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                     <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -99,34 +99,38 @@
                     <x-input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
-                <button type="submit" x-on:click="setTimeout(() => show = false, 500)"  wire:submit.attr="disabled" wire:target="updateCategory" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
-                <x-secondary-button class="mx-4 px-5 py-2.5 capitalize" x-on:click="$dispatch('close')">
-                    Cancel
-                </x-secondary-button>
+                <div class="flex justify-end">
+                    <x-secondary-button class="mx-4 px-5 py-2.5 capitalize" x-on:click="$dispatch('close')">
+                        Cancel
+                    </x-secondary-button>
+                    <button type="submit" wire:submit.attr="disabled" wire:target="updateCategory" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                </div>
             </form>
         </div>
     </x-modal>
 
     <x-modal name="delete-category" focusable>
-        <div class="p-6 dark:bg-gray-900">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
-                Are you sure you want to delete this category?
-            </h2>
+        <form id="destroy-category" @submit.prevent="show = false">
+            <div class="p-6 dark:bg-gray-900">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
+                    Are you sure you want to delete <span class="font-bold underline"> {{ $selectedCategory ? $selectedCategory['name'] : 'this' }} </span> category?
+                </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                This category may have data related to it, once the category deleted, all the data that related to it will be impacted.
-            </p>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    This category may have data related to it, once the category deleted, all the data that related to it will be impacted.
+                </p>
 
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
 
-                <x-danger-button class="ml-3" type="submit" wire:click="destroyCategory" x-on:click="setTimeout(() => show = false, 500)" wire:submit.attr="disabled" wire:target="destroyCategory">
-                    {{ __('Delete Category') }}
-                </x-danger-button>
+                    <x-danger-button class="ml-3" type="submit" wire:click="destroyCategory" wire:submit.attr="disabled" wire:target="destroyCategory">
+                        {{ __('Delete Category') }}
+                    </x-danger-button>
+                </div>
             </div>
-        </div>
+        </form>
     </x-modal>
 
 </div>
