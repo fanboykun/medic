@@ -75,4 +75,9 @@ class IndexCategory extends Component
         $this->dispatch('close');
         $this->reset('selectedCategory');
     }
+
+    public function clearForm(): void
+    {
+        $this->reset('name', 'description');
+    }
 }
