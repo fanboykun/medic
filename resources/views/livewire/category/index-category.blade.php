@@ -4,9 +4,9 @@
     </x-slot>
 
     <div class="grid grid-cols-3 gap-x-4">
-        <div class="col-span-2 bg-gray-800 rounded-lg">
+        <div class="col-span-2 bg-white dark:bg-gray-800 rounded-lg">
 
-            <div class="relative w-full py-3 mb-1 px-2 rounded-md bg-gray-900">
+            <div class="relative w-full py-3 mb-1 px-2 rounded-md dark:bg-gray-900">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -49,7 +49,7 @@
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
-            <div class="flex bg-gray-700 text-gray-400 py-4 rounded-xl item-center justify-center">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
                 Add Category Form
             </div>
             <form class="p-4" wire:submit="saveCategory">
@@ -79,7 +79,7 @@
 
     <x-modal name="edit-category" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
-            <div class="flex bg-gray-700 text-gray-400 py-4 rounded-xl item-center justify-center">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
                 Edit Category Form
             </div>
             <form class="p-4" wire:submit="updateCategory">
@@ -108,12 +108,12 @@
     </x-modal>
 
     <x-modal name="delete-category" focusable>
-        <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900">
+        <div class="p-6 dark:bg-gray-900">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
                 Are you sure you want to delete this category?
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 This category may have data related to it, once the category deleted, all the data that related to it will be impacted.
             </p>
 
