@@ -17,7 +17,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div x-data="{ mobilemenu : false }" class="min-h-screen bg-gray-100" id="app">
+    <div x-data="{ mobilemenu : false }" class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
         @include('components.layouts.header')
         @include('components.layouts.sidebar')
         <main>
