@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Category\IndexCategory;
 use App\Livewire\Dashboard;
 use App\Livewire\Medicine\IndexMedicine;
+use App\Livewire\Unit\IndexUnit;
 use App\Livewire\User\UserProfile;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +26,10 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/medicines', IndexMedicine::class)->name('medicines.index');
+
+    Route::get('/categories', IndexCategory::class)->name('categories.index');
+
+    Route::get('/units', IndexUnit::class)->name('units.index');
 });
 
 Route::middleware('auth')->group(function () {
