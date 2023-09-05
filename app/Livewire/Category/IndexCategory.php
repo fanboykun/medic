@@ -79,4 +79,9 @@ class IndexCategory extends Component
     {
         $this->reset('name', 'description');
     }
+
+    public function loadMore() : void
+    {
+        $this->perPage += 10;
+    }
 }

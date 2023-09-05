@@ -45,6 +45,19 @@
                         @endforelse
                     </tbody>
                 </table>
+                <div class="relative overflow-hidden bg-white rounded-b-lg shadow-md dark:bg-gray-800">
+                    <nav class="flex flex-col items-start justify-between p-4 bg-white dark:bg-gray-700  space-y-3 md:flex-row md:items-center md:space-y-0" aria-label="Table navigation">
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-200">
+                            Menampilkan
+                            <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $categories?->count() }}</span>
+                            dari
+                            <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $categories?->total() }}</span>
+                        </span>
+                        <button type="button" wire:click="loadMore()" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
+                            Muat Lebih ...
+                        </button>
+                    </nav>
+                </div>
             </div>
         </div>
 
