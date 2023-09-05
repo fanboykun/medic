@@ -3,7 +3,7 @@
         Categories
     </x-slot>
 
-    <div class="grid grid-cols-3 gap-x-4">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-2 sm:gap-x-2">
         <div class="col-span-2 bg-white dark:bg-gray-800 rounded-lg">
 
             <div class="relative w-full py-3 mb-1 px-2 rounded-md dark:bg-gray-900">
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
+        <div class="sm:order-last order-first bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
                 Add Category Form
             </div>
@@ -69,10 +69,12 @@
                     <x-input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
-                <button type="submit" wire:submit.attr="disabled" wire:target="saveCategory" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveCategory">
-                    Clear
-                </x-secondary-button>
+                <div class="flex">
+                    <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveCategory">
+                        Clear
+                    </x-secondary-button>
+                    <button type="submit" wire:submit.attr="disabled" wire:target="saveCategory" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                </div>
             </form>
         </div>
     </div>
