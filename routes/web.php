@@ -5,6 +5,7 @@ use App\Livewire\Category\IndexCategory;
 use App\Livewire\Dashboard;
 use App\Livewire\Medicine\IndexMedicine;
 use App\Livewire\Medicine\AddMedicine;
+use App\Livewire\Supplier\IndexSupplier;
 use App\Livewire\Unit\IndexUnit;
 use App\Livewire\User\UserProfile;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/categories', IndexCategory::class)->name('categories.index');
 
     Route::get('/units', IndexUnit::class)->name('units.index');
+    Route::get('/suppliers', IndexSupplier::class)->name('suppliers.index');
 });
 
 Route::middleware('auth')->group(function () {
