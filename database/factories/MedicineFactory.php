@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,7 @@ class MedicineFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'storage' => $this->faker->text(),
-            // 'stock' => $this->faker->randomNumber(),
-            'expired' => $this->faker->date(),
+            'expired' => Carbon::now()->addMonths(3)->format('Y-m-d'),
             'description' => $this->faker->text(),
             'purchase_price' => $this->faker->randomNumber(5),
             'selling_price' => $this->faker->randomNumber(5),
