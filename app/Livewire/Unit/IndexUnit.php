@@ -4,6 +4,7 @@ namespace App\Livewire\Unit;
 
 use Livewire\Component;
 use App\Models\Unit;
+use Illuminate\Contracts\View\View;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -20,7 +21,7 @@ class IndexUnit extends Component
     public array $selectedUnit;
     public $name;
 
-    public function render()
+    public function render() : View
     {
         $units = Unit::where('name', 'like', '%'.$this->search.'%')
         ->latest()->paginate($this->perPage);
@@ -43,6 +44,7 @@ class IndexUnit extends Component
             'name' => $this->name,
         ]);
         $this->reset('name');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Created!']);
     }
 
     public function updateUnit() : void
@@ -55,6 +57,7 @@ class IndexUnit extends Component
             'name' => $this->selectedUnit['name'],
         ]);
         $this->reset('selectedUnit');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Updated!']);
     }
 
     public function deleteUnit(array $unit) : void
@@ -66,8 +69,9 @@ class IndexUnit extends Component
     public function destroyUnit() : void
     {
         Unit::where('id',$this->selectedUnit)->delete();
-        $this->dispatch('close-modal');
         $this->reset('selectedUnit');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Deleted!']);
+
     }
 
     public function clearForm(): void

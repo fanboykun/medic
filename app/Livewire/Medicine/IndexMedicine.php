@@ -44,6 +44,7 @@ class IndexMedicine extends Component
                 return $this->filter_expired ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
             })
             ->with('supplier', 'unit', 'category')
+            ->latest()
             ->paginate($this->perPage)
         ]);
     }

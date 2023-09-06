@@ -4,6 +4,7 @@ namespace App\Livewire\Category;
 
 use Livewire\Component;
 use App\Models\Category;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
@@ -21,7 +22,7 @@ class IndexCategory extends Component
     public array $selectedCategory;
     public $name, $description;
 
-    public function render()
+    public function render() : View
     {
         $categories = Category::where('name', 'like', '%'.$this->search.'%')
         ->latest()->paginate($this->perPage);
@@ -35,7 +36,7 @@ class IndexCategory extends Component
         $this->dispatch('open-modal', 'edit-category');
     }
 
-    public function saveCategory()
+    public function saveCategory() : void
     {
         $this->validate([
             'name' => 'required|string|max:20',
@@ -46,7 +47,7 @@ class IndexCategory extends Component
             'description' => $this->description
         ]);
         $this->reset('name', 'description');
-        $this->dispatch('open-toast', 'Category Has Been Created!');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Created!']);
     }
 
     public function updateCategory() : void
@@ -61,6 +62,7 @@ class IndexCategory extends Component
             'description' => $this->selectedCategory['description']
         ]);
         $this->reset('selectedCategory');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Updated!']);
     }
 
     public function deleteCategory(array $category) : void
@@ -72,8 +74,9 @@ class IndexCategory extends Component
     public function destroyCategory() : void
     {
         Category::where('id',$this->selectedCategory)->delete();
-        $this->dispatch('close-modal');
         $this->reset('selectedCategory');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Deleted!']);
+
     }
 
     public function clearForm(): void

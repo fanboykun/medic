@@ -22,7 +22,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Supplier Name
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-6 py-3  break-words">
                                 Supplier Address
                             </th>
                             <th scope="col" class="px-6 py-3">
@@ -40,7 +40,7 @@
                                <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier->name }}</a>
                             </th>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                               <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier?->address }}</a>
+                               <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1 break-words">{{ $supplier?->address }}</a>
                             </th>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier?->phone }}</a>

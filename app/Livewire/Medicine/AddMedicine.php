@@ -12,6 +12,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\error;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
+
 class AddMedicine extends Component
 {
     public $categories;
@@ -26,9 +30,9 @@ class AddMedicine extends Component
     public $purchase_price;
     public $selling_price;
 
-    public $unit_id;
-    public $category_id;
-    public $supplier_id;
+    public $unit_id = '';
+    public $category_id = '';
+    public $supplier_id = '';
 
     public $unitName;
 
@@ -49,41 +53,44 @@ class AddMedicine extends Component
         return view('livewire.medicine.add-medicine');
     }
 
-    public function saveMedicine() : Redirector|RedirectResponse
+    public function saveMedicine()
     {
        $this->validate([
             'name' => 'required|string|max:250',
-            'stock' => 'required|integer|min_digits:1|max_digits:1000000',
+            'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
             'storage' => 'nullable|string|max:250',
-            'expired' => 'required|date_format:Y-m-d|max:250',
+            'expired' => 'required|date_format:Y-m-d',
             'description' => 'nullable|string|max:250',
-            'purchase_price' => 'required|integer|min_digits:2|max_digits:250',
-            'selling_price' => 'required|integer|min_digits:2|max_digits:250',
+            'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
+            'selling_price' => 'required|integer|min_digits:2|max_digits:8',
             'unit_id' => 'required|integer|exists:App\Models\Unit,id',
             'category_id' => 'required|integer|exists:App\Models\Category,id',
             'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
         ]);
+        if(error('*') != null){
+            return;
+        };
 
         try{
             DB::transaction(function () {
                 Medicine::create([
                     'name' => $this->name,
-                    'stock' => $this->stock,
+                    'stock' => (int) $this->stock,
                     'storage' => $this->storage,
                     'expired' => $this->expired,
                     'description' => $this->description,
                     'purchase_price' => $this->purchase_price,
                     'selling_price' => $this->selling_price,
-                    'unit_id' => $this->unit_id,
-                    'category_id' => $this->category_id,
-                    'supplier_id' => $this->supplier_id,
+                    'unit_id' => (int) $this->unit_id,
+                    'category_id' => (int) $this->category_id,
+                    'supplier_id' => (int) $this->supplier_id,
                 ]);
             });
 
         }catch(\Exception $e){
             throw($e);
         }
-
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Medicine Has Been Created!']);
         return redirect()->route('medicines.index');
 
     }
@@ -100,6 +107,7 @@ class AddMedicine extends Component
             ['name' => $this->unitName]
         );
         $this->reset('unitName');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Created!']);
     }
 
     public function saveCategory() :void
@@ -112,6 +120,7 @@ class AddMedicine extends Component
             'description' => $this->categoryDescription]
         );
         $this->reset('categoryName', 'categoryDescription' );
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Created!']);
     }
 
     public function saveSupplier() :void
@@ -126,6 +135,7 @@ class AddMedicine extends Component
             'phone' => $this->supplierPhone]
         );
         $this->reset('supplierName', 'supplierAddress', 'supplierPhone' );
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Created!']);
     }
 
 

@@ -28,7 +28,7 @@
         @include('components.layouts.sidebar')
         <main>
             <div class="p-2 sm:ml-64">
-                @include('components.toast')
+                <x-toast />
                 {{ $slot }}
             </div>
         </main>

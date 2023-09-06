@@ -4,6 +4,7 @@ namespace App\Livewire\Supplier;
 
 use Livewire\Component;
 use App\Models\Supplier;
+use Illuminate\Contracts\View\View;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -20,7 +21,7 @@ class IndexSupplier extends Component
     public array $selectedSupplier;
     public $name, $address, $phone;
 
-    public function render()
+    public function render() : View
     {
         $suppliers = Supplier::where('name', 'like', '%'.$this->search.'%')
         ->latest()->paginate($this->perPage);
@@ -47,6 +48,7 @@ class IndexSupplier extends Component
             'phone' => $this->phone
         ]);
         $this->reset('name', 'address', 'phone');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Created!']);
     }
 
     public function updateSupplier() : void
@@ -63,6 +65,7 @@ class IndexSupplier extends Component
             'phone' => $this->selectedSupplier['phone']
         ]);
         $this->reset('selectedSupplier');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Updated!']);
     }
 
     public function deleteSupplier(array $supplier) : void
@@ -74,8 +77,8 @@ class IndexSupplier extends Component
     public function destroySupplier() : void
     {
         Supplier::where('id',$this->selectedSupplier['id'])->delete();
-        $this->dispatch('close-modal');
         $this->reset('selectedSupplier');
+        $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Deleted!']);
     }
 
     public function clearForm(): void
