@@ -9,6 +9,8 @@ use Livewire\Component;
 use App\Models\Medicine;
 use App\Models\Unit;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+
 
 class IndexMedicine extends Component
 {
@@ -24,6 +26,8 @@ class IndexMedicine extends Component
     public $filter_unit;
     public $filter_category;
     public $filter_expired;
+    // public $medicine;
+    public $selectedMedicine;
 
     public function render() : View
     {
@@ -48,4 +52,30 @@ class IndexMedicine extends Component
     {
         $this->perPage += 10;
     }
+
+    public function deleteMedicine(array $medicine) : void
+    {
+        $this->selectedMedicine = $medicine;
+        $this->dispatch('open-modal', 'delete-medicine');
+    }
+
+    public function destroyMedicine() : void
+    {
+
+
+        try{
+            DB::transaction(function () {
+                Medicine::where('id',$this->selectedMedicine)->delete();
+            });
+
+        }catch(\Exception $e){
+            throw($e);
+        }
+
+
+        $this->dispatch('close-modal');
+        $this->reset('selectedMedicine');
+    }
+
+
 }

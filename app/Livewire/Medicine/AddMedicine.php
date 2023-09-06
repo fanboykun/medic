@@ -32,6 +32,13 @@ class AddMedicine extends Component
 
     public $unitName;
 
+    public $categoryName;
+    public $categoryDescription;
+
+    public $supplierName;
+    public $supplierAddress;
+    public $supplierPhone;
+
     public function render() : View
     {
         $this->categories = Category::latest()->get();
@@ -94,4 +101,32 @@ class AddMedicine extends Component
         );
         $this->reset('unitName');
     }
+
+    public function saveCategory() :void
+    {
+        $this->validate([
+            'categoryName' => 'required|string|min:2|max:100',
+            'categoryDescription' => 'required|string|min:2|max:100']);
+        Category::create(
+            ['name' => $this->categoryName,
+            'description' => $this->categoryDescription]
+        );
+        $this->reset('categoryName', 'categoryDescription' );
+    }
+
+    public function saveSupplier() :void
+    {
+        $this->validate([
+            'supplierName' => 'required|string|min:2|max:100',
+            'supplierAddress' => 'required|string|min:2|max:100',
+            'supplierPhone' => 'required|string|min_digits:10|max_digits:14']);
+        Supplier::create(
+            ['name' => $this->supplierName,
+            'address' => $this->supplierAddress,
+            'phone' => $this->supplierPhone]
+        );
+        $this->reset('supplierName', 'supplierAddress', 'supplierPhone' );
+    }
+
+
 }

@@ -76,7 +76,7 @@
                             <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
                             <td class="px-6 py-4">
                                 <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <a href="/" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                                <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -95,4 +95,28 @@
             </nav>
         </div>
     </div>
+    <x-modal name="delete-medicine" focusable>
+        <form id="destroy-medicine" @submit.prevent="show = false">
+            <div class="p-6 dark:bg-gray-900">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
+                    Are you sure you want to delete <span class="font-bold underline"> {{ $selectedMedicine ? $selectedMedicine['name'] : 'this' }} </span> medicine?
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    This category may have data related to it, once the category deleted, all the data that related to it will be impacted.
+                </p>
+
+                <div class="mt-6 flex justify-end">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+
+                    <x-danger-button class="ml-3" type="submit" wire:click="destroyMedicine" wire:submit.attr="disabled" wire:target="destroyMedicine">
+                        {{ __('Delete Category') }}
+                    </x-danger-button>
+                </div>
+            </div>
+        </form>
+    </x-modal>
+
 </div>
