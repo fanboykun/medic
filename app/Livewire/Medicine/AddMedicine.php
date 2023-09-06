@@ -7,8 +7,10 @@ use App\Models\Medicine;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\Category;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
 
 class AddMedicine extends Component
 {
@@ -28,17 +30,19 @@ class AddMedicine extends Component
     public $category_id;
     public $supplier_id;
 
-    public function render()
+    public $unitName;
+
+    public function render() : View
     {
-        $this->categories = Category::all();
-        $this->units = Unit::all();
-        $this->suppliers = Supplier::all();
+        $this->categories = Category::latest()->get();
+        $this->units = Unit::latest()->get();
+        $this->suppliers = Supplier::latest()->get();
 
 
         return view('livewire.medicine.add-medicine');
     }
 
-    public function saveMedicine()
+    public function saveMedicine() : Redirector|RedirectResponse
     {
        $this->validate([
             'name' => 'required|string|max:250',
@@ -77,8 +81,17 @@ class AddMedicine extends Component
 
     }
 
-    public function clearForm()
+    public function clearForm() : void
     {
         $this->reset('name', 'stock', 'storage', 'expired', 'description', 'purchase_price', 'selling_price', 'unit_id', 'category_id', 'supplier_id');
+    }
+
+    public function saveUnit() :void
+    {
+        $this->validate(['unitName' => 'required|string|min:2|max:100']);
+        Unit::create(
+            ['name' => $this->unitName]
+        );
+        $this->reset('unitName');
     }
 }
