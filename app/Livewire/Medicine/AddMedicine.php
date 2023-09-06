@@ -13,8 +13,6 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
 use function Laravel\Prompts\error;
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class AddMedicine extends Component
 {
@@ -55,21 +53,22 @@ class AddMedicine extends Component
 
     public function saveMedicine()
     {
-       $this->validate([
-            'name' => 'required|string|max:250',
-            'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
-            'storage' => 'nullable|string|max:250',
-            'expired' => 'required|date_format:Y-m-d',
-            'description' => 'nullable|string|max:250',
-            'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
-            'selling_price' => 'required|integer|min_digits:2|max_digits:8',
-            'unit_id' => 'required|integer|exists:App\Models\Unit,id',
-            'category_id' => 'required|integer|exists:App\Models\Category,id',
-            'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
-        ]);
-        if(error('*') != null){
+        try{
+            $this->validate([
+                 'name' => 'required|string|max:250',
+                 'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
+                 'storage' => 'nullable|string|max:250',
+                 'expired' => 'required|date_format:Y-m-d',
+                 'description' => 'nullable|string|max:250',
+                 'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
+                 'selling_price' => 'required|integer|min_digits:2|max_digits:8',
+                 'unit_id' => 'required|integer|exists:App\Models\Unit,id',
+                 'category_id' => 'required|integer|exists:App\Models\Category,id',
+                 'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
+         ]);
+        }catch(\Exception $exe){
             return;
-        };
+        }
 
         try{
             DB::transaction(function () {
