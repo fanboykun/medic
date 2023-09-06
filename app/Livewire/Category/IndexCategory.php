@@ -35,7 +35,7 @@ class IndexCategory extends Component
         $this->dispatch('open-modal', 'edit-category');
     }
 
-    public function saveCategory() : void
+    public function saveCategory()
     {
         $this->validate([
             'name' => 'required|string|max:20',
@@ -46,6 +46,7 @@ class IndexCategory extends Component
             'description' => $this->description
         ]);
         $this->reset('name', 'description');
+        $this->dispatch('open-toast', 'Category Has Been Created!');
     }
 
     public function updateCategory() : void
