@@ -5,7 +5,6 @@ namespace App\Livewire\Category;
 use Livewire\Component;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -22,10 +21,15 @@ class IndexCategory extends Component
     public array $selectedCategory;
     public $name, $description;
 
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'asc';
+    protected array $sortableField = ['name', 'created_at'];
+
     public function render() : View
     {
         $categories = Category::where('name', 'like', '%'.$this->search.'%')
-        ->latest()->paginate($this->perPage);
+        ->orderBy($this->sortField ?? 'created_at', $this->sortDirection)
+        ->paginate($this->perPage);
 
         return view('livewire.category.index-category', ['categories' => $categories]);
     }
@@ -87,5 +91,17 @@ class IndexCategory extends Component
     public function loadMore() : void
     {
         $this->perPage += 10;
+    }
+
+    public function sortBy(string $field) : void
+    {
+        if(in_array($field, $this->sortableField, true)){
+            if ($this->sortField === $field) {
+                $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                $this->sortDirection = 'asc';
+            }
+            $this->sortField = $field;
+        }
     }
 }

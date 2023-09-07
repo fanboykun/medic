@@ -21,10 +21,15 @@ class IndexUnit extends Component
     public array $selectedUnit;
     public $name;
 
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'asc';
+    protected array $sortableField = ['name', 'created_at'];
+
     public function render() : View
     {
         $units = Unit::where('name', 'like', '%'.$this->search.'%')
-        ->latest()->paginate($this->perPage);
+        ->orderBy($this->sortField ?? 'created_at', $this->sortDirection)
+        ->paginate($this->perPage);
 
         return view('livewire.unit.index-unit', ['units' => $units]);
     }
@@ -82,5 +87,17 @@ class IndexUnit extends Component
     public function loadMore() : void
     {
         $this->perPage += 10;
+    }
+
+    public function sortBy(string $field) : void
+    {
+        if(in_array($field, $this->sortableField, true)){
+            if ($this->sortField === $field) {
+                $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                $this->sortDirection = 'asc';
+            }
+            $this->sortField = $field;
+        }
     }
 }
