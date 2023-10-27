@@ -1,22 +1,35 @@
 <?php
 
-namespace App\Livewire\Medicine;
+namespace App\Livewire\Purchase;
 
 use Livewire\Component;
 use App\Models\Medicine;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\Category;
+use App\Models\Purchase;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-
-class AddMedicine extends Component
+class AddPurchase extends Component
 {
+    // model purchase that will be filled after purchase created
+    public $purchase;
+
+    // column model for purchase data
+    public $purchase_date;
+    public $total_purchase;
+    public $invoice;
+    public $total_medicine;
+    public $total_quantity;
+
+    // data for select input
     public $categories;
     public $units;
     public $suppliers;
 
+    // column model for medicine data
     public $name;
     public $stock;
     public $storage;
@@ -25,27 +38,43 @@ class AddMedicine extends Component
     public $purchase_price;
     public $selling_price;
 
+    // column model for purchase data
     public $unit_id = '';
     public $category_id = '';
     public $supplier_id = '';
 
+    // column model for creating new unit data
     public $unitName;
 
+    // column model for creating new category data
     public $categoryName;
     public $categoryDescription;
 
+    // column model for creating new supplier data
     public $supplierName;
     public $supplierAddress;
     public $supplierPhone;
 
     public function render() : View
     {
+        $this->invoice = Str::random(7);
         $this->categories = Category::latest()->get();
         $this->units = Unit::latest()->get();
         $this->suppliers = Supplier::latest()->get();
 
+        return view('livewire.purchase.add-purchase');
+    }
 
-        return view('livewire.medicine.add-medicine');
+    public function appendNewForm() : void
+    {
+        $this->validate([
+            'purchase_date' => 'required|date_format:Y-m-d',
+            'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
+        ]);
+        $new_purchase = Purchase::firstOrCreate(
+            ['id' => $this->purchase->id],
+            [ 'invoice' => $this->invoice, 'supplier_id' => $this->supplier_id, 'purchase_date' => $this->purchase_date, 'total_purchase' => $this->total_purchase]
+        );
     }
 
     public function saveMedicine()
@@ -61,7 +90,7 @@ class AddMedicine extends Component
                  'selling_price' => 'required|integer|min_digits:2|max_digits:8',
                  'unit_id' => 'required|integer|exists:App\Models\Unit,id',
                  'category_id' => 'required|integer|exists:App\Models\Category,id',
-                 'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
+                //  'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
          ]);
         }catch(\Exception $exe){
             return;
@@ -133,6 +162,5 @@ class AddMedicine extends Component
         $this->reset('supplierName', 'supplierAddress', 'supplierPhone' );
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Created!']);
     }
-
 
 }
