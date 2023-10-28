@@ -47,7 +47,7 @@
                     get theme() { return this.currentMode }
                 }"
                 class="ml-auto md:flex items-center justify-between md:divide-x md:divide-gray-200 md:dark:divide-gray-700">
-                <div data-headlessui-state="" class="relative inline-block text-left">
+                <div data-headlessui-state="" class="relative inline-block text-left items-center mt-2 md:mt-0">
                     <div x-transition>
                         <button x-cloak x-on:click="toggle = !toggle" id="headlessui-menu-button-238" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="" class="flex items-center">
                             <svg x-cloak xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-show="currentMode == 'light'" class="w-5 h-5 text-teal-500">
@@ -85,12 +85,14 @@
                     </div>
                 </div>
 
-                <div class="flex items-center ml-6">
+                <div class="flex items-center ml-6 md:mt-0 -mt-10">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-2 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md text-slate-600 dark:text-gray-500  bg-gray-200 dark:bg-white hover:bg-gray-400/20 dark:hover:bg-gray-100 dark:hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
+                            <button class="inline-flex items-center px-2 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md text-slate-600 dark:text-gray-500  bg-gray-200 dark:bg-white hover:bg-gray-400/20 dark:hover:bg-gray-100 dark:hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div class="hidden sm:flex">{{ Auth::user()->name }}</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 flex sm:hidden">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
 
                                 <div class="ml-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"

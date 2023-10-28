@@ -198,44 +198,47 @@
                     </button>
                 </div>
             </div>
-
-            <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-3">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">Id</th>
-                        <th scope="col" class="px-6 py-3"> Name</th>
-                        <th scope="col" class="px-6 py-3"> Stock</th>
-                        <th scope="col" class="px-6 py-3"> Unit</th>
-                        <th scope="col" class="px-6 py-3"> Category</th>
-                        <th scope="col" class="px-6 py-3"> Expired</th>
-                        <th scope="col" class="px-6 py-3"> Purchase Price</th>
-                        <th scope="col" class="px-6 py-3"> Selling Price</th>
-                        <th scope="col" class="px-6 py-3"> Supplier</th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                {{-- <tbody>
-                    @foreach ($medicines as $medicine)
-                        <tr wire:key="{{ $medicine->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <td class="px-6 py-4"> {{ $medicine->id }} </td>
-                            <td class="px-6 py-4">{{ $medicine->name }}</td>
-                            <td class="px-6 py-4">{{ $medicine->stock }}</td>
-                            <td class="px-6 py-4">{{ $medicine->unit->name}}</td>
-                            <td class="px-6 py-4">{{ $medicine->category->name}}</td>
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine->expired)->format('d M Y') }}</td>
-                            <td class="px-6 py-4">Rp {{number_format($medicine->purchase_price, 0, ',','.')}}</td>
-                            <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
-                            <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
-                            <td class="px-6 py-4">
-                                <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody> --}}
-            </table>
+            <div class="mt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+                <div class=" max-h-[80vh]">
+                    <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Id</th>
+                                <th scope="col" class="px-6 py-3"> Name</th>
+                                <th scope="col" class="px-6 py-3"> Stock</th>
+                                <th scope="col" class="px-6 py-3"> Unit</th>
+                                <th scope="col" class="px-6 py-3"> Category</th>
+                                <th scope="col" class="px-6 py-3"> Expired</th>
+                                <th scope="col" class="px-6 py-3"> Purchase Price</th>
+                                <th scope="col" class="px-6 py-3"> Selling Price</th>
+                                <th scope="col" class="px-6 py-3"> Supplier</th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        {{-- <tbody>
+                            @foreach ($medicines as $medicine)
+                                <tr wire:key="{{ $medicine->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                    <td class="px-6 py-4"> {{ $medicine->id }} </td>
+                                    <td class="px-6 py-4">{{ $medicine->name }}</td>
+                                    <td class="px-6 py-4">{{ $medicine->stock }}</td>
+                                    <td class="px-6 py-4">{{ $medicine->unit->name}}</td>
+                                    <td class="px-6 py-4">{{ $medicine->category->name}}</td>
+                                    <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine->expired)->format('d M Y') }}</td>
+                                    <td class="px-6 py-4">Rp {{number_format($medicine->purchase_price, 0, ',','.')}}</td>
+                                    <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
+                                    <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
+                                    <td class="px-6 py-4">
+                                        <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                        <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody> --}}
+                    </table>
+                </div>
+            </div>
 
             <div class="flex items-end justify-start bg-slate-900">
                 <button type="submit" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveMedicine" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
