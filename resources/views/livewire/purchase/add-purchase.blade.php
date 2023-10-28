@@ -7,6 +7,10 @@
         <div class="py-8 px-4 mx-auto w-full lg:py-8">
             <div class=" flex justify-between items-center">
                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Purchase Form</h2>
+                <div>
+                    <x-secondary-button class="capitalize mb-2">Unset</x-secondary-button>
+                    <x-secondary-button class="capitalize mb-2" x-on:click="$dispatch('open-modal', 'search-purchase-modal')">Search by Existing Purchase Data</x-secondary-button>
+                </div>
             </div>
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 <div>
@@ -19,6 +23,9 @@
                         </div>
                         <input type="date" wire:model="purchase_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date" required>
                     </div>
+                    @error('purchase_date')
+                    <span class="block text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div>
                     <label for="supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier <span class="text-red-500">*</span></label>
@@ -72,6 +79,10 @@
 
             <div class=" flex justify-between items-center">
                 <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
+                <div>
+                    <x-secondary-button class="capitalize mb-2">Unset</x-secondary-button>
+                    <x-secondary-button class="capitalize mb-2" x-on:click="$dispatch('open-modal', 'search-medicine-modal')">Search by Existing Medicine</x-secondary-button>
+                </div>
             </div>
 
             <div class="grid gap-y-4">
@@ -86,6 +97,9 @@
                     <div class="w-full">
                         <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock <span class="text-red-500">*</span></label>
                         <input type="number" wire:model="stock" min="1" minlength="1" max="9999" maxlength="4" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="input stock with min value is 1" required="">
+                        @error('stock')
+                        <span class="block text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div>
                         <label for="unit_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit <span class="text-red-500">*</span></label>
@@ -193,7 +207,7 @@
                     <x-secondary-button class="py-3 mx-1 capitalize" wire:click="clearForm">
                         Clear
                     </x-secondary-button>
-                    <button type="submit" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveMedicine" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                    <button type="submit" wire:click="setPurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="setPurchase" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                         Add Medicine
                     </button>
                 </div>
@@ -206,36 +220,35 @@
                                 <th scope="col" class="px-6 py-3">Id</th>
                                 <th scope="col" class="px-6 py-3"> Name</th>
                                 <th scope="col" class="px-6 py-3"> Stock</th>
-                                <th scope="col" class="px-6 py-3"> Unit</th>
-                                <th scope="col" class="px-6 py-3"> Category</th>
                                 <th scope="col" class="px-6 py-3"> Expired</th>
                                 <th scope="col" class="px-6 py-3"> Purchase Price</th>
                                 <th scope="col" class="px-6 py-3"> Selling Price</th>
-                                <th scope="col" class="px-6 py-3"> Supplier</th>
                                 <th scope="col" class="px-6 py-3">
                                     Action
                                 </th>
                             </tr>
                         </thead>
-                        {{-- <tbody>
-                            @foreach ($medicines as $medicine)
-                                <tr wire:key="{{ $medicine->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                    <td class="px-6 py-4"> {{ $medicine->id }} </td>
-                                    <td class="px-6 py-4">{{ $medicine->name }}</td>
-                                    <td class="px-6 py-4">{{ $medicine->stock }}</td>
-                                    <td class="px-6 py-4">{{ $medicine->unit->name}}</td>
-                                    <td class="px-6 py-4">{{ $medicine->category->name}}</td>
-                                    <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine->expired)->format('d M Y') }}</td>
-                                    <td class="px-6 py-4">Rp {{number_format($medicine->purchase_price, 0, ',','.')}}</td>
-                                    <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
-                                    <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
-                                    <td class="px-6 py-4">
-                                        <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                        <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-                                    </td>
+                        <tbody>
+                            @if($purchase && $purchase->medicines != null)
+                                @forelse ($purchase?->medicines as $medicine)
+                                    <tr wire:key="{{ $medicine->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                        <td class="px-6 py-4"> {{ $medicine->id }} </td>
+                                        <td class="px-6 py-4">{{ $medicine->name }}</td>
+                                        <td class="px-6 py-4">{{ $medicine->stock }}</td>
+                                        <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine->expired)->format('d M Y') }}</td>
+                                        <td class="px-6 py-4">Rp {{number_format($medicine->purchase_price, 0, ',','.')}}</td>
+                                        <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
+                                        <td class="px-6 py-4">
+                                            <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                <tr>
+                                    <td>No Data</td>
                                 </tr>
-                            @endforeach
-                        </tbody> --}}
+                                @endforelse
+                            @endif
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -248,6 +261,79 @@
 
         </div>
     </section>
+
+    <x-modal x-data name="search-purchase-modal" focusable>
+        <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+                Search Purchase
+            </div>
+            <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-2">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Id</th>
+                        <th scope="col" class="px-6 py-3"> Invoice</th>
+                        <th scope="col" class="px-6 py-3"> Supplier</th>
+                        <th scope="col" class="px-6 py-3"> Purchase Date</th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($purchases as $purchase)
+                        <tr wire:key="{{ $purchase->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <td class="px-6 py-4"> {{ $purchase->id }} </td>
+                            <td class="px-6 py-4">{{ $purchase->invoice }}</td>
+                            <td class="px-6 py-4">{{ $purchase->supplier->name }}</td>
+                            <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $purchase->purchase_date)->format('d M Y')}}</td>
+                            <td class="px-6 py-4">
+                            <button wire:click="selectPurchase({{ $purchase }})" class="block font-medium text-blue-600 dark:text-blue-500 hover:underline">Pilih</button>
+                            </td>
+                        </tr>
+                    @empty
+                    <tr>
+                        <td class=" col-span-8 items-center justify-center">No Data</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </x-modal>
+    <x-modal x-data name="search-medicine-modal" focusable>
+        <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+                Search Purchase
+            </div>
+            <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-2">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Id</th>
+                        <th scope="col" class="px-6 py-3"> Name</th>
+                        <th scope="col" class="px-6 py-3"> Supplier</th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($medicines as $medicine)
+                        <tr wire:key="{{ $medicine->id }}" class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                            <td class="px-6 py-4"> {{ $medicine->id }} </td>
+                            <td class="px-6 py-4">{{ $medicine->name }}</td>
+                            <td class="px-6 py-4">{{ $medicine->supplier->name }}</td>
+                            <td class="px-6 py-4">
+                            <button wire:click="selectMedicine({{ $medicine }})" class="block font-medium text-blue-600 dark:text-blue-500 hover:underline">Pilih</button>
+                            </td>
+                        </tr>
+                    @empty
+                    <tr>
+                        <td class=" col-span-8 items-center justify-center">No Data</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </x-modal>
     <x-modal x-data name="add-unit" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">

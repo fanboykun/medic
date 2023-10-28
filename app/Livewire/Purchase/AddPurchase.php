@@ -14,8 +14,17 @@ use Illuminate\Support\Str;
 
 class AddPurchase extends Component
 {
+    // purchases data to be searched and selected
+    public $purchases;
+
+    // medicines data to be searched and selected
+    public $medicines;
+
     // model purchase that will be filled after purchase created
     public $purchase;
+
+    // model medicine that being selected
+    public $selectedMedicine;
 
     // column model for purchase data
     public $purchase_date;
@@ -57,45 +66,56 @@ class AddPurchase extends Component
 
     public function render() : View
     {
-        $this->invoice = Str::random(7);
         $this->categories = Category::latest()->get();
         $this->units = Unit::latest()->get();
         $this->suppliers = Supplier::latest()->get();
+        $this->purchases = Purchase::with('supplier')->latest()->get();
+        $this->medicines = Medicine::with('supplier')->latest()->get();
 
         return view('livewire.purchase.add-purchase');
     }
 
-    public function appendNewForm() : void
+    public function setPurchase() : void
     {
         $this->validate([
             'purchase_date' => 'required|date_format:Y-m-d',
             'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
         ]);
-        $new_purchase = Purchase::firstOrCreate(
-            ['id' => $this->purchase->id],
-            [ 'invoice' => $this->invoice, 'supplier_id' => $this->supplier_id, 'purchase_date' => $this->purchase_date, 'total_purchase' => $this->total_purchase]
+        $this->validateMedicine();
+        $new_purchase = Purchase::firstOrNew(
+            ['id' => $this->purchase?->id],
+            [ 'invoice' => $this->invoice ?? Str::random(7), 'supplier_id' => $this->supplier_id, 'purchase_date' => $this->purchase_date, 'total_purchase' => $this->total_purchase]
         );
+        dd($new_purchase);
+    }
+
+    private function validateMedicine() : void
+    {
+        $this->validate([
+            'name' => 'required|string|max:250',
+            'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
+            'storage' => 'nullable|string|max:250',
+            'expired' => 'required|date_format:Y-m-d',
+            'description' => 'nullable|string|max:250',
+            'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
+            'selling_price' => 'required|integer|min_digits:2|max_digits:8',
+            'unit_id' => 'required|integer|exists:App\Models\Unit,id',
+            'category_id' => 'required|integer|exists:App\Models\Category,id',
+        ]);
+    }
+
+    public function selectPurchase( Purchase $purchase ) : void
+    {
+        $this->purchase = $purchase->load('medicines');
+    }
+
+    public function selectMedicine( Medicine $medicine ) : void
+    {
+        $this->selectedMedicine = $medicine;
     }
 
     public function saveMedicine()
     {
-        try{
-            $this->validate([
-                 'name' => 'required|string|max:250',
-                 'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
-                 'storage' => 'nullable|string|max:250',
-                 'expired' => 'required|date_format:Y-m-d',
-                 'description' => 'nullable|string|max:250',
-                 'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
-                 'selling_price' => 'required|integer|min_digits:2|max_digits:8',
-                 'unit_id' => 'required|integer|exists:App\Models\Unit,id',
-                 'category_id' => 'required|integer|exists:App\Models\Category,id',
-                //  'supplier_id' => 'required|integer|exists:App\Models\Supplier,id',
-         ]);
-        }catch(\Exception $exe){
-            return;
-        }
-
         try{
             DB::transaction(function () {
                 Medicine::create([
@@ -115,8 +135,8 @@ class AddPurchase extends Component
         }catch(\Exception $e){
             throw($e);
         }
-        $this->dispatch('notify', ['status' => 'success', 'message' => 'Medicine Has Been Created!']);
-        return redirect()->route('medicines.index');
+        // $this->dispatch('notify', ['status' => 'success', 'message' => 'Medicine Has Been Created!']);
+        // return redirect()->route('medicines.index');
 
     }
 
