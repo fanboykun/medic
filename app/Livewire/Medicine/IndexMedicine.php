@@ -66,6 +66,13 @@ class IndexMedicine extends Component
 
         try{
             DB::transaction(function () {
+                // detach medicine data from purchase_medicine pivot
+                // tbd
+
+                // update the purchase data ( total_purchase, updated_at)
+                // tbd
+
+                // then delete the medicine
                 Medicine::where('id',$this->selectedMedicine)->delete();
             });
 

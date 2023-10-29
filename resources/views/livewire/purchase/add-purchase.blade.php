@@ -33,10 +33,10 @@
             <div x-show="currentTab == 'purchase_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8">
                 <div class=" flex justify-between items-center">
                     <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Purchase Form</h2>
-                    <div>
+                    {{-- <div>
                         <x-secondary-button class="capitalize mb-2">Unset</x-secondary-button>
                         <x-secondary-button class="capitalize mb-2" x-on:click="$dispatch('open-modal', 'search-purchase-modal')">Search by Existing Purchase Data</x-secondary-button>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-6">
                     <div>
@@ -111,10 +111,10 @@
                 <div>
                     <div class=" flex justify-between items-center">
                         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
-                        <div>
+                        {{-- <div>
                             <x-secondary-button class="capitalize mb-2">Unset</x-secondary-button>
                             <x-secondary-button class="capitalize mb-2" x-on:click="$dispatch('open-modal', 'search-medicine-modal')">Search by Existing Medicine</x-secondary-button>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="grid gap-y-4">
@@ -341,7 +341,7 @@
         </div>
 
     </section>
-
+{{--
     <x-modal x-data name="search-purchase-modal" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
@@ -367,7 +367,6 @@
                             <td class="px-6 py-4">{{ $purchase->supplier->name }}</td>
                             <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $purchase->purchase_date)->format('d M Y')}}</td>
                             <td class="px-6 py-4">
-                            <button wire:click="selectPurchase({{ $purchase }})" class="block font-medium text-blue-600 dark:text-blue-500 hover:underline">Pilih</button>
                             </td>
                         </tr>
                     @empty
@@ -413,7 +412,7 @@
                 </tbody>
             </table>
         </div>
-    </x-modal>
+    </x-modal> --}}
     <x-modal x-data name="add-unit" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">

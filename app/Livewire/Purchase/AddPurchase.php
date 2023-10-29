@@ -19,19 +19,19 @@ class AddPurchase extends Component
 {
     // purchases data to be searched and selected
     // the feature is tbd
-    public $purchases;
+    // public $purchases;
 
     // medicines data to be searched and selected
     // the feature is tbd
-    public $medicines;
+    // public $medicines;
 
     // model purchase that will be filled after purchase created
     // the feature is tbd
-    public $purchase;
+    // public $purchase;
 
     // model medicine that being selected
     // the feature is tbd
-    public $selectedMedicine;
+    // public $selectedMedicine;
 
     // column model for new purchase data
     // i think this var(s) better should be in the newPurchase instead
@@ -88,8 +88,8 @@ class AddPurchase extends Component
         $this->categories = Category::latest()->get();
         $this->units = Unit::latest()->get();
         $this->suppliers = Supplier::latest()->get();
-        $this->purchases = Purchase::with('supplier')->latest()->get();
-        $this->medicines = Medicine::with('supplier')->latest()->get();
+        // $this->purchases = Purchase::with('supplier')->latest()->get();
+        // $this->medicines = Medicine::with('supplier')->latest()->get();
 
         return view('livewire.purchase.add-purchase');
     }
@@ -172,15 +172,15 @@ class AddPurchase extends Component
         $this->invoice = $this->invoice == null ? Str::random(7) : $this->invoice;
     }
 
-    public function selectPurchase( Purchase $purchase ) : void
-    {
-        $this->purchase = $purchase->load('medicines');
-    }
+    // public function selectPurchase( Purchase $purchase ) : void
+    // {
+    //     $this->purchase = $purchase->load('medicines');
+    // }
 
-    public function selectMedicine( Medicine $medicine ) : void
-    {
-        $this->selectedMedicine = $medicine;
-    }
+    // public function selectMedicine( Medicine $medicine ) : void
+    // {
+    //     $this->selectedMedicine = $medicine;
+    // }
 
     public function saveMedicinePurchase()
     {

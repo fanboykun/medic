@@ -62,7 +62,7 @@
                             <td class="px-6 py-4">{{ $purchase->updated_at->diffForHumans() }}</td>
                             <td class="px-6 py-4">
                                 <a href="/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <button wire:click="deletePurchase({{ $purchase }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                <button wire:click="deletePurchase({{ $purchase->id }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                             </td>
                         </tr>
                     @empty
@@ -131,8 +131,8 @@
     </x-modal>
 
     <x-modal name="delete-purchase" focusable>
-        <form id="destroy-category" @submit.prevent="show = false">
-            <div class="p-6 dark:bg-gray-900">
+        <div>
+            <div class="p-6 dark:bg-gray-900" x-on:close-modal.window="show = false">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
                     Are you sure you want to delete this purchase
                     <div>
@@ -154,7 +154,7 @@
                     </x-danger-button>
                 </div>
             </div>
-        </form>
+        </div>
     </x-modal>
 
 </div>
