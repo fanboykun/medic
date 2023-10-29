@@ -24,6 +24,12 @@
                 </svg>
                 Add Purchase
             </a>
+            <select wire:model.live.debounce.500ms="filter_supplier" class="py-2 dark:bg-gray-700 dark:text-white rounded-full">
+                <option value=""> Filter Supplier </option>
+                @foreach ($suppliers as $supplier)
+                <option value="{{ $supplier->id }}"> {{ $supplier->name }} </option>
+                @endforeach
+            </select>
         </div>
     </div>
 
