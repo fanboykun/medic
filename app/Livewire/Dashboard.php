@@ -31,4 +31,5 @@ class Dashboard extends Component
         $this->total_items_sold = DB::table('medicine_sell')->sum('quantity');
         return view('livewire.dashboard');
     }
+
 }

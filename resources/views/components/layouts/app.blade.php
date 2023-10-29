@@ -29,6 +29,7 @@
         <main>
             <div class="p-2 sm:ml-64">
                 <x-toast />
+                <x-session-toast />
                 {{ $slot }}
             </div>
         </main>

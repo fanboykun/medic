@@ -8,7 +8,6 @@
         <div x-data="{
                 currentTab : 'purchase_form',
                 changeTab(tab){
-                    console.log(tab, this.currentTab)
                     this.currentTab = tab
                 }
             }"

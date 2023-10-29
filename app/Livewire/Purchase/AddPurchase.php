@@ -130,7 +130,6 @@ class AddPurchase extends Component
     {
         // unset an item of medicine from $this->newMedicines
         // return void
-        // tbd
         if( ($key = array_search($med, $this->newMedicines) ) !== false ) {
             unset($this->newMedicines[$key]);
         }
@@ -188,7 +187,6 @@ class AddPurchase extends Component
         // save purchase and all medicine data to database
         // then attach each medicine to purchase relation
         // then return redirect to purchases.index route
-        // tbd
         $this->validatePurchase();
         try{
             DB::transaction(function() {
@@ -202,11 +200,11 @@ class AddPurchase extends Component
         }catch( \Exception $e ) {
             throw($e);
         }
+        session()->flash( 'success-notify', 'Purchase Has Been Created!' );
         $this->redirect(
             route('purchases.index'),
             navigate: true
         );
-        // return $this->redirect(route('purchases.index'), navigate: true);
     }
 
     public function validatePurchase() : void
@@ -223,8 +221,6 @@ class AddPurchase extends Component
     {
         // save purchase data to database
         // then return back the instance
-        // tdb
-
         try{
             $new_purchase = Purchase::create([
                 'invoice' => $this->invoice,
@@ -242,7 +238,6 @@ class AddPurchase extends Component
     {
          // save medicine data to database
         // then return back the instance
-        // tdb
         try{
             $new_medicine = Medicine::create([
                 'name' => $med['name'],
