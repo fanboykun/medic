@@ -113,7 +113,7 @@
                     </x-secondary-button>
 
                     <x-danger-button class="ml-3" type="submit" wire:click="destroyMedicine" wire:submit.attr="disabled" wire:target="destroyMedicine">
-                        {{ __('Delete Category') }}
+                        {{ __('Delete Medicine') }}
                     </x-danger-button>
                 </div>
             </div>

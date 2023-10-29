@@ -62,21 +62,26 @@ class IndexMedicine extends Component
 
     public function destroyMedicine() : void
     {
-
-
         try{
             DB::transaction(function () {
+                // find the desired medicine from database
+                $med = Medicine::where('id',$this->selectedMedicine)->with( 'purchases' )->first();
+
+                // get first purchase data to update
+                // update the purchase data
+                $purchase = $med->purchases->first();
+                $purchase->total_purchase = $purchase->total_purchase - $med->purchase_price;
+                $purchase->save();
+
                 // detach medicine data from purchase_medicine pivot
-                // tbd
-
-                // update the purchase data ( total_purchase, updated_at)
-                // tbd
-
-                // then delete the medicine
-                Medicine::where('id',$this->selectedMedicine)->delete();
+                // then delete the medicine from the database
+                $med->purchases()->detach();
+                $med->delete();
             });
+            $this->dispatch('notify', ['message' => 'Medicine has been deleted!', 'status' => 'success']);
 
         }catch(\Exception $e){
+            $this->dispatch('notify', ['message' => 'Error! Medicine cannot be deleted!', 'status' => 'error']);
             throw($e);
         }
 
