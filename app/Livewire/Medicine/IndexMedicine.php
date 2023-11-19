@@ -51,7 +51,8 @@ class IndexMedicine extends Component
 
     public function loadMore() : void
     {
-        $this->perPage += 10;
+        $this->perPage += 10;                   # not a good option, but will do for now
+        // $this->nextPage();                   # should be like this, old way pagination instead of incrementing the limit number
     }
 
     public function deleteMedicine(array $medicine) : void
