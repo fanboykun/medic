@@ -3,7 +3,7 @@
     <div class="max-w-[90rem] px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
         <div class="flex items-center h-[3.3rem] gap-4">
             <button type="button" @click="mobilemenu = ! mobilemenu"
-                class="md:hidden text-gray-600 dark:text-gray-400"><span class="sr-only">Navigation</span><svg
+                class="sm:hidden text-gray-600 dark:text-gray-400"><span class="sr-only">Navigation</span><svg
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" aria-hidden="true" class="flex-shrink-0 w-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
