@@ -164,10 +164,14 @@ class AddPurchase extends Component
             $this->reset('total_purchase', 'total_medicine', 'total_quantity', 'invoice');
             return ;
         }
+        $new_total_purchase = 0;
+        (int) $new_total_quantity = 0;
         foreach($this->newMedicines as $key => $med){
-            $this->total_purchase += $med['purchase_price'] * $med['stock'];
-            $this->total_quantity += $med['stock'];
+            $new_total_purchase += $med['purchase_price'] * $med['stock'];
+            $new_total_quantity += $med['stock'];
         }
+        $this->total_purchase = $new_total_purchase;
+        $this->total_quantity = $new_total_quantity;
         $this->total_medicine = count($this->newMedicines);
         $this->invoice = $this->invoice == null ? Str::random(7) : $this->invoice;
     }
