@@ -3,7 +3,7 @@
         Dashboard
     </x-slot>
     <div class="w-full">
-        <div class="bg-white dark:bg-slate-700 dark:text-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class=" dark:text-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="dark:bg-slate-800 grid grid-cols-2 py-4 border-spacing-1">
                 <div class="flex justify-start px-4 py-2">
                     <div class="block">
@@ -20,8 +20,8 @@
                     <span class="bg-indigo-100 text-indigo-800 text-xs mr-2 px-3 py-0.5 rounded-full dark:bg-gray-700/30 font-bold dark:text-indigo-600 border border-indigo-400">Active</span>
                 </div>
             </div>
-            <div class="bg-gray-200 dark:bg-slate-600/80 grid sm:grid-cols-2 md:grid-cols-4 border-y border-gray-100 dark:border-gray-500">
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+            <div class=" grid grid-rows-1 gap-y-2 sm:gap-x-0 sm:gap-y-0 md:grid-rows-2 md:grid-cols-2 lg:grid-cols-4 border-none sm:border-y">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -93,9 +93,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="bg-gray-200 dark:bg-slate-600/80 grid sm:grid-cols-2 md:grid-cols-4 border-y border-gray-100 dark:border-gray-500">
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -113,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -126,12 +124,12 @@
                         <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
                             Money Receive on Sales
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
-                           Rp {{ number_format($money_receive_on_sales, 0, ',', '.') }}
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white whitespace-nowrap">
+                           <span class="text-xs">RP</span> {{ number_format($money_receive_on_sales, 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -144,12 +142,12 @@
                         <div class=" font-semibold text-sm text-slate-600 dark:text-slate-200">
                             Money Spent on Purchases
                         </div>
-                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white">
-                            Rp {{ number_format($money_spent_on_purchases, 0, ',', '.') }}
+                        <div class="text-3xl leading-loose font-semibold text-slate-700 dark:text-white whitespace-nowrap">
+                            <span class="text-xs">Rp</span> {{ number_format($money_spent_on_purchases, 0, ',', '.') }}
                         </div>
                     </div>
                 </div>
-                <div class="flex border-r border-white dark:border-gray-500 px-2 py-4">
+                <div class="bg-gray-200 dark:bg-slate-600/80 flex border-r border-white dark:border-gray-500 px-4 py-4">
                     <div>
                         <div class="p-2 rounded-lg bg-white w-fit mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-indigo-600">
@@ -168,6 +166,8 @@
                     </div>
                 </div>
             </div>
+            {{-- <div class="bg-gray-200 dark:bg-slate-600/80 grid sm:grid-cols-2 md:grid-cols-4 border-y border-gray-100 dark:border-gray-500">
+            </div> --}}
         </div>
     </div>
 
