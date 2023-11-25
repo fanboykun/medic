@@ -8,7 +8,8 @@
         <div class="col-span-2 bg-white dark:bg-gray-800 rounded-lg">
             <x-table-content>
                 <x-slot name="table_header">
-                    <div class="relative w-full py-3 mb-1 px-2 rounded-md dark:bg-gray-900">
+                <div class="flex justify-between w-full dark:bg-gray-900 rounded-t-md">
+                    <div class="relative w-full py-3 mb-1 px-2">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -16,6 +17,10 @@
                         </div>
                         <input type="text" wire:model.live.debounce.500ms="search" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder="Search supplier by name" required="">
                     </div>
+                    <div class="flex lg:hidden items-center justify-end py-3 px-2 whitespace-nowrap ">
+                        <x-secondary-button x-on:click="$dispatch('open-modal', 'add-supplier')">Add New</x-secondary-button>
+                    </div>
+                </div>
                 </x-slot>
                 <x-slot name="th">
                     <tr>
@@ -97,7 +102,7 @@
             </x-table-content>
         </div>
         <!-- Form -->
-        <div class="lg:order-last order-first bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
+        <div class="lg:order-last order-first hidden lg:block bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
                 Add Supplier Form
             </div>
@@ -135,12 +140,51 @@
         </div>
     </div>
 
+    <x-modal x-data name="add-supplier" focusable>
+        <div class=" bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
+                Add Supplier Form
+            </div>
+            <form class="p-4" wire:submit="saveSupplier" x-on:close-modal.window="show = false">
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="text" name="name" wire:model="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        Supplier Name <span class="text-xs font-light text-red-500">*</span>
+                    </label>
+                    @error('name')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="text" name="address" wire:model="address" id="address" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Address</label>
+                    @error('address')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="number" name="phone" wire:model="phone" id="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Phone</label>
+                    @error('phone')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+                <div class="flex overflow-x-auto no-scrollbar flex-nowrap">
+                    <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveSupplier">
+                        Clear
+                    </x-secondary-button>
+                    <button type="submit" wire:submit.attr="disabled" wire:target="saveSupplier" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                </div>
+            </form>
+        </div>
+    </x-modal>
+
     <x-modal x-data name="edit-supplier" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
             <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
                 Edit Supplier Form
             </div>
-            <form class="p-4" wire:submit="updateSupplier" @submit.prevent="show = false">
+            <form class="p-4" wire:submit="updateSupplier" x-on:close-modal.window="show = false">
                 <div class="relative z-0 w-full mb-6 group p-2">
                     <input type="text" name="name" wire:model="selectedSupplier.name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                     <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -175,7 +219,7 @@
     </x-modal>
 
     <x-modal name="delete-supplier" focusable>
-        <form id="destroy-supplier" @submit.prevent="show = false">
+        <div id="destroy-supplier" x-on:close-modal.window="show = false">
             <div class="p-6 dark:bg-gray-900">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-200">
                     Are you sure you want to delete <span class="font-bold underline"> {{ $selectedSupplier ? $selectedSupplier['name'] : 'this' }} </span> supplier?
@@ -195,7 +239,7 @@
                     </x-danger-button>
                 </div>
             </div>
-        </form>
+        </div>
     </x-modal>
 
 </div>

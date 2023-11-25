@@ -53,6 +53,7 @@ class IndexSupplier extends Component
             'phone' => $this->phone
         ]);
         $this->reset('name', 'address', 'phone');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Created!']);
     }
 
@@ -70,6 +71,7 @@ class IndexSupplier extends Component
             'phone' => $this->selectedSupplier['phone']
         ]);
         $this->reset('selectedSupplier');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Updated!']);
     }
 
@@ -83,6 +85,7 @@ class IndexSupplier extends Component
     {
         Supplier::where('id',$this->selectedSupplier['id'])->delete();
         $this->reset('selectedSupplier');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Supplier Has Been Deleted!']);
     }
 
