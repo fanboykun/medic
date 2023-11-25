@@ -1,4 +1,4 @@
-<div x-show="mobilemenu" x-cloak class="relative z-30" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+<div x-show="mobilemenu" x-cloak class="relative z-30 sm:hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
     <!--
       Background backdrop, show/hide based on slide-over state.
 

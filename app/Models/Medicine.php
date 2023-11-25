@@ -22,6 +22,8 @@ class Medicine extends Model
         'supplier_id',
     ];
 
+    protected $appends = ['is_expired', 'price_diff'];
+
     public function unit () : \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->BelongsTo(Unit::class);
@@ -45,6 +47,17 @@ class Medicine extends Model
     public function purchases () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Purchase::class)->withPivot(['quantity', 'purchase_price',])->withTimestamps();
+    }
+
+    public function getIsExpiredAttribute()
+    {
+        $formatted_date = \Carbon\Carbon::createFromFormat('Y-m-d', $this->expired);
+        return $formatted_date <= today();
+    }
+
+    public function getPriceDiffAttribute()
+    {
+        return (float) ($this->purchase_price - $this->selling_price);
     }
 
 

@@ -23,8 +23,15 @@
 </head>
 
 <body class="font-sans antialiased bg-white dark:bg-slate-900">
-    <div x-data="{ mobilemenu : false }" class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
-        {{-- <x-layouts.header /> --}}
+    <div
+        x-data="{
+            mobilemenu : false,
+            calc(){
+                if(window.innerWidth >= 640) this.mobilemenu = false
+            }
+        }"
+        x-on:resize.window="calc()"
+        class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
         @include('components.layouts.header')
         <x-layouts.sidebar />
         <main>

@@ -1,6 +1,6 @@
-<div>
-    <header class="bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 sticky top-0 z-20 w-full h-[3.3rem] flex-none">
-        <div class="max-w-[90rem] px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
+<div class="relative block">
+    <header class="block bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 sticky top-0 z-20 w-full h-[3.3rem] flex-none">
+        <div class="max-w-full px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
             <div class="flex items-center h-[3.3rem] gap-4">
                 <button type="button" @click="mobilemenu = ! mobilemenu"
                     class="sm:hidden text-gray-600 dark:text-gray-400"><span class="sr-only">Navigation</span><svg
@@ -50,7 +50,7 @@
                     <div data-headlessui-state="" class="relative inline-block text-left items-center mt-2 md:mt-0">
                         <div x-transition>
                             <button x-cloak x-on:click="toggle = !toggle" id="headlessui-menu-button-238" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="" class="flex items-center">
-                                <svg x-cloak xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-show="currentMode == 'light'" class="w-5 h-5 text-teal-500">
+                                <svg x-cloak xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-show="currentMode == 'light'" class="w-5 h-5 text-indigo-500">
                                     <path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.061 1.06l1.06 1.06z"></path>
                                 </svg>
                                 <svg x-cloak xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-show="currentMode == 'dark'" class="flex-shrink-0 w-5 h-5 text-gray-500">
@@ -62,13 +62,13 @@
                             </button>
                             <div x-show="toggle" x-cloak  @click.outside="toggle = false" aria-labelledby="headlessui-menu-button-238" id="headlessui-menu-items-5" role="menu" class="absolute right-0 z-10 mt-2 py-2 px-1.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-950 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-5 focus:outline-none">
                                 <div class="py-1" role="none">
-                                    <button type="button" x-on:click="change('light')"  class="flex items-center gap-3 w-full font-semibold text-left px-3 py-1 text-sm text-teal-500 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-900" id="headlessui-menu-item-7" role="menuitem" tabindex="-1">
+                                    <button type="button" x-on:click="change('light')"  class="flex items-center gap-3 w-full font-semibold text-left px-3 py-1 text-sm text-indigo-500 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-900" id="headlessui-menu-item-7" role="menuitem" tabindex="-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="flex-shrink-0 w-5 h-5">
                                             <path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.061 1.06l1.06 1.06z"></path>
                                         </svg>
                                         Light
                                     </button>
-                                    <button x-on:click="change('dark')" type="button" class="flex items-center gap-3 w-full font-semibold text-left px-3 py-1 text-sm text-gray-700 dark:text-teal-500 hover:bg-gray-50 dark:hover:bg-gray-900" id="headlessui-menu-item-8" role="menuitem" tabindex="-1">
+                                    <button x-on:click="change('dark')" type="button" class="flex items-center gap-3 w-full font-semibold text-left px-3 py-1 text-sm text-gray-700 dark:text-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-900" id="headlessui-menu-item-8" role="menuitem" tabindex="-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="flex-shrink-0 w-5 h-5">
                                             <path fill-rule="evenodd" d="M7.455 2.004a.75.75 0 01.26.77 7 7 0 009.958 7.967.75.75 0 011.067.853A8.5 8.5 0 116.647 1.921a.75.75 0 01.808.083z"clip-rule="evenodd"></path>
                                         </svg>
