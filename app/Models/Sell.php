@@ -21,6 +21,6 @@ class Sell extends Model
 
     public function medicines () : \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'purchase_price'])->withTimestamps();
+        return $this->belongsToMany(Medicine::class)->withPivot(['quantity', 'selling_price'])->withTimestamps();
     }
 }
