@@ -23,7 +23,7 @@ class IndexUnit extends Component
 
     public string $sortField = 'created_at';
     public string $sortDirection = 'asc';
-    protected array $sortableField = ['name', 'created_at'];
+    public array $sortableField = ['name', 'created_at'];
 
     public function render() : View
     {
@@ -49,12 +49,12 @@ class IndexUnit extends Component
             'name' => $this->name,
         ]);
         $this->reset('name');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Created!']);
     }
 
     public function updateUnit() : void
     {
-        $this->dispatch('close-modal');
         $this->validate([
             'selectedUnit.name' => 'required|string|max:50',
         ]);
@@ -62,6 +62,7 @@ class IndexUnit extends Component
             'name' => $this->selectedUnit['name'],
         ]);
         $this->reset('selectedUnit');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Updated!']);
     }
 
@@ -75,6 +76,7 @@ class IndexUnit extends Component
     {
         Unit::where('id',$this->selectedUnit)->delete();
         $this->reset('selectedUnit');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Unit Has Been Deleted!']);
 
     }
@@ -95,7 +97,7 @@ class IndexUnit extends Component
             if ($this->sortField === $field) {
                 $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
             } else {
-                $this->sortDirection = 'asc';
+                $this->sortDirection = 'desc';
             }
             $this->sortField = $field;
         }

@@ -22,7 +22,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-white dark:bg-slate-900">
     <div x-data="{ mobilemenu : false }" class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
         @include('components.layouts.header')
         @include('components.layouts.sidebar')
