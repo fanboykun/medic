@@ -105,7 +105,7 @@ class IndexSupplier extends Component
             if ($this->sortField === $field) {
                 $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
             } else {
-                $this->sortDirection = 'asc';
+                $this->sortDirection = 'desc';
             }
             $this->sortField = $field;
         }
