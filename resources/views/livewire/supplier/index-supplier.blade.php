@@ -55,6 +55,16 @@
                             </div>
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            <div class="flex items-center">
+                                Created At
+                                <button wire:click="sortBy('created_at')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
@@ -70,6 +80,9 @@
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                            <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier?->phone }}</a>
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $supplier->created_at->format('d M Y') }}
                         </th>
                         <td class="px-6 py-4">
                             <button type="button" wire:click="editSupplier({{ $supplier }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>

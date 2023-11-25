@@ -24,8 +24,9 @@
 
 <body class="font-sans antialiased bg-white dark:bg-slate-900">
     <div x-data="{ mobilemenu : false }" class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
+        {{-- <x-layouts.header /> --}}
         @include('components.layouts.header')
-        @include('components.layouts.sidebar')
+        <x-layouts.sidebar />
         <main>
             <div class="p-2 sm:ml-64">
                 <x-toast />

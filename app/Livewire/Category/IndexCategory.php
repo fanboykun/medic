@@ -51,6 +51,7 @@ class IndexCategory extends Component
             'description' => $this->description
         ]);
         $this->reset('name', 'description');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Created!']);
     }
 
@@ -66,6 +67,7 @@ class IndexCategory extends Component
             'description' => $this->selectedCategory['description']
         ]);
         $this->reset('selectedCategory');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Updated!']);
     }
 
@@ -79,6 +81,7 @@ class IndexCategory extends Component
     {
         Category::where('id',$this->selectedCategory)->delete();
         $this->reset('selectedCategory');
+        $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Deleted!']);
 
     }
@@ -99,7 +102,7 @@ class IndexCategory extends Component
             if ($this->sortField === $field) {
                 $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
             } else {
-                $this->sortDirection = 'asc';
+                $this->sortDirection = 'desc';
             }
             $this->sortField = $field;
         }

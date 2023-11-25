@@ -34,19 +34,16 @@ class IndexMedicine extends Component
         $this->units = Unit::all();
         $this->categories = Category::all();
         $today = $this->filter_expired != null ? today()->format('Y-m-d') : '';
-
-        return view('livewire.medicine.index-medicine',
-        [
-            'medicines' => Medicine::where('name', 'like', '%'.$this->search.'%')
-            ->where('unit_id', 'like', '%'.$this->filter_unit. '%')
-            ->where('category_id', 'like', '%'.$this->filter_category. '%')
-            ->when($today != '', function ($q) use($today){
-                return $this->filter_expired ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
-            })
-            ->with('supplier', 'unit', 'category')
-            ->latest()
-            ->paginate($this->perPage)
-        ]);
+        $medicines = Medicine::where('name', 'like', '%'.$this->search.'%')
+        ->where('unit_id', 'like', '%'.$this->filter_unit. '%')
+        ->where('category_id', 'like', '%'.$this->filter_category. '%')
+        ->when($today != '', function ($q) use($today){
+            return $this->filter_expired ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
+        })
+        ->with('supplier', 'unit', 'category')
+        ->latest()
+        ->paginate($this->perPage);
+        return view('livewire.medicine.index-medicine',['medicines' => $medicines]);
     }
 
     public function loadMore() : void
