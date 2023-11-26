@@ -73,18 +73,19 @@
                     @forelse ($suppliers as $supplier)
                     <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                           <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier->name }}</a>
+                           {{ $supplier->name }}
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                           <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1 break-words">{{ $supplier?->address }}</a>
+                            {{ $supplier?->address }}
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                           <a href="" class="hover:underline underline-offset-2 decoration-slate-100 decoration-1">{{ $supplier?->phone }}</a>
+                           {{ $supplier?->phone }}
                         </th>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $supplier->created_at->format('d M Y') }}
                         </th>
                         <td class="px-6 py-4">
+                            <a href="{{ route('suppliers.show', ['supplier' => $supplier ]) }}" wire:navigate class="block font-medium text-green-600 dark:text-green-400 hover:underline">Details</a>
                             <button type="button" wire:click="editSupplier({{ $supplier }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             <button wire:click="deleteSupplier({{ $supplier }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                         </td>
