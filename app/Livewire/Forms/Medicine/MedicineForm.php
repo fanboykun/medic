@@ -4,10 +4,10 @@ namespace App\Livewire\Forms\Medicine;
 
 use App\Models\Medicine;
 use Carbon\Carbon;
-use Exception;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\Locked;
 use Livewire\Form;
+use Exception;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
 
 class MedicineForm extends Form
 {
@@ -28,54 +28,59 @@ class MedicineForm extends Form
      * define the variable type, if needed, init the value
      * like $name = ''; (if needed)
      */
-    #[Validate(['required|string|max:250'], [
+    #[Validate(
+        ['name' => 'required|string|max:250'],
+        message : [
         'required' => 'Please enter the medicine name',
         'max' => 'too much character for name, max character is 255 character'
+        ],
+        attribute: [
+            'name' => 'form.name',
         ])]
     public string|null $name;
 
-    #[Validate(['nullable|string|max:250'], [
+    #[Validate(['storage' =>'nullable|string|max:250'], message : [
         'max' => 'too much character for storage, max character is 255 character'
     ])]
     public string|null $storage;
 
-    #[Validate(['nullable|string|max:250'], [
+    #[Validate(['description' =>'nullable|string|max:250'], message :  [
         'max' => 'too much character for description, max character is 255 character'
     ])]
     public string|null $description;
 
-    #[Validate(['required|integer|exists:App\Models\Unit,id'], [
-        'exists' => 'the unit does not exists, please create one',
+    #[Validate(['unit_id' =>'required|integer|exists:App\Models\Unit,id'], message :  [
+        'exists' => 'the unit does not exists, please create one then select it',
         'required' => 'please select one unit'
         ])]
     public int|null $unit_id;
 
-    #[Validate(['required|integer|exists:App\Models\Category,id'],[
+    #[Validate(['category_id' => 'required|integer|exists:App\Models\Category,id'], message : [
         'exists' => 'the category does not exists, please create one',
         'required' => 'please select one category'
         ])]
     public int|null $category_id;
 
-    #[Validate(['required|integer|exists:App\Models\Supplier,id'], [
+    #[Validate(['supplier_id' => 'required|integer|exists:App\Models\Supplier,id'], message : [
         'exists' => 'the supplier does not exists, please create one',
         'required' => 'please select one supplier'
         ])]
     public int|null $supplier_id;
 
-    #[Validate(['required|integer|min:1|max:9999|min_digits:1|max_digits:4'], [
+    #[Validate(['stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4'], message : [
         'required' => 'please enter the stock amount, min amount is 1',
         'max' => 'too much value for stock, max value is 9999',
         'integer' => 'please input only real number for stock, not accepting decimal'
     ])]
     public int|null $stock;
 
-    #[Validate(['required|date_format:Y-m-d'], [
+    #[Validate(['expired' => 'required|date_format:Y-m-d'], message : [
         'required' => 'plase fill the expiration date',
         'date_format' => 'the accepted date format is Y-m-d'
     ])]
     public string|null $expired;
 
-    #[Validate(['required|integer|min_digits:2|max_digits:8'],[
+    #[Validate(['selling_price' => 'required|integer|min_digits:2|max_digits:8'], message : [
         'required' => 'plase fill the selling price',
         'integer' => 'only accepts number',
         'min_digits' => 'the minimum accepted digit is 2 digit',
@@ -83,7 +88,7 @@ class MedicineForm extends Form
     ])]
     public float|null $selling_price;
 
-    #[Validate(['required|integer|min_digits:2|max_digits:8'], [
+    #[Validate(['purchase_price' => 'required|integer|min_digits:2|max_digits:8'], message : [
         'required' => 'plase fill the purchase price',
         'integer' => 'only accepts number',
         'min_digits' => 'the minimum accepted digit is 2 digit',
@@ -106,6 +111,7 @@ class MedicineForm extends Form
         $this->stock = $medicine->stock;
         $this->unit_id = $medicine->unit_id;
         $this->category_id = $medicine->category_id;
+        $this->supplier_id = $medicine->supplier_id;
         $this->supplier_name = $medicine->supplier->name;
         $this->purchase_price = $medicine->purchase_price;
         $this->selling_price = $medicine->selling_price;
@@ -114,32 +120,23 @@ class MedicineForm extends Form
         $this->description = $medicine->description;
     }
 
-    public function validateMedicineForUpdate()
-    {
-        $this->validate([
-            'name' => 'required|string|max:250',
-            'storage' => 'nullable|string|max:250',
-            'expired' => 'required|date_format:Y-m-d',
-            'description' => 'nullable|string|max:250',
-            'unit_id' => 'required|integer|exists:App\Models\Unit,id',
-            'category_id' => 'required|integer|exists:App\Models\Category,id',
-        ]);
-    }
-
     public function storeMedicineForUpdate()
     {
-        $this->validateMedicineForUpdate();
+    //    dd($this->all());
+        $this->validate();
         try{
-            Medicine::where('id', $this->medicineId)->update([
+            $medicine = Medicine::findOrFail($this->medicineId);
+            $medicine->update([
                 'name' => $this->name,
                 'storage' => $this->storage,
                 'expired' => $this->expired,
                 'description' => $this->description,
                 'unit_id' => $this->unit_id,
-                'category_id' => $this->unit_id,
+                'category_id' => $this->category_id,
             ]);
         }catch (\Exception $e){
-            throw new Exception('Something Goes Wrong');
+            throw($e);
+            // throw new Exception('Something Goes Wrong');
         }
         $this->reset();         // always reset the prop
     }

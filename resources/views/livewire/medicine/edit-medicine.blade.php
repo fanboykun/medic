@@ -11,14 +11,14 @@
             <div class="py-8 px-4 mx-auto w-full lg:py-8">
                 <div>
                     <div class=" flex justify-between items-center">
-                        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
+                        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Edit Medicine Form</h2>
                     </div>
 
                     <form wire:submit="updateMedicine" class="grid gap-y-4">
                         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 dark:bg-slate-800 px-2 py-4">
                             <div class="lg:col-span-2 col-span-3">
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name <span class="text-red-500">*</span> </label>
-                                <input type="text" wire:model="form.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required="">
+                                <input type="text" wire:model="form.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name">
                                 @error('form.name')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -33,6 +33,9 @@
                             <div class="lg:col-span-1 col-span-3">
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier <span class="text-red-500">*</span> </label>
                                 <input readonly disabled type="text" value="{{ $form->supplier_name }}" name="supplier_id" id="supplier_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required="">
+                                @error('form.supplier_id')
+                                <span class="block text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="w-full lg:col-span-1 col-span-3">
                                 <label for="unit_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit <span class="text-red-500">*</span></label>
@@ -136,18 +139,10 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mt-2">
+                        <div class="flex items-end justify-end">
                             <div>
-                                <x-secondary-button class="py-3 mx-1 capitalize" x-on:click="currentTab = 'summary'">
-                                    Next Step
-                                </x-secondary-button>
-                            </div>
-                            <div>
-                                <x-secondary-button class="py-3 mx-1 capitalize" wire:click="clearForm">
-                                    Clear
-                                </x-secondary-button>
-                                <button type="submit" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
-                                    Add Medicine
+                                <button type="submit" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                                    Update Medicine
                                 </button>
                             </div>
                         </div>
