@@ -18,7 +18,7 @@
                         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 dark:bg-slate-800 px-2 py-4">
                             <div class="lg:col-span-2 col-span-3">
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name <span class="text-red-500">*</span> </label>
-                                <input type="text" wire:model="form.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name">
+                                <input type="text" wire:model="form.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required>
                                 @error('form.name')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -26,6 +26,7 @@
                             <div class="w-full lg:col-span-1 col-span-3">
                                 <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock <span class="text-red-500">*</span></label>
                                 <input readonly disabled type="number" wire:model="form.stock" min="1" minlength="1" max="9999" maxlength="4" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="input stock with min value is 1" required="">
+                                <span class="block text-gray-500 text-sm">not allowed to edit the stock data</span>
                                 @error('form.stock')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -33,6 +34,7 @@
                             <div class="lg:col-span-1 col-span-3">
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier <span class="text-red-500">*</span> </label>
                                 <input readonly disabled type="text" value="{{ $form->supplier_name }}" name="supplier_id" id="supplier_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required="">
+                                <span class="block text-gray-500 text-sm">not allowed to edit the supplier data</span>
                                 @error('form.supplier_id')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -94,6 +96,7 @@
                                     </div>
                                     <input readonly disabled type="number" wire:model="form.purchase_price" id="purchase_price" class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                                 </div>
+                                <span class="block text-gray-500 text-sm">not allowed to edit the purchase price data</span>
                                 @error('form.purchase_price')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -106,6 +109,7 @@
                                     </div>
                                     <input readonly disabled type="number" wire:model="form.selling_price" id="selling_price" class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                                 </div>
+                                <span class="block text-gray-500 text-sm">not allowed to edit the selling price data</span>
                                 @error('form.selling_price')
                                 <span class="block text-red-500 text-sm">{{ $message }}</span>
                                 @enderror

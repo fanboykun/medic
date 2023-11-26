@@ -5,7 +5,6 @@ namespace App\Livewire\Forms\Medicine;
 use App\Models\Medicine;
 use Carbon\Carbon;
 use Livewire\Form;
-use Exception;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 
@@ -28,72 +27,58 @@ class MedicineForm extends Form
      * define the variable type, if needed, init the value
      * like $name = ''; (if needed)
      */
-    #[Validate(
-        ['name' => 'required|string|max:250'],
-        message : [
-        'required' => 'Please enter the medicine name',
-        'max' => 'too much character for name, max character is 255 character'
-        ],
-        attribute: [
-            'name' => 'form.name',
-        ])]
+    #[Validate('required', message: 'Please enter the medicine name')]
+    #[Validate('string', message: 'Only accepts string')]
+    #[Validate('max:250', message: 'too much character for name, max character is 255 character')]
     public string|null $name;
 
-    #[Validate(['storage' =>'nullable|string|max:250'], message : [
-        'max' => 'too much character for storage, max character is 255 character'
-    ])]
+    #[Validate('nullable')]
+    #[Validate('string', message: 'Only accepts string')]
+    #[Validate('max:250', message: 'too much character for storage, max character is 255 character')]
     public string|null $storage;
 
-    #[Validate(['description' =>'nullable|string|max:250'], message :  [
-        'max' => 'too much character for description, max character is 255 character'
-    ])]
+    #[Validate('nullable')]
+    #[Validate('string', message: 'Only accepts string')]
+    #[Validate('max:250', message: 'too much character for description, max character is 255 character')]
     public string|null $description;
 
-    #[Validate(['unit_id' =>'required|integer|exists:App\Models\Unit,id'], message :  [
-        'exists' => 'the unit does not exists, please create one then select it',
-        'required' => 'please select one unit'
-        ])]
+    #[Validate('required', message: 'please select one unit')]
+    #[Validate('integer')]
+    #[Validate('exists:App\Models\Unit,id', message: 'the unit does not exists, please create one then select it')]
     public int|null $unit_id;
 
-    #[Validate(['category_id' => 'required|integer|exists:App\Models\Category,id'], message : [
-        'exists' => 'the category does not exists, please create one',
-        'required' => 'please select one category'
-        ])]
+    #[Validate('required', message : 'please select one category')]
+    #[Validate('integer')]
+    #[Validate('exists:App\Models\Category,id', message : 'the category does not exists, please create one')]
     public int|null $category_id;
 
-    #[Validate(['supplier_id' => 'required|integer|exists:App\Models\Supplier,id'], message : [
-        'exists' => 'the supplier does not exists, please create one',
-        'required' => 'please select one supplier'
-        ])]
+    #[Validate('required', message : 'please select one supplier')]
+    #[Validate('integer')]
+    #[Validate('exists:App\Models\Supplier,id', message : 'the supplier does not exists, please create one')]
     public int|null $supplier_id;
 
-    #[Validate(['stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4'], message : [
-        'required' => 'please enter the stock amount, min amount is 1',
-        'max' => 'too much value for stock, max value is 9999',
-        'integer' => 'please input only real number for stock, not accepting decimal'
-    ])]
+    #[Validate('required', message : 'please enter the stock amount, min amount is 1')]
+    #[Validate('integer')]
+    #[Validate('min:1')]
+    #[Validate('max:9999', message : 'too much value for stock, max value is 999')]
+    #[Validate('min_digits:1', message : '')]
+    #[Validate('max_digits:4', message : '')]
     public int|null $stock;
 
-    #[Validate(['expired' => 'required|date_format:Y-m-d'], message : [
-        'required' => 'plase fill the expiration date',
-        'date_format' => 'the accepted date format is Y-m-d'
-    ])]
+    #[Validate('required', message: 'plase fill the expiration date')]
+    #[Validate('date_format:Y-m-d', message: 'the accepted date format is Y-m-d')]
     public string|null $expired;
 
-    #[Validate(['selling_price' => 'required|integer|min_digits:2|max_digits:8'], message : [
-        'required' => 'plase fill the selling price',
-        'integer' => 'only accepts number',
-        'min_digits' => 'the minimum accepted digit is 2 digit',
-        'max_digit' => 'the maximun accepted digit is 8 digit'
-    ])]
+    #[Validate('required', message: 'plase fill the selling price')]
+    #[Validate('integer', message: 'only accepts number for price')]
+    #[Validate('min_digits:2', message: 'the minimum accepted digit is 2 digit')]
+    #[Validate('max_digits:8', message: 'the maximun accepted digit is 8 digit')]
     public float|null $selling_price;
 
-    #[Validate(['purchase_price' => 'required|integer|min_digits:2|max_digits:8'], message : [
-        'required' => 'plase fill the purchase price',
-        'integer' => 'only accepts number',
-        'min_digits' => 'the minimum accepted digit is 2 digit',
-        'max_digit' => 'the maximun accepted digit is 8 digit'
-    ])]
+    #[Validate('required', message: 'plase fill the purchase price')]
+    #[Validate('integer', message: 'only accepts number for price')]
+    #[Validate('min_digits:2', message: 'the minimum accepted digit is 2 digit')]
+    #[Validate('max_digits:8', message: 'the maximun accepted digit is 8 digit')]
     public float|null $purchase_price;
 
     /**
@@ -115,14 +100,13 @@ class MedicineForm extends Form
         $this->supplier_name = $medicine->supplier->name;
         $this->purchase_price = $medicine->purchase_price;
         $this->selling_price = $medicine->selling_price;
-        $this->expired = Carbon::createFromFormat('Y-m-d',$medicine->expired)->format('Y-m-d');
+        $this->expired = Carbon::createFromFormat('Y-m-d',$medicine->expired)->format('Y-m-d'); // for HTML input type date, since it's only accepts Y-m-d format :)
         $this->storage = $medicine->storage;
         $this->description = $medicine->description;
     }
 
     public function storeMedicineForUpdate()
     {
-    //    dd($this->all());
         $this->validate();
         try{
             $medicine = Medicine::findOrFail($this->medicineId);
@@ -136,7 +120,6 @@ class MedicineForm extends Form
             ]);
         }catch (\Exception $e){
             throw($e);
-            // throw new Exception('Something Goes Wrong');
         }
         $this->reset();         // always reset the prop
     }
