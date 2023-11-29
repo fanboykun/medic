@@ -31,11 +31,11 @@
             }
         }"
         x-on:resize.window="calc()"
-        class="min-h-screen bg-gray-100 dark:bg-slate-800" id="app">
+        class="max-h-screen bg-inherit" id="app">
         @include('components.layouts.header')
         <x-layouts.sidebar />
         <main>
-            <div class="p-2 sm:ml-64">
+            <div class="sm:p-2 sm:ml-64 sm:mt-[64px] max-h-[calc(100vh-64px)]">
                 <x-toast />
                 <x-session-toast />
                 {{ $slot }}

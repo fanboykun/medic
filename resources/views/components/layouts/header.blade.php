@@ -1,5 +1,5 @@
-<div class="relative block">
-    <header class="block bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 sticky top-0 z-20 w-full h-[3.3rem] flex-none">
+<div class="">
+    <header class="block bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 fixed top-0 z-20 w-full h-[64px] flex-none">
         <div class="max-w-full px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
             <div class="flex items-center h-[3.3rem] gap-4">
                 <button type="button" @click="mobilemenu = ! mobilemenu"
@@ -16,8 +16,6 @@
                 <a href="{{ route('dashboard') }}" wire:navigate
                     class="flex-shrink-0 h-[24px] text-gray-600 dark:text-white" alt="Pharmacy App">
                     Pharmacy App
-                    {{-- <img class="flex-shrink-0 h-[24px] text-gray-500 dark:text-white block dark:hidden" alt="logo" src="/docs/logo.svg">
-                    <img class="flex-shrink-0 h-[24px] text-gray-500 dark:text-white hidden dark:block" alt="logo" src="/docs/logo-dark.svg"> --}}
                 </a>
                 @if (isset($header))
                     <div class="items-start hidden sm:flex ml-28 text-gray-600 dark:text-gray-200 font-semibold text-lg">
@@ -74,12 +72,6 @@
                                         </svg>
                                         Dark
                                     </button>
-                                    {{-- <button type="button" x-on:click="change('system')" class="flex items-center gap-3 w-full font-semibold text-gray-700 dark:text-gray-200 text-left px-3 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-900 !text-primary-500" id="headlessui-menu-item-9" role="menuitem" tabindex="-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-600">
-                                            <path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 014.25 2h11.5A2.25 2.25 0 0118 4.25v8.5A2.25 2.25 0 0115.75 15h-3.105a3.501 3.501 0 001.1 1.677A.75.75 0 0113.26 18H6.74a.75.75 0 01-.484-1.323A3.501 3.501 0 007.355 15H4.25A2.25 2.25 0 012 12.75v-8.5zm1.5 0a.75.75 0 01.75-.75h11.5a.75.75 0 01.75.75v7.5a.75.75 0 01-.75.75H4.25a.75.75 0 01-.75-.75v-7.5z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        System
-                                    </button> --}}
                                 </div>
                             </div>
                         </div>
@@ -128,11 +120,11 @@
         </div>
     </header>
     @if(isset($header))
-    <div class="block sm:hidden w-full h-auto py-2 bg-none">
+    <div class="block sm:hidden sm:mt-0 mt-[64px] w-full h-auto py-2 bg-none">
         <div class="px-4 underline decoration decoration-wavy decoration-indigo-500 text-gray-600 dark:text-gray-200 font-semibold text-lg">
             {{ $header }}
         </div>
     </div>
+    @endif
 </div>
-@endif
 @include('components.layouts.mobile-sidebar')
