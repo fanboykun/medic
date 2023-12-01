@@ -57,7 +57,7 @@ class Medicine extends Model
 
     public function getPriceDiffAttribute()
     {
-        return (float) ($this->purchase_price - $this->selling_price);
+        return (float) ($this->selling_price - $this->purchase_price);
     }
 
 
