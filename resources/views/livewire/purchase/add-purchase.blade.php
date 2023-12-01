@@ -206,7 +206,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="flex items-end justify-between mt-2">
+                        <div class="flex items-center justify-between">
                             <div>
                                 <x-secondary-button class="py-3 mx-1 capitalize" x-on:click="currentTab = 'summary'">
                                     Next Step
@@ -216,7 +216,7 @@
                                 <x-secondary-button class="py-3 mx-1 capitalize" wire:click="clearForm">
                                     Clear
                                 </x-secondary-button>
-                                <button type="submit" wire:click="appendNewMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                                <button type="submit" wire:click="appendNewMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                                     Add Medicine
                                 </button>
                             </div>

@@ -93,12 +93,15 @@
 
     <x-modal name="purchase-medicine-detail">
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
-                <div class="block">
-                    <p>Detail Purchase Medicine</p>
-                    <p>ID : {{ $selectedPurchase?->id }}| Invoice : {{ $selectedPurchase?->invoice }}</p>
+            <div class="flex flex-col items-center justify-center bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl">
+                <p class="underline decoration decoration-wavy decoration-indigo-500 font-extrabold">Purchase Medicine Detail</p>
+                <div class="flex w-full px-6 justify-between items-center">
+                    <p class="font-bold">Purchase ID : <span class="font-normal"> {{ $selectedPurchase?->id }} </span></p>
+                    <p class="font-bold"> Invoice : <span class="font-normal"> {{ $selectedPurchase?->invoice }}</span></p>
                 </div>
             </div>
+            {{-- <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+            </div> --}}
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-2">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -129,7 +132,7 @@
             </table>
             <div class="flex justify-end mt-4 mb-2">
                 <x-secondary-button class="mx-4 px-5 py-2.5 capitalize" x-on:click="$dispatch('close')">
-                    Cancel
+                    Close
                 </x-secondary-button>
             </div>
         </div>

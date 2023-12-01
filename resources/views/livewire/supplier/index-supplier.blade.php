@@ -144,7 +144,7 @@
                     <x-input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
-                <div class="flex overflow-x-auto no-scrollbar flex-nowrap">
+                <div class="flex overflow-wrap no-scrollbar flex-nowrap">
                     <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveSupplier">
                         Clear
                     </x-secondary-button>
@@ -183,7 +183,7 @@
                     <x-input-error :messages="$message" class="mt-2" />
                     @enderror
                 </div>
-                <div class="flex overflow-x-auto no-scrollbar flex-nowrap">
+                <div class="flex overflow-wrap no-scrollbar flex-nowrap">
                     <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveSupplier">
                         Clear
                     </x-secondary-button>

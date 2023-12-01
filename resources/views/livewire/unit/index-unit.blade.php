@@ -92,7 +92,7 @@
         </div>
 
         <div class="sm:order-last hidden lg:block order-first bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
                 Add Unit Form
             </div>
             <form class="p-4" wire:submit="saveUnit">
@@ -117,7 +117,7 @@
 
     <x-modal x-data name="add-unit" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
                 Add Unit Form
             </div>
             <form class="p-4" wire:submit="saveUnit" x-on:close-modal.window="show = false">
@@ -142,7 +142,7 @@
 
     <x-modal x-data name="edit-unit" focusable>
         <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
                 Edit Unit Form
             </div>
             <form class="p-4" wire:submit="updateUnit" x-on:close-modal.window="show = false">

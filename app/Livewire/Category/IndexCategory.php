@@ -5,6 +5,7 @@ namespace App\Livewire\Category;
 use Livewire\Component;
 use App\Models\Category;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -19,12 +20,12 @@ class IndexCategory extends Component
     protected $queryString = ['q'];
 
     public array $selectedCategory;
-    public $name, $description;
 
     public string $sortField = 'created_at';
-    public string $sortDirection = 'asc';
+    public string $sortDirection = 'desc';
     protected array $sortableField = ['name', 'created_at'];
 
+    #[On('category-created')]
     public function render() : View
     {
         $categories = Category::where('name', 'like', '%'.$this->search.'%')
@@ -38,21 +39,6 @@ class IndexCategory extends Component
     {
         $this->selectedCategory = $category;
         $this->dispatch('open-modal', 'edit-category');
-    }
-
-    public function saveCategory() : void
-    {
-        $this->validate([
-            'name' => 'required|string|max:20',
-            'description' => 'nullable|string|max:100',
-        ]);
-        Category::create([
-            'name' => $this->name,
-            'description' => $this->description
-        ]);
-        $this->reset('name', 'description');
-        $this->dispatch('close-modal');
-        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Created!']);
     }
 
     public function updateCategory() : void
@@ -84,11 +70,6 @@ class IndexCategory extends Component
         $this->dispatch('close-modal');
         $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Deleted!']);
 
-    }
-
-    public function clearForm(): void
-    {
-        $this->reset('name', 'description');
     }
 
     public function loadMore() : void
