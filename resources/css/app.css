@@ -16,5 +16,11 @@
       }
     }
   }
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
 

@@ -20,12 +20,12 @@
                     </div>
                 </x-slot>
                 <x-slot name="main_button">
-                    <a href="{{ route('purchases.create')}}" wire:navigate class="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800">
+                    <x-primary-link href="{{ route('purchases.create')}}" wire:navigate>
                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                         </svg>
                         Add New
-                    </a>
+                    </x-primary-link>
                 </x-slot>
                 <x-slot name="actions">
                     <select wire:model.live.debounce.500ms="filter_supplier" class="py-2 dark:bg-gray-700 dark:text-white rounded-full">

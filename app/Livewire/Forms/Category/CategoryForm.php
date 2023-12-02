@@ -31,7 +31,6 @@ class CategoryForm extends Form
             $this->reset('name', 'description');
             return true;
         }catch (\Exception $e) {
-            $this->reset('name', 'description');
             return false;
             // throw($e);
         }
