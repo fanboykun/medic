@@ -34,29 +34,7 @@ class IndexCategory extends Component
 
         return view('livewire.category.index-category', ['categories' => $categories]);
     }
-
-    public function editCategory(array $category) : void
-    {
-        $this->selectedCategory = $category;
-        $this->dispatch('open-modal', 'edit-category');
-    }
-
-    public function updateCategory() : void
-    {
-        $this->dispatch('close-modal');
-        $this->validate([
-            'selectedCategory.name' => 'required|string|max:50',
-            'selectedCategory.description' => 'nullable|string|max:100',
-        ]);
-        Category::where('id',$this->selectedCategory['id'])->update([
-            'name' => $this->selectedCategory['name'],
-            'description' => $this->selectedCategory['description']
-        ]);
-        $this->reset('selectedCategory');
-        $this->dispatch('close-modal');
-        $this->dispatch('notify', ['status' => 'success', 'message' => 'Category Has Been Updated!']);
-    }
-
+    
     public function deleteCategory(array $category) : void
     {
         $this->selectedCategory = $category;
