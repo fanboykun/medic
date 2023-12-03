@@ -12,7 +12,7 @@
         break;
 }
 @endphp
-<div {{ $attributes->merge(['class' => 'flex flex-wrap lg:flex-nowrap flex-col lg:flex-row items-center justify-between space-y-2 lg:space-y-0 lg:space-x-4 p-4']) }}>
+<div {{ $attributes->merge(['class' => 'flex flex-wrap lg:flex-nowrap flex-col lg:flex-row items-center justify-between space-y-2 lg:space-y-0 lg:space-x-4 px-4 py-3']) }}>
     <div class="{{ $searchWrapperClass }}">
         @isset($search)
         {{ $search }}

@@ -2,16 +2,16 @@
 @php
     switch ($smbtn) {
         case true :
-            $searchWrapperClass = 'flex justify-between w-full ';
-            $searchInputWrapperClass = 'relative w-full py-3 mb-1 px-2';
+            $searchWrapperClass = 'flex justify-between w-full items-center';
+            $searchInputWrapperClass = 'relative w-full';
             break;
             case false :
             $searchWrapperClass = 'flex items-center';
-            $searchInputWrapperClass = 'relative w-full py-3 mb-1 px-2';
+            $searchInputWrapperClass = 'relative w-full';
             break;
             default :
             $searchWrapperClass = 'flex items-center';
-            $searchInputWrapperClass = 'relative w-full py-3 mb-1 px-2';
+            $searchInputWrapperClass = 'relative w-full';
             break;
     }
 @endphp

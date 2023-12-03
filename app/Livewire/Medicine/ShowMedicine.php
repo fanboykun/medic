@@ -11,7 +11,7 @@ class ShowMedicine extends Component
 
     public function mount(Medicine $medicine)
     {
-        $this->medicine = $medicine->load('unit', 'category', 'supplier', 'purchases', 'sales');
+        $this->medicine = $medicine->load(['unit', 'category', 'supplier', 'purchases' => fn ($q) => $q->take(5)->latest(), 'sales' => fn ($q) => $q->take(5)->latest()]);
     }
 
     public function render()
