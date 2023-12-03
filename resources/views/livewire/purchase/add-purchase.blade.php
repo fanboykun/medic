@@ -3,7 +3,7 @@
         New Purchase
     </x-slot>
 
-    <section class="bg-white dark:bg-gray-900 rounded-lg">
+    <section class="bg-white dark:bg-gray-800 rounded-lg">
 
         <div x-data="{
                 currentTab : 'purchase_form',
@@ -15,7 +15,7 @@
             x-on:set-tab.window="changeTab($event.detail)">
 
             <!-- Tabs -->
-            <div class="flex justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+            <div class="flex justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 dark:bg-slate-900">
                 <ul class="flex flex-wrap -mb-px">
                     <li class="mr-2">
                         <button x-on:click="currentTab = 'purchase_form'" :class="currentTab == 'purchase_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg">Purchase Form</button>
@@ -30,11 +30,14 @@
             </div>
 
             <!-- Purchase Form -->
-            <div x-show="currentTab == 'purchase_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8">
-                <div class=" flex justify-between items-center">
-                    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Purchase Form</h2>
+            <div x-show="currentTab == 'purchase_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
+                <div class="flex justify-between items-center py-2">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Purchase Form</h2>
+                    <button type="submit" wire:click="appendNewPurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewPurchase" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                        Next Step
+                    </button>
                 </div>
-                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-6">
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-6 p-4 bg-white dark:bg-slate-900 rounded-xl">
                     <div>
                         <label for="purchase_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purchase Date <span class="text-red-500">*</span></label>
                         <div class="relative w-full">
@@ -74,22 +77,20 @@
                         @enderror
                     </div>
                 </div>
-                 <div class="flex items-end justify-end dark:bg-slate-900">
-                    <button type="submit" wire:click="appendNewPurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewPurchase" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
-                        Next Step
-                    </button>
-                </div>
             </div>
 
             <!-- Medicine Form -->
-            <div x-show="currentTab == 'medicine_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8">
+            <div x-show="currentTab == 'medicine_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
                 <div>
-                    <div class=" flex justify-between items-center">
-                        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
+                    <div class="flex justify-between items-center py-2">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
+                        <x-primary-button type="button" class="py-3 mx-1 capitalize" x-on:click="currentTab = 'summary'">
+                            Next Step
+                        </x-primary-button>
                     </div>
 
-                    <div class="grid gap-y-4">
-                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 dark:bg-slate-800 px-2 py-4">
+                    <div class="grid gap-y-2 bg-white dark:bg-slate-900 p-4  rounded-xl">
+                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 ">
                             <div class="lg:col-span-2 col-span-3">
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name <span class="text-red-500">*</span> </label>
                                 <input type="text" wire:model="name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required="">
@@ -206,12 +207,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <x-secondary-button class="py-3 mx-1 capitalize" x-on:click="currentTab = 'summary'">
-                                    Next Step
-                                </x-secondary-button>
-                            </div>
+                        <div class="flex items-center justify-end">
                             <div>
                                 <x-secondary-button class="py-3 mx-1 capitalize" wire:click="clearForm">
                                     Clear
@@ -227,84 +223,89 @@
 
             <!-- Summary -->
             <div x-show="currentTab == 'summary'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8">
-                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-6">
-                    <div class="w-full">
-                        <label for="total_purchase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Purchase (filled automatically)<span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <span class="w-4 text-gray-500 dark:text-gray-400">Rp.</span>
+                <div class="flex justify-between items-center py-4">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Purchase Summary</h2>
+                </div>
+                <div class="bg-white dark:bg-slate-900 p-4  rounded-xl">
+                    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-6">
+                        <div class="w-full">
+                            <label for="total_purchase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Purchase (filled automatically)<span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <span class="w-4 text-gray-500 dark:text-gray-400">Rp.</span>
+                                </div>
+                                <input type="number" wire:model="total_purchase" disabled id="total_purchase" class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                             </div>
-                            <input type="number" wire:model="total_purchase" disabled id="total_purchase" class="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                        </div>
+                        <div>
+                            <label for="supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Invoice <span class="text-red-500">*</span></label>
+                            <div class="flex">
+                                <input type="text" wire:model="invoice" disabled name="invoice" id="invoice" class="flex w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="invoice will be filled after purchase created" required="">
+                                <button wire:click="regenerateInvoiceCode()" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="regenerateInvoiceCode" class="flex bg-indigo-600 hover:bg-indigo-800 text-white rounded-lg px-2 py-1 ml-2 items-center text-sm">
+                                    Regenerate
+                                </button>
+                            </div>
+                            <span class="block text-gray-500 text-xs text-end pt-0.5">click regenerate invoice code button if invoice code alaready exist</span>
+                            @error('supplier_id')
+                            <span class="block text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-full">
+                            <label for="total_medicine" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Medicine(s) (filled automatically)<span class="text-red-500">*</span></label>
+                            <input type="text" wire:model="total_medicine" disabled name="total_medicine" id="total_medicine" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="will be filled after purchase created" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="total_quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Quantities (filled automatically)<span class="text-red-500">*</span></label>
+                            <input type="number" wire:model="total_quantity" disabled name="total_quantity" id="total_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="will be filled after purchase created" required="">
                         </div>
                     </div>
-                    <div>
-                        <label for="supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Invoice <span class="text-red-500">*</span></label>
-                        <div class="flex">
-                            <input type="text" wire:model="invoice" disabled name="invoice" id="invoice" class="flex w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="invoice will be filled after purchase created" required="">
-                            <button wire:click="regenerateInvoiceCode()" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="regenerateInvoiceCode" class="flex bg-indigo-600 hover:bg-indigo-800 text-white rounded-lg px-2 py-1 ml-2 items-center text-sm">
-                                Regenerate
-                            </button>
-                        </div>
-                        <span class="block text-gray-500 text-xs text-end pt-0.5">click regenerate invoice code button if invoice code alaready exist</span>
-                        @error('supplier_id')
-                        <span class="block text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="w-full">
-                        <label for="total_medicine" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Medicine(s) (filled automatically)<span class="text-red-500">*</span></label>
-                        <input type="text" wire:model="total_medicine" disabled name="total_medicine" id="total_medicine" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="will be filled after purchase created" required="">
-                    </div>
-                    <div class="w-full">
-                        <label for="total_quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total Quantities (filled automatically)<span class="text-red-500">*</span></label>
-                        <input type="number" wire:model="total_quantity" disabled name="total_quantity" id="total_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="will be filled after purchase created" required="">
-                    </div>
-                </div>
-                <div class="pt-4 mt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <div class=" max-h-[80vh]">
-                        <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3"> Name</th>
-                                    <th scope="col" class="px-6 py-3"> Stock</th>
-                                    <th scope="col" class="px-6 py-3"> Expired</th>
-                                    <th scope="col" class="px-6 py-3"> Purchase Price</th>
-                                    <th scope="col" class="px-6 py-3"> Selling Price</th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($newMedicines != null)
-                                    @forelse ($newMedicines as $k => $n_medicine)
-                                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                            <td class="px-6 py-4">{{ $n_medicine['name'] }}</td>
-                                            <td class="px-6 py-4">{{ $n_medicine['stock'] }}</td>
-                                            <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $n_medicine['expired'])->format('d M Y') }}</td>
-                                            <td class="px-6 py-4">Rp {{number_format($n_medicine['purchase_price'], 0, ',','.')}}</td>
-                                            <td class="px-6 py-4">Rp {{number_format($n_medicine['selling_price'], 0, ',','.')}}</td>
-                                            <td class="px-6 py-4">
-                                                <button wire:click="unsetAMedicine({{ json_encode($n_medicine) }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="unsetAMedicine" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
-                                            </td>
+                    <div class="pt-4 mt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <div class=" max-h-[80vh]">
+                            <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3"> Name</th>
+                                        <th scope="col" class="px-6 py-3"> Stock</th>
+                                        <th scope="col" class="px-6 py-3"> Expired</th>
+                                        <th scope="col" class="px-6 py-3"> Purchase Price</th>
+                                        <th scope="col" class="px-6 py-3"> Selling Price</th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($newMedicines != null)
+                                        @forelse ($newMedicines as $k => $n_medicine)
+                                            <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                                <td class="px-6 py-4">{{ $n_medicine['name'] }}</td>
+                                                <td class="px-6 py-4">{{ $n_medicine['stock'] }}</td>
+                                                <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $n_medicine['expired'])->format('d M Y') }}</td>
+                                                <td class="px-6 py-4">Rp {{number_format($n_medicine['purchase_price'], 0, ',','.')}}</td>
+                                                <td class="px-6 py-4">Rp {{number_format($n_medicine['selling_price'], 0, ',','.')}}</td>
+                                                <td class="px-6 py-4">
+                                                    <button wire:click="unsetAMedicine({{ json_encode($n_medicine) }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="unsetAMedicine" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</button>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                        <tr>
+                                            <td>No Data</td>
                                         </tr>
-                                    @empty
-                                    <tr>
-                                        <td>No Data</td>
-                                    </tr>
-                                    @endforelse
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center py-1.5">No Data</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                        @endforelse
+                                    @else
+                                        <tr>
+                                            <td colspan="7" class="text-center py-1.5">No Data</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="flex items-end justify-end dark:bg-slate-900">
-                    <button type="submit" wire:click.prevent="saveMedicinePurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveMedicinePurchase" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
-                        Save Purchase and All Medicines
-                    </button>
+                    <div class="flex items-end justify-end">
+                        <button type="submit" wire:click.prevent="saveMedicinePurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveMedicinePurchase" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                            Save Purchase and All Medicines
+                        </button>
+                    </div>
                 </div>
             </div>
 
