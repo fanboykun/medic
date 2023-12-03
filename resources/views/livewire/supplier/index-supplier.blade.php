@@ -8,19 +8,21 @@
         <div class="col-span-2 bg-white dark:bg-gray-800 rounded-lg">
             <x-table-content>
                 <x-slot name="table_header">
-                    <div class="flex justify-between w-full dark:bg-gray-900 rounded-t-md">
-                        <div class="relative w-full py-3 mb-1 px-2">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <input type="text" wire:model.live.debounce.500ms="search" id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder="Search supplier by name" required="">
-                        </div>
+                    <x-table-header searchOnly=true>
+                        <x-slot name="search">
+                            <x-search smbtn=true>
+                                <x-slot name="input">
+                                    <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by supplier name"/>
+                                </x-slot>
+                                <x-slot name="btn">
+                                    <x-secondary-button x-on:click="$dispatch('open-modal', 'add-supplier')">Add New</x-secondary-button>
+                                </x-slot>
+                            </x-search>
+                        </x-slot>
                         <div class="flex lg:hidden items-center justify-end py-3 px-2 whitespace-nowrap ">
                             <x-secondary-button x-on:click="$dispatch('open-modal', 'add-supplier')">Add New</x-secondary-button>
                         </div>
-                    </div>
+                    </x-table-header>
                 </x-slot>
                 <x-slot name="th">
                     <tr>

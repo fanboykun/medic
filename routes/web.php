@@ -39,7 +39,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/medicines', IndexMedicine::class)->name('medicines.index');
-    Route::get('/medicines/create', AddMedicine::class)->name('medicines.create');
     Route::get('/medicines/{medicine}', ShowMedicine::class)->name('medicines.show');
     Route::get('/medicines/{medicineId}/edit', EditMedicine::class)->name('medicines.edit');
 

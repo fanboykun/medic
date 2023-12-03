@@ -152,7 +152,7 @@ class AddPurchase extends Component
             'expired' => 'required|date_format:Y-m-d',
             'description' => 'nullable|string|max:250',
             'purchase_price' => 'required|integer|min_digits:2|max_digits:8',
-            'selling_price' => 'required|integer|min_digits:2|max_digits:8',
+            'selling_price' => 'required|integer|min_digits:2|max_digits:8|min:'. $this->purchase_price,
             'unit_id' => 'required|integer|exists:App\Models\Unit,id',
             'category_id' => 'required|integer|exists:App\Models\Category,id',
         ]);
