@@ -1,4 +1,4 @@
-<div class=" bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+<div class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg overflow-hidden">
     @isset($table_header)
     {{ $table_header }}
     @endisset

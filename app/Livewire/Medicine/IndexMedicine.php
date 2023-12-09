@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Medicine;
 use App\Models\Unit;
 use App\Models\Category;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 
@@ -25,7 +26,7 @@ class IndexMedicine extends Component
     public $categories;
     public $filter_unit;
     public $filter_category;
-    public $filter_expired;
+    public $filter_expired = '';
     // public $medicine;
     public $selectedMedicine;
 
@@ -33,12 +34,12 @@ class IndexMedicine extends Component
     {
         $this->units = Unit::all();
         $this->categories = Category::all();
-        $today = $this->filter_expired != null ? today()->format('Y-m-d') : '';
+        $today = $this->filter_expired != '' ? today()->format('Y-m-d') : '';
         $medicines = Medicine::where('name', 'like', '%'.$this->search.'%')
         ->where('unit_id', 'like', '%'.$this->filter_unit. '%')
         ->where('category_id', 'like', '%'.$this->filter_category. '%')
-        ->when($today != '', function ($q) use($today){
-            return $this->filter_expired ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
+        ->when($today != '', function ($q) use($today) : Builder {
+            return $this->filter_expired == true ? $q->whereDate('expired', '<=', $today) : $q->whereDate('expired', '>=', $today);
         })
         ->with('supplier', 'unit', 'category')
         ->latest()
@@ -87,6 +88,5 @@ class IndexMedicine extends Component
         $this->dispatch('close-modal');
         $this->reset('selectedMedicine');
     }
-
 
 }

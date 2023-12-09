@@ -35,7 +35,7 @@
         @include('components.layouts.header')
         <x-layouts.sidebar />
         <main>
-            <div class="sm:p-2 sm:ml-64 sm:mt-[64px] max-h-[calc(100vh-64px)]">
+            <div class="sm:p-2 sm:ml-64 sm:mt-[64px] min-h-[90dvh] max-h-[calc(100dvh-64px)]">
                 <x-toast />
                 <x-session-toast />
                 {{ $slot }}

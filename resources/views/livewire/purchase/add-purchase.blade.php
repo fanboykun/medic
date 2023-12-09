@@ -30,8 +30,8 @@
             </div>
 
             <!-- Purchase Form -->
-            <div x-show="currentTab == 'purchase_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
-                <div class="flex justify-between items-center py-2">
+            <div x-show="currentTab == 'purchase_form'" x-cloak class="py-4 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
+                <div class="flex justify-between items-center pb-4">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white">Purchase Form</h2>
                     <button type="submit" wire:click="appendNewPurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewPurchase" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                         Next Step
@@ -80,9 +80,9 @@
             </div>
 
             <!-- Medicine Form -->
-            <div x-show="currentTab == 'medicine_form'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
+            <div x-show="currentTab == 'medicine_form'" x-cloak class="py-4 px-4 mx-auto w-full lg:py-8 bg-gray-50 dark:bg-inherit">
                 <div>
-                    <div class="flex justify-between items-center py-2">
+                    <div class="flex justify-between items-center pb-4">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white">Medicine Form</h2>
                         <x-primary-button type="button" class="py-3 mx-1 capitalize" x-on:click="currentTab = 'summary'">
                             Next Step
@@ -222,7 +222,7 @@
             </div>
 
             <!-- Summary -->
-            <div x-show="currentTab == 'summary'" x-cloak class="py-8 px-4 mx-auto w-full lg:py-8">
+            <div x-show="currentTab == 'summary'" x-cloak class="py-4 px-4 mx-auto w-full lg:py-8">
                 <div class="flex justify-between items-center py-4">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white">Purchase Summary</h2>
                 </div>
@@ -259,7 +259,7 @@
                             <input type="number" wire:model="total_quantity" disabled name="total_quantity" id="total_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="will be filled after purchase created" required="">
                         </div>
                     </div>
-                    <div class="pt-4 mt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div class="pt-4 mt-2 relative overflow-x-auto sm:rounded-lg shadow-lg">
                         <div class=" max-h-[80vh]">
                             <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -301,7 +301,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="flex items-end justify-end">
+                    <div class="flex items-center justify-end">
                         <button type="submit" wire:click.prevent="saveMedicinePurchase()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveMedicinePurchase" class="inline-flex mx-2 items-center px-5 py-3 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                             Save Purchase and All Medicines
                         </button>
