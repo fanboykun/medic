@@ -21,12 +21,42 @@
                     </x-slot>
 
                     <x-slot name="actions">
-                        {{-- <x-primary-link href="{{ route('purchases.create')}}" wire:navigate>
-                            <x-icons.plus />
-                            Add New
-                        </x-primary-link> --}}
+                        <x-filter-dropdown.wrapper>
+                            <div x-data="{
+                                setUnitVal(id) {
+                                    $wire.set('filter_unit', id)
+                                    id == '' ? this.filtered = false : this.filtered = true
+                                    this.dd = false
+                                },
+                                setCatVal(id) {
+                                    $wire.set('filter_category', id)
+                                    id == '' ? this.filtered = false : this.filtered = true
+                                    this.dd = false
+                                },
+                                setExpVal(tf) {
+                                    $wire.set('filter_expired', tf)
+                                    this.dd = false
+                                    this.filtered = true
+                                },
+                                clearFilter() {
+                                    console.log('triggered')
+                                    {{-- $wire.set('filter_unit', '')
+                                    $wire.set('filter_category', '')
+                                    $wire.set('filter_expired', '')
+                                    this.filtered = false --}}
+                                },
+                            }">
+                                <x-slot name="trigger" >
+                                    <x-filter-dropdown.trigger-button label="Filter" />
+                                </x-slot>
+                                <x-slot name="reset_button">
+                                    <button x-on:click="clearFilter()" type="button" class="flex w-full px-4 py-2  border border-red-200 hover:bg-red-200 text-red-600 rounded-md">
+                                        Clear Filter
+                                    </button>
+                                </x-slot>
+                            </div>
+                        </x-filter-dropdown.wrapper>
                        <div x-data="{
-                            a : $wire.get('filter_expired'),
                             dd : false,
                             filtered : false,
                             openDd() {
@@ -45,7 +75,7 @@
                             setExpVal(tf) {
                                 $wire.set('filter_expired', tf)
                                 this.dd = false
-                                console.log($wire.get('filter_expired'))
+                                this.filtered = true
                             },
                             clearFilter() {
                                 $wire.set('filter_unit', '')
@@ -56,9 +86,7 @@
                         }"
                         >
                              <button x-on:click="openDd" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                <svg class="w-4 h-4 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-                                  </svg>
+                               <x-icons.filter />
                                 Filter
                             </button>
 
@@ -73,10 +101,8 @@
                                         </li>
                                         <li x-on:mouseover="showChild = 1" class="w-full relative group">
                                             <button type="button" x-on:click="showChild = 1" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                <svg class="h-[18px] w-[18px] transition-all group-hover:text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                                </svg>
-                                               <span>Filter Unit</span>
+                                                <x-icons.caret />
+                                                <span>Filter Unit</span>
                                             </button>
                                             <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
@@ -85,9 +111,7 @@
                                                         <button type="button" x-on:click="setUnitVal({{ $unit->id }})" class="flex items-center justify-between w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             {{ $unit->name }}
                                                             @if($filter_unit === $unit->id)
-                                                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                            </svg>
+                                                            <x-icons.check />
                                                             @endif
                                                         </button>
                                                     </li>
@@ -97,9 +121,7 @@
                                         </li>
                                         <li x-on:mouseover="showChild = 2" class="w-full relative group">
                                             <button type="button" x-on:click="showChild = 1" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                <svg class="h-[18px] w-[18px] transition-all group-hover:text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                                </svg>
+                                               <x-icons.caret />
                                                <span>Filter Category</span>
                                             </button>
                                             <div x-cloak x-show="showChild == 2" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
@@ -109,9 +131,7 @@
                                                         <button type="button" x-on:click="setCatVal({{ $category->id }})" class="flex items-center justify-center w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             {{ $category->name }}
                                                             @if($filter_category === $category->id)
-                                                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                            </svg>
+                                                           <x-icons.check />
                                                             @endif
                                                         </button>
                                                     </li>
@@ -121,10 +141,8 @@
                                         </li>
                                         <li x-on:mouseover="showChild = 3" class="w-full relative group">
                                             <button type="button" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                <svg class="h-[18px] w-[18px] transition-all group-hover:text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                                                </svg>
-                                               <span>Filter Expired</span>
+                                                <x-icons.caret />
+                                                <span>Filter Expired</span>
                                             </button>
                                             <div x-cloak x-show="showChild == 3" class="absolute flex flex-row z-[9999] w-full max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
@@ -132,19 +150,15 @@
                                                         <button type="button" x-on:click="setExpVal(1)" class="flex items-center justify-center w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             Expired
                                                             @if($filter_expired != null && $filter_expired == true)
-                                                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                              </svg>
-                                                              @endif
+                                                                <x-icons.check />
+                                                            @endif
                                                         </button>
                                                     </li>
                                                     <li class="w-full">
                                                         <button type="button" x-on:click="setExpVal(0)" class="flex items-center justify-center w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             Not Expired
                                                             @if($filter_expired != null && $filter_expired == false)
-                                                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                              </svg>
+                                                                <x-icons.check />
                                                             @endif
                                                         </button>
                                                     </li>
