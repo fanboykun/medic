@@ -5,10 +5,10 @@
         $searchWrapperClass = 'w-full flex-nowrap';
         break;
     case false:
-        $searchWrapperClass = 'w-full lg:w-1/2 flex-nowrap';
+        $searchWrapperClass = 'w-full flex-nowrap';
         break;
     default:
-        $searchWrapperClass = 'w-full lg:w-1/2 flex-nowrap';
+        $searchWrapperClass = 'w-full flex-nowrap';
         break;
 }
 @endphp

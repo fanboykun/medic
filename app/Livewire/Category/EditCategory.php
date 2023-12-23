@@ -4,6 +4,7 @@ namespace App\Livewire\Category;
 
 use App\Livewire\Forms\Category\CategoryForm;
 use App\Models\Category;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class EditCategory extends Component
@@ -18,12 +19,12 @@ class EditCategory extends Component
         }
     }
 
-    public function render()
+    public function render() : View
     {
         return view('livewire.category.edit-category');
     }
 
-    public function updateCategory()
+    public function updateCategory() : void
     {
         if($this->categoryForm->updateCategory()) {
             $this->dispatch('close-modal');

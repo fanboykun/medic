@@ -17,7 +17,7 @@ class MedicineForm extends Form
      * see the livewire v3 documentation.
      */
     #[Locked]
-    public $medicineId;                // for update and delete (or interacting with existing record, use this)
+    public ?int $medicineId;                // for update and delete (or interacting with existing record, use this)
 
     public ?Medicine $medicine;         // for making new instance (create, or even select use this)
 
@@ -87,9 +87,9 @@ class MedicineForm extends Form
      * same goes for purchase_price,
      * selling_price and stock.
      */
-    public $supplier_name;
+    public ?string $supplier_name;
 
-    public function setMedicineForUpdate(Medicine $medicine)
+    public function setMedicineForUpdate(Medicine $medicine) : void
     {
         $this->medicineId = $medicine->id;
         $this->name = $medicine->name;
@@ -105,7 +105,7 @@ class MedicineForm extends Form
         $this->description = $medicine->description;
     }
 
-    public function storeMedicineForUpdate()
+    public function storeMedicineForUpdate() : void
     {
         $this->validate();
         try{

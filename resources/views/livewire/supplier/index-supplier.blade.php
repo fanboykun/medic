@@ -88,7 +88,7 @@
                         </th>
                         <td class="px-6 py-4">
                             <a href="{{ route('suppliers.show', ['supplier' => $supplier ]) }}" wire:navigate class="block font-medium text-green-600 dark:text-green-400 hover:underline">Details</a>
-                            <button type="button" wire:click="editSupplier({{ $supplier }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                            <button type="button" x-on:click="$dispatch('open-edit-supplier-modal', {{ $supplier->id }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             <button wire:click="deleteSupplier({{ $supplier }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                         </td>
                     </tr>
@@ -102,15 +102,15 @@
                     <x-table-navigation>
                         <x-slot name="nav_info">
                             <span class="text-sm font-normal text-gray-500 dark:text-gray-200">
-                                Menampilkan
+                                Showing
                                 <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $suppliers?->count() }}</span>
-                                dari
+                                of
                                 <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $suppliers?->total() }}</span>
                             </span>
                         </x-slot>
                         <x-slot name="nav_link">
                             <button type="button" wire:click="loadMore()" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
-                                Muat Lebih ...
+                                Load More ...
                             </button>
                         </x-slot>
                     </x-table-navigation>
@@ -118,120 +118,17 @@
             </x-table-content>
         </div>
         <!-- Form -->
-        <div class="lg:order-last order-first hidden lg:block bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
-                Add Supplier Form
-            </div>
-            <form class="p-4" wire:submit="saveSupplier">
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="name" wire:model="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                        Supplier Name <span class="text-xs font-light text-red-500">*</span>
-                    </label>
-                    @error('name')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="address" wire:model="address" id="address" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Address</label>
-                    @error('address')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="number" name="phone" wire:model="phone" id="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Phone</label>
-                    @error('phone')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="flex overflow-wrap no-scrollbar flex-nowrap">
-                    <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveSupplier">
-                        Clear
-                    </x-secondary-button>
-                    <button type="submit" wire:submit.attr="disabled" wire:target="saveSupplier" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                </div>
-            </form>
+        <div class="sm:order-last order-first hidden lg:block ">
+            <livewire:supplier.add-supplier />
         </div>
     </div>
 
     <x-modal x-data name="add-supplier" focusable>
-        <div class=" bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg w-full sm:py-2 sm:px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
-                Add Supplier Form
-            </div>
-            <form class="p-4" wire:submit="saveSupplier" x-on:close-modal.window="show = false">
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="name" wire:model="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                        Supplier Name <span class="text-xs font-light text-red-500">*</span>
-                    </label>
-                    @error('name')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="address" wire:model="address" id="address" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Address</label>
-                    @error('address')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="number" name="phone" wire:model="phone" id="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Phone</label>
-                    @error('phone')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="flex overflow-wrap no-scrollbar flex-nowrap">
-                    <x-secondary-button class="mx-4 px-5 py-2.5" wire:click="clearForm"  wire:submit.attr="disabled" wire:target="saveSupplier">
-                        Clear
-                    </x-secondary-button>
-                    <button type="submit" wire:submit.attr="disabled" wire:target="saveSupplier" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                </div>
-            </form>
-        </div>
+        <livewire:supplier.add-supplier />
     </x-modal>
 
     <x-modal x-data name="edit-supplier" focusable>
-        <div class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
-            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
-                Edit Supplier Form
-            </div>
-            <form class="p-4" wire:submit="updateSupplier" x-on:close-modal.window="show = false">
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="name" wire:model="selectedSupplier.name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                        Name of The Supplier <span class="text-xs font-light text-red-500">*</span>
-                    </label>
-                    @error('selectedSupplier.name')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="text" name="address" id="address" wire:model="selectedSupplier.address" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Address</label>
-                    @error('selectedSupplier.address')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="relative z-0 w-full mb-6 group p-2">
-                    <input type="number" name="phone" id="phone" wire:model="selectedSupplier.phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Supplier Phone</label>
-                    @error('selectedSupplier.phone')
-                    <x-input-error :messages="$message" class="mt-2" />
-                    @enderror
-                </div>
-                <div class="flex justify-end">
-                    <x-secondary-button class="mx-4 px-5 py-2.5 capitalize" x-on:click="$dispatch('close')">
-                        Cancel
-                    </x-secondary-button>
-                    <button type="submit" wire:submit.attr="disabled" wire:target="updateSupplier" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
-                </div>
-            </form>
-        </div>
+        <livewire:supplier.edit-supplier  @supplier-updated.window="$refresh"/>
     </x-modal>
 
     <x-modal name="delete-supplier" focusable>

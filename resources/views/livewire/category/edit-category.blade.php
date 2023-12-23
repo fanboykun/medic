@@ -7,10 +7,10 @@
         x-on:open-edit-category-modal.window="prepareOpenEditCategoryModal($event.detail)">
         <x-simple-form action="updateCategory" x-on:close-modal.window="show = false">
             <x-slot name="form_header">
-                Add Category Form
+                Edit Category Form
             </x-slot>
             <x-slot name="form_body">
-                <x-floating-input name="name" type="text" :model="'categoryForm.name'" id="name" required=true :label_name="'The Medicine Name'" :requiredSymbol=true :showError=true />
+                <x-floating-input name="name" type="text" :model="'categoryForm.name'" id="name" required=true :label_name="'The Category Name'" :requiredSymbol=true :showError=true />
                 <x-floating-input name="description" type="text" :model="'categoryForm.description'" id="description" :label_name="'Description Category'" />
             </x-slot>
             <x-slot name="form_action">

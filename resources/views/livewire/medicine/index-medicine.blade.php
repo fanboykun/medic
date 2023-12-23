@@ -149,15 +149,15 @@
                 <x-table-navigation>
                     <x-slot name="nav_info">
                         <span class="text-sm font-normal text-gray-500 dark:text-gray-200">
-                            Menampilkan
+                            Showing
                             <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $medicines?->count() }}</span>
-                            dari
+                            of
                             <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $medicines?->total() }}</span>
                         </span>
                         </x-slot>
                     <x-slot name="nav_link">
                         <button type="button" wire:click="loadMore()" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
-                            Muat Lebih ...
+                            Load More ...
                         </button>
                     </x-slot>
                 </x-table-navigation>

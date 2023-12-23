@@ -5,27 +5,61 @@
 
     <x-table-content>
         <x-slot name="table_header">
-            <x-table-header>
+            <x-table-header ddFilter=true>
                 <x-slot name="search">
                     <x-search>
                         <x-slot name="input">
-                            <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search"/>
+                            <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by purchase invoice name"/>
                         </x-slot>
                     </x-search>
                 </x-slot>
                 <x-slot name="main_button">
-                    <x-primary-link href="{{ route('purchases.create')}}" wire:navigate>
+                    <x-primary-link href="{{ route('purchases.create')}}" wire:navigate class="w-full">
                         <x-icons.plus />
                         Add New
                     </x-primary-link>
                 </x-slot>
+
                 <x-slot name="actions">
-                    <x-select-input wire:model.live.debounce.500ms="filter_supplier">
-                        <option value=""> Filter Supplier </option>
-                        @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}"> {{ $supplier->name }} </option>
-                        @endforeach
-                    </x-select-input>
+                   <div x-data="toggleFilter" >
+                         <button x-on:click="openDd" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                           <x-icons.filter />
+                            Filter
+                        </button>
+
+                        <div x-data="{ showChild : 0 }" x-on:mouseleave="showChild = 0">
+                            <!-- Dropdown menu -->
+                            <div x-cloak x-show="dd == true" x-on:click.outside="dd = false" class="z-10 absolute flex flex-row mt-2 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow min-w-[150px] dark:bg-gray-700">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
+                                    <li x-show="filtered == true" class="w-full">
+                                        <button type="button" x-on:click="clearFilter" class="flex w-full px-4 py-2  border border-red-200 hover:bg-red-200 text-red-600 rounded-md">
+                                            Reset Filter
+                                        </button>
+                                    </li>
+                                    <li x-on:mouseover="showChild = 1" class="w-full relative group">
+                                        <button type="button" x-on:click="showChild = 1" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            <x-icons.caret />
+                                            <span>Filter Supplier</span>
+                                        </button>
+                                        <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
+                                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
+                                                @foreach ($suppliers as $supplier)
+                                                <li class="w-full">
+                                                    <button type="button" x-on:click="setSupplierVal({{ $supplier->id }})" class="flex items-center justify-between w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                        {{ $supplier->name }}
+                                                        @if($filter_supplier === $supplier->id)
+                                                        <x-icons.check />
+                                                        @endif
+                                                    </button>
+                                                </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
                 </x-slot>
             </x-table-header>
         </x-slot>
@@ -68,15 +102,15 @@
             <x-table-navigation>
                 <x-slot name="nav_info">
                     <span class="text-sm font-normal text-gray-500 dark:text-gray-200">
-                        Menampilkan
+                        Showing
                         <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $purchases?->count() }}</span>
-                        dari
+                        of
                         <span class="font-semibold text-gray-900 dark:text-gray-50">{{ $purchases?->total() }}</span>
                     </span>
                 </x-slot>
                 <x-slot name="nav_link">
                     <button type="button" wire:click="loadMore()" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
-                        Muat Lebih ...
+                        Load More ...
                     </button>
                 </x-slot>
             </x-table-navigation>
@@ -92,8 +126,6 @@
                     <p class="font-bold"> Invoice : <span class="font-normal"> {{ $selectedPurchase?->invoice }}</span></p>
                 </div>
             </div>
-            {{-- <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-4 rounded-xl item-center justify-center">
-            </div> --}}
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-2">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -156,5 +188,27 @@
             </div>
         </div>
     </x-modal>
+
+    @script
+        <script>
+            Alpine.data('toggleFilter', () => ({
+                dd : false,
+                filtered : false,
+                openDd() {
+                    this.dd = true
+                },
+                setSupplierVal(id) {
+                    $wire.set('filter_supplier', id)
+                    id == '' ? this.filtered = false : this.filtered = true
+                    this.dd = false
+                },
+                clearFilter() {
+                    $wire.set('filter_supplier', '')
+                    this.filtered = false
+                    this.dd = false
+                },
+            }))
+        </script>
+    @endscript
 
 </div>

@@ -54,7 +54,7 @@ class CategoryForm extends Form
         return true;
     }
 
-    public function updateCategory()
+    public function updateCategory() : bool
     {
         $this->validate();
         try {
@@ -65,8 +65,9 @@ class CategoryForm extends Form
             return true;
         } catch(\Exception $e) {
             return false;
+        } finally {
+            $this->reset();
         }
-        $this->reset();
 
     }
 
