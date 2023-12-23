@@ -27,22 +27,25 @@
                                 Filter
                             </button>
 
-                            <div x-data="{ showChild : 0 }" x-on:mouseleave="showChild = 0">
+                            <div x-on:mouseleave="decideToggleWrap()">
                                 <!-- Dropdown menu -->
-                                <div x-cloak x-show="dd == true" x-on:click.outside="dd = false" class="z-10 absolute flex flex-row mt-2 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow min-w-[150px] dark:bg-gray-700">
+                                <div x-cloak x-show="dd == true" x-on:click.outside="() => { dd = false; showChild = 0 }" class="z-10 absolute flex flex-row mt-2 right-0 bg-white divide-y divide-gray-100 rounded-lg shadow min-w-[150px] dark:bg-gray-700">
                                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
                                         <li x-show="filtered == true" class="w-full">
                                             <button type="button" x-on:click="clearFilter" class="flex w-full px-4 py-2  border border-red-200 hover:bg-red-200 text-red-600 rounded-md">
                                                 Reset Filter
                                             </button>
                                         </li>
-                                        <li x-on:mouseover="showChild = 1" class="w-full relative group">
+                                        <li x-on:mouseover="decideToggleChild( { child: 1, state: 'open' } )" class="w-full relative group">
                                             <button type="button" x-on:click="showChild = 1" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                 <x-icons.caret />
                                                 <span>Filter Unit</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
+                                            <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
+                                                    <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
+                                                        Back
+                                                    </button>
                                                     @foreach ($units as $unit)
                                                     <li class="w-full">
                                                         <button type="button" x-on:click="setUnitVal({{ $unit->id }})" class="flex items-center justify-between w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -56,13 +59,16 @@
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li x-on:mouseover="showChild = 2" class="w-full relative group">
-                                            <button type="button" x-on:click="showChild = 1" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <li x-on:mouseover="decideToggleChild( { child: 2, state: 'open' } )" class="w-full relative group">
+                                            <button type="button" x-on:click="showChild = 2" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                <x-icons.caret />
                                                <span>Filter Category</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 2" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
+                                            <div x-cloak x-show="showChild == 2" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
+                                                    <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
+                                                        Back
+                                                    </button>
                                                     @foreach ($categories as $category)
                                                     <li class="w-full">
                                                         <button type="button" x-on:click="setCatVal({{ $category->id }})" class="flex items-center justify-center w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -76,13 +82,16 @@
                                                 </ul>
                                             </div>
                                         </li>
-                                        <li x-on:mouseover="showChild = 3" class="w-full relative group">
-                                            <button type="button" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <li x-on:mouseover="decideToggleChild( { child: 3, state: 'open' } )" class="w-full relative group">
+                                            <button type="button" x-on:click="showChild = 3" class="flex items-center justify-start w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                 <x-icons.caret />
                                                 <span>Filter Expired</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 3" class="absolute flex flex-row z-[9999] w-full max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
+                                            <div x-cloak x-show="showChild == 3" class="absolute flex flex-row z-[9999] w-full max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
+                                                    <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
+                                                        Back
+                                                    </button>
                                                     <li class="w-full">
                                                         <button type="button" x-on:click="setExpVal(1)" class="flex items-center justify-center w-full h-fit px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             Expired
@@ -192,6 +201,8 @@
             Alpine.data('toggleFilter', () => ({
                 dd : false,
                 filtered : false,
+                showChild: 0,
+                shouldClickToOpenChild: false,
                 openDd() {
                     this.dd = true
                 },
@@ -199,22 +210,42 @@
                     $wire.set('filter_unit', id)
                     id == '' ? this.filtered = false : this.filtered = true
                     this.dd = false
+                    this.showChild = 0
                 },
                 setCatVal(id) {
                     $wire.set('filter_category', id)
                     id == '' ? this.filtered = false : this.filtered = true
                     this.dd = false
+                    this.showChild = 0
                 },
                 setExpVal(tf) {
                     $wire.set('filter_expired', tf)
                     this.dd = false
                     this.filtered = true
+                    this.showChild = 0
+                },
+                decideToggleChild(data) {
+                    if(window.innerWidth > 640) {
+                        if(data.state == 'open') {
+                            this.showChild = data.child
+                        }else {
+                            this.showChild = this.showChild === 0 ? data.child : this.showChild
+                        }
+                    }
+
+                },
+                decideToggleWrap() {
+                    if(window.innerWidth > 640) {
+                        this.showChild = 0
+                    }
                 },
                 clearFilter() {
                     $wire.set('filter_unit', '')
                     $wire.set('filter_category', '')
                     $wire.set('filter_expired', '')
+                    this.dd = false
                     this.filtered = false
+                    this.showChild = 0
                 },
             }))
         </script>

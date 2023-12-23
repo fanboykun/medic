@@ -41,7 +41,7 @@
                                             <x-icons.caret />
                                             <span>Filter Supplier</span>
                                         </button>
-                                        <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500" style="transform: translateX(calc(-100%))">
+                                        <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] translate-y-[30%] sm:translate-y-[0%] sm:translate-x-[-100%]" >
                                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
                                                 @foreach ($suppliers as $supplier)
                                                 <li class="w-full">
