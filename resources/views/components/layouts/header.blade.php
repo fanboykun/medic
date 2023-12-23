@@ -22,32 +22,11 @@
                         {{ $header }}
                     </div>
                 @endif
-                <div x-data="{
-                        toggle : false,
-                        currentMode : localStorage.theme,
-                        change(mode){
-                            this.toggle = false
-                            this.currentMode = mode
-                            if(localStorage.theme == mode) {
-                                toggle = false
-                                return
-                            }
-                            if (mode === 'light') {
-                                localStorage.theme = 'light';
-                                document.documentElement.classList.remove('dark');
-                            } else if(mode === 'dark') {
-                                localStorage.theme = 'dark';
-                                document.documentElement.classList.add('dark');
-                            }else{
-                                localStorage.removeItem('theme')
-                            }
-                        },
-                        get theme() { return this.currentMode }
-                    }"
+                <div x-data="dark_mode_switcher"
                     class="ml-auto md:flex max-w-fit items-center justify-between md:divide-x md:divide-gray-200 md:dark:divide-gray-700">
                     <div data-headlessui-state="" class="relative inline-block text-left items-center mt-2 md:mt-0">
                         <div x-transition>
-                            <button x-cloak x-on:click="toggle = !toggle" id="headlessui-menu-button-238" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="" class="flex items-center">
+                            <button x-cloak x-on:click="openToggle()" id="headlessui-menu-button-238" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="" class="flex items-center">
                                 <svg x-cloak xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" x-show="currentMode == 'light'" class="w-5 h-5 text-indigo-500">
                                     <path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.061 1.06l1.06 1.06z"></path>
                                 </svg>
@@ -58,7 +37,7 @@
                                     <path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 014.25 2h11.5A2.25 2.25 0 0118 4.25v8.5A2.25 2.25 0 0115.75 15h-3.105a3.501 3.501 0 001.1 1.677A.75.75 0 0113.26 18H6.74a.75.75 0 01-.484-1.323A3.501 3.501 0 007.355 15H4.25A2.25 2.25 0 012 12.75v-8.5zm1.5 0a.75.75 0 01.75-.75h11.5a.75.75 0 01.75.75v7.5a.75.75 0 01-.75.75H4.25a.75.75 0 01-.75-.75v-7.5z" clip-rule="evenodd"></path>
                                 </svg>
                             </button>
-                            <div x-show="toggle" x-cloak  @click.outside="toggle = false" aria-labelledby="headlessui-menu-button-238" id="headlessui-menu-items-5" role="menu" class="absolute right-0 z-10 mt-2 py-2 px-1.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-950 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-5 focus:outline-none">
+                            <div x-show="toggle" x-cloak  @click.outside="closeToggle()" aria-labelledby="headlessui-menu-button-238" id="headlessui-menu-items-5" role="menu" class="absolute right-0 z-10 mt-2 py-2 px-1.5 w-32 origin-top-right rounded-md bg-white dark:bg-gray-950 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-5 focus:outline-none">
                                 <div class="py-1" role="none">
                                     <button type="button" x-on:click="change('light')"  class="flex items-center gap-3 w-full font-semibold text-left px-3 py-1 text-sm text-indigo-500 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-900" id="headlessui-menu-item-7" role="menuitem" tabindex="-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="flex-shrink-0 w-5 h-5">

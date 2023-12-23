@@ -21,70 +21,7 @@
                     </x-slot>
 
                     <x-slot name="actions">
-                        <x-filter-dropdown.wrapper>
-                            <div x-data="{
-                                setUnitVal(id) {
-                                    $wire.set('filter_unit', id)
-                                    id == '' ? this.filtered = false : this.filtered = true
-                                    this.dd = false
-                                },
-                                setCatVal(id) {
-                                    $wire.set('filter_category', id)
-                                    id == '' ? this.filtered = false : this.filtered = true
-                                    this.dd = false
-                                },
-                                setExpVal(tf) {
-                                    $wire.set('filter_expired', tf)
-                                    this.dd = false
-                                    this.filtered = true
-                                },
-                                clearFilter() {
-                                    console.log('triggered')
-                                    {{-- $wire.set('filter_unit', '')
-                                    $wire.set('filter_category', '')
-                                    $wire.set('filter_expired', '')
-                                    this.filtered = false --}}
-                                },
-                            }">
-                                <x-slot name="trigger" >
-                                    <x-filter-dropdown.trigger-button label="Filter" />
-                                </x-slot>
-                                <x-slot name="reset_button">
-                                    <button x-on:click="clearFilter()" type="button" class="flex w-full px-4 py-2  border border-red-200 hover:bg-red-200 text-red-600 rounded-md">
-                                        Clear Filter
-                                    </button>
-                                </x-slot>
-                            </div>
-                        </x-filter-dropdown.wrapper>
-                       <div x-data="{
-                            dd : false,
-                            filtered : false,
-                            openDd() {
-                                this.dd = true
-                            },
-                            setUnitVal(id) {
-                                $wire.set('filter_unit', id)
-                                id == '' ? this.filtered = false : this.filtered = true
-                                this.dd = false
-                            },
-                            setCatVal(id) {
-                                $wire.set('filter_category', id)
-                                id == '' ? this.filtered = false : this.filtered = true
-                                this.dd = false
-                            },
-                            setExpVal(tf) {
-                                $wire.set('filter_expired', tf)
-                                this.dd = false
-                                this.filtered = true
-                            },
-                            clearFilter() {
-                                $wire.set('filter_unit', '')
-                                $wire.set('filter_category', '')
-                                $wire.set('filter_expired', '')
-                                this.filtered = false
-                            },
-                        }"
-                        >
+                       <div x-data="toggleFilter" >
                              <button x-on:click="openDd" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                <x-icons.filter />
                                 Filter
@@ -250,4 +187,36 @@
             </div>
         </x-modal>
     </section>
+    @script
+        <script>
+            Alpine.data('toggleFilter', () => ({
+                dd : false,
+                filtered : false,
+                openDd() {
+                    this.dd = true
+                },
+                setUnitVal(id) {
+                    $wire.set('filter_unit', id)
+                    id == '' ? this.filtered = false : this.filtered = true
+                    this.dd = false
+                },
+                setCatVal(id) {
+                    $wire.set('filter_category', id)
+                    id == '' ? this.filtered = false : this.filtered = true
+                    this.dd = false
+                },
+                setExpVal(tf) {
+                    $wire.set('filter_expired', tf)
+                    this.dd = false
+                    this.filtered = true
+                },
+                clearFilter() {
+                    $wire.set('filter_unit', '')
+                    $wire.set('filter_category', '')
+                    $wire.set('filter_expired', '')
+                    this.filtered = false
+                },
+            }))
+        </script>
+    @endscript
 </div>
