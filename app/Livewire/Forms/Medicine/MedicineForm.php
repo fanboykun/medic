@@ -4,6 +4,9 @@ namespace App\Livewire\Forms\Medicine;
 
 use App\Models\Medicine;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\DB;
 use Livewire\Form;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -89,7 +92,7 @@ class MedicineForm extends Form
      */
     public ?string $supplier_name;
 
-    public function setMedicineForUpdate(Medicine $medicine) : void
+    public function setMedicineForUpdate(Medicine|SupportCollection|array $medicine) : void
     {
         $this->medicineId = $medicine->id;
         $this->name = $medicine->name;
@@ -105,22 +108,48 @@ class MedicineForm extends Form
         $this->description = $medicine->description;
     }
 
-    public function storeMedicineForUpdate() : void
+    public function storeMedicineForUpdate($shouldReturn = false) : null|object
     {
         $this->validate();
         try{
-            $medicine = Medicine::findOrFail($this->medicineId);
-            $medicine->update([
-                'name' => $this->name,
-                'storage' => $this->storage,
-                'expired' => $this->expired,
-                'description' => $this->description,
-                'unit_id' => $this->unit_id,
-                'category_id' => $this->category_id,
-            ]);
+            $medicine = tap(Medicine::findOrFail($this->medicineId), function(Medicine $medicine) {
+                $medicine->update([
+                    'name' => $this->name,
+                    'storage' => $this->storage,
+                    'expired' => $this->expired,
+                    'description' => $this->description,
+                    'unit_id' => $this->unit_id,
+                    'category_id' => $this->category_id,
+                ]);
+            });
+            if($shouldReturn) return $medicine;
         }catch (\Exception $e){
             throw($e);
         }
         $this->reset();         // always reset the prop
+    }
+
+    public function destroyMedicineWithSoftDelete(int $medicine_id) : bool
+    {
+        try {
+            DB::transaction(function () use($medicine_id) {
+                // find the desired medicine from database
+                $medicine_to_destroy = Medicine::where('id',$medicine_id)->with( 'purchases' )->first();
+
+                // get first purchase data to update
+                // update the purchase data
+                $purchase = $medicine_to_destroy->purchases->first();
+                $purchase->total_purchase = $purchase->total_purchase - $medicine_to_destroy->purchase_price;
+                $purchase->save();
+
+                // detach medicine data from purchase_medicine pivot
+                // then delete the medicine from the database
+                $medicine_to_destroy->purchases()->detach();
+                $medicine_to_destroy->delete();
+            });
+            return true;
+        } catch(\Exception $e) {
+            return false;
+        }
     }
 }

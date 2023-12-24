@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         <div>
-                            <label for="supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Invoice <span class="text-red-500">*</span></label>
+                            <label for="invoice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Invoice (filled automatically)<span class="text-red-500">*</span></label>
                             <div class="flex">
                                 <input type="text" wire:model="invoice" disabled name="invoice" id="invoice" class="flex w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="invoice will be filled after purchase created" required="">
                                 <button wire:click="regenerateInvoiceCode()" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="regenerateInvoiceCode" class="flex bg-indigo-600 hover:bg-indigo-800 text-white rounded-lg px-2 py-1 ml-2 items-center text-sm">
@@ -246,7 +246,7 @@
                                 </button>
                             </div>
                             <span class="block text-gray-500 text-xs text-end pt-0.5">click regenerate invoice code button if invoice code alaready exist</span>
-                            @error('supplier_id')
+                            @error('invoice')
                             <span class="block text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>

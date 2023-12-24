@@ -41,7 +41,7 @@
                                                 <x-icons.caret />
                                                 <span>Filter Unit</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
+                                            <div x-cloak x-show="showChild == 1" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:400px)]:translate-y-[0%] [@media(min-width:400px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
                                                     <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
                                                         Back
@@ -64,7 +64,7 @@
                                                <x-icons.caret />
                                                <span>Filter Category</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 2" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
+                                            <div x-cloak x-show="showChild == 2" class="absolute flex flex-row z-[9999] min-w-[200px] max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:400px)]:translate-y-[0%] [@media(min-width:400px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
                                                     <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
                                                         Back
@@ -87,7 +87,7 @@
                                                 <x-icons.caret />
                                                 <span>Filter Expired</span>
                                             </button>
-                                            <div x-cloak x-show="showChild == 3" class="absolute flex flex-row z-[9999] w-full max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:300px)]:translate-y-[0%] [@media(min-width:300px)]:translate-x-[-100%]">
+                                            <div x-cloak x-show="showChild == 3" class="absolute flex flex-row z-[9999] w-full max-h-[150px] sm:max-h-[300px] overflow-y-auto bg-white dark:bg-gray-700 top-0 rounded-lg shadow-md border-2 border-indigo-500 translate-x-[-25%] [@media(min-width:400px)]:translate-y-[0%] [@media(min-width:400px)]:translate-x-[-100%]">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 text-center w-full" aria-labelledby="dropdownHoverButton">
                                                     <button type="button" x-on:click="showChild = 0" class="sm:hidden flex w-full px-4 py-2 bg-gray-500 rounded-md">
                                                         Back

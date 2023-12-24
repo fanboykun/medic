@@ -134,6 +134,7 @@
                         <th scope="col" class="px-6 py-3"> Quantity</th>
                         <th scope="col" class="px-6 py-3"> Purchase Price</th>
                         <th scope="col" class="px-6 py-3"> Created at</th>
+                        <th scope="col" class="px-6 py-3"> </th>
                     </tr>
                 </thead>
                 @if($selectedPurchase != null)
@@ -145,6 +146,9 @@
                             <td class="px-6 py-4">{{ $medicine->pivot->quantity }}</td>
                             <td class="px-6 py-4">Rp {{number_format($medicine->pivot->purchase_price, 0, ',','.')}}</td>
                             <td class="px-6 py-4">{{ $medicine->pivot->created_at->format('d M Y')}}</td>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('medicines.edit', $medicine->id) }}" wire:navigate class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            </td>
                         </tr>
                         @empty
                         <tr>

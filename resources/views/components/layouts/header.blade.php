@@ -1,4 +1,4 @@
-<div class="">
+<div x-data="{mobilemenu: false}">
     <header class="flex items-center bg-white/80 dark:bg-gray-900 backdrop-blur border-b dark:border-gray-700 fixed top-0 z-20 w-full h-[64px] flex-none">
         <div class="min-w-full px-4 sm:px-6 md:px-8 mx-auto h-[3.3rem]">
             <div class="flex items-center h-[3.3rem] gap-4">
@@ -105,5 +105,5 @@
         </div>
     </div>
     @endif
+    @include('components.layouts.mobile-sidebar')
 </div>
-@include('components.layouts.mobile-sidebar')
