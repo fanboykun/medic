@@ -1,6 +1,6 @@
 <div>
     <x-slot name="header">
-        New Purchase
+        Edit Purchase
     </x-slot>
 
     <section class="bg-white dark:bg-gray-800 rounded-lg">
@@ -116,7 +116,7 @@
                     <div class="pt-8">
                         <div class="flex justify-between items-center pb-4">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Medicine Data</h2>
-                            <button type="button" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewPurchase" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                            <button type="button" wire:click="addNewMedicine" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="addNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                                 Add New Medicine
                             </button>
                         </div>
@@ -125,8 +125,8 @@
                                 <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
-                                            <th scope="col" class="px-6 py-3"> Name</th>
-                                            <th scope="col" class="px-6 py-3"> Stock</th>
+                                            <th scope="col" class="px-6 py-3"> Name </th>
+                                            <th scope="col" class="px-6 py-3"> Quantity </th>
                                             <th scope="col" class="px-6 py-3"> Expired</th>
                                             <th scope="col" class="px-6 py-3"> Purchase Price</th>
                                             <th scope="col" class="px-6 py-3"> Selling Price</th>
@@ -139,13 +139,13 @@
                                         @forelse ($purchase_medicine as $k => $medicine)
                                             <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                                                     <td class="px-6 py-4">{{ $medicine['name'] }}</td>
-                                                    <td class="px-6 py-4">{{ $medicine['stock'] }}</td>
+                                                    <td class="px-6 py-4">{{ $medicine['pivot']['quantity'] }}</td>
                                                     <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine['expired'])->format('d M Y') }}</td>
                                                     <td class="px-6 py-4">Rp {{number_format($medicine['purchase_price'], 0, ',','.')}}</td>
                                                     <td class="px-6 py-4">Rp {{number_format($medicine['selling_price'], 0, ',','.')}}</td>
                                                 <td class="px-6 py-4">
-                                                    <button wire:click="editMedicine({{ $medicine->id }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="editMedicine" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                                                    <button wire:click="deleteMedicine({{ $medicine }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="deleteMedicine" type="button" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                                    <button wire:click="editMedicine({{ $medicine['id'] }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="editMedicine" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                                    <button wire:click="deleteMedicine({{ $medicine['id'] }})" wire:loading.attr="disabled" wire:loading.class="text-indigo-400 opacity-50" wire:target="deleteMedicine" type="button" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -296,7 +296,7 @@
                                             Clear
                                         </x-secondary-button>
                                     </template>
-                                    <button type="submit" x-text="medicineFormButtonText" wire:click="updateMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="appendNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800"> </button>
+                                    <button type="submit" x-text="medicineFormButtonText" wire:click="updateMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="updateMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800"> </button>
                                 </div>
                             </div>
                         </div>

@@ -34,13 +34,17 @@ class PurchaseForm extends Form
     #[Validate('max_digits:8', message: 'the maximun accepted digit is 8 digit')]
     public float $total_purchase;
 
-    public function fillInput(Purchase $purchase): void
+    public ?int $total_quantity;
+    public ?int $total_medicine;
+
+    public function fillInput(Purchase $purchase, ?callable $callback = null): void
     {
         $this->purchase_id = $purchase->id;
         $this->supplier_id = $purchase->supplier_id;
         $this->purchase_date = $purchase->purchase_date;
         $this->invoice = $purchase->invoice;
         $this->total_purchase = $purchase->total_purchase;
+        if( is_callable( $callback ) ) call_user_func( $callback );
     }
 
     public function updatePurchaseOnly() : void
@@ -51,7 +55,7 @@ class PurchaseForm extends Form
                 Purchase::where('id', $this->purchase_id)->update([
                     'supplier_id' => $this->supplier_id,
                     'purchase_date' => $this->purchase_date,
-                    'total_purchase' => $this->total_purchase,
+                    // 'total_purchase' => $this->total_purchase,   // no update total_purchase here, since purchase can only be modified if the medicine that attached to it is been updated
                 ]);
             });
         } catch(\Exception $e) {
@@ -62,6 +66,11 @@ class PurchaseForm extends Form
     public function updatePurchase() : void
     {
 
+    }
+
+    public function getUpdatedTotalPurchase() {
+        if($this->purchase_id === null) return;
+        $this->total_purchase = (Purchase::select('total_purchase')->where('id', $this->purchase_id)->first())->total_purchase;
     }
 
 }

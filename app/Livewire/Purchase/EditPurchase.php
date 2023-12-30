@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use App\Models\Unit;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
 use Livewire\Component;
 
@@ -30,11 +31,11 @@ class EditPurchase extends Component
     public function  mount(Purchase $purchase) : void
     {
         $purchase_data = $purchase->load(['medicines']);
-        $this->purchase_medicine = $purchase_data->medicines;
-        $this->purchaseForm->fillInput($purchase_data);
+        $this->purchase_medicine = $purchase_data->medicines->toArray();
+        $this->purchaseForm->fillInput( $purchase_data );
 
         $this->total_medicine = count($this->purchase_medicine);
-        $this->total_quantity = $this->purchase_medicine->sum('pivot.quantity');
+        $this->total_quantity = array_sum( (array) Arr::pluck($this->purchase_medicine, 'pivot.quantity'));
 
         $this->suppliers = Supplier::latest()->get();
         $this->categories = Category::latest()->get();
@@ -46,27 +47,40 @@ class EditPurchase extends Component
         return view('livewire.purchase.edit-purchase');
     }
 
-    public function deleteMedicine( int|array $id ) : void
+    public function deleteMedicine( int|array $data ) : void
     {
-        return;
+        // return;
+        if(is_array($data) && array_key_exists('id', $data)) {
+            $id = $data['id'];
+        } else if(is_int($data)) {
+            $id = $data;
+        } else {
+            return;
+        }
         try {
-            if($this->medicineForm->destroyMedicineWithSoftDelete($id)) {
-                $filtered_old_medicine =  $this->purchase_medicine->filter(fn($value) => $value->id != $id);
-                $this->purchase_medicine = $filtered_old_medicine;
-                $this->total_medicine = count($filtered_old_medicine);
-                // buggy
-                // $this->total_quantity = $filtered_old_medicine->sum('purchases.pivot.quantity');
+            if($this->medicineForm->destroyMedicineWithSoftDelete($id, shouldUpdatePurchase: true)) {
+                try{
+                    $filtered_old_medicine =  Arr::where($this->purchase_medicine, fn($arr) : bool => $arr['id'] != $id);
+                    $this->purchase_medicine = $filtered_old_medicine;
+                    $this->total_medicine = count($filtered_old_medicine);
+                    $this->total_quantity = array_sum( (array) Arr::pluck($this->purchase_medicine, 'pivot.quantity'));
+                    $this->purchaseForm->getUpdatedTotalPurchase();
+                }catch(\Exception $e) {
+                    // if( env('APP_DEBUG') === true )
+                    throw($e);
+                    $this->dispatch('notify', ['message' => 'Error! Failed Updating Purchase Data', 'status' => 'error']);
+                }
             }
             $this->dispatch('notify', ['message' => 'Medicine has been deleted!', 'status' => 'success']);
         } catch(\Exception $err) {
-            throw($err);
+            if( env('APP_DEBUG') === true ) throw($err);
             $this->dispatch('notify', ['message' => 'Error! Medicine cannot be deleted!', 'status' => 'error']);
         }
     }
 
     public function editMedicine(int $id) : void
     {
-        (object) $medicine_to_update = collect($this->purchase_medicine)->filter(fn($value) => $value->id == $id)->first();
+        (object) $medicine_to_update = collect($this->purchase_medicine)->filter(fn($value) : bool => $value['id'] == $id)->first();
         $this->medicineForm->setMedicineForUpdate($medicine_to_update);
         $this->dispatch('set-tab', 'medicine_form');
         $this->dispatch('change-form-label', 'Update Medicine');
@@ -76,12 +90,19 @@ class EditPurchase extends Component
     {
         try {
             // actions
-            $updated_medicine =  $this->medicineForm->storeMedicineForUpdate(shouldReturn: true);
-
+            $updated_medicine =  $this->medicineForm->storeMedicineForCompleteUpdate(shouldReturn: true);
+            dd($updated_medicine);
+            if($updated_medicine == null) {
+                $this->dispatch('notify', ['message' => 'Error Updating Medicine and Purchase!', 'status' => 'error']);
+                return;
+            }
             // update the list of $this->purchase_medicine
-            $this->purchase_medicine = $this->purchase_medicine->filter(function( $item ) use($updated_medicine) {
-                return $item->id != $updated_medicine->id;
-            })->push($updated_medicine)->sortByDesc('updated_at');
+            $updated_purchase_medicine = collect( (object) $this->purchase_medicine)->filter( function( $item ) use ( $updated_medicine ): bool {
+                return (is_array($item) == true) ? $item['id'] != $updated_medicine->id : $item->id != $updated_medicine->id;
+            })->push($updated_medicine)->toArray();
+
+            // sorting
+            $this->purchase_medicine = array_values(Arr::sortDesc($updated_purchase_medicine, fn($arr) => $arr['updated_at'] ));
 
             // event dispacther to browser
             $this->dispatch('notify', ['message' => 'Medicine has been updated!', 'status' => 'success']);
@@ -104,5 +125,11 @@ class EditPurchase extends Component
 
         // $total_purchase_amount  = $this->purchase_medicine;
     }
+
+    public function addNewMedicine() : void
+    {
+
+    }
+
 
 }

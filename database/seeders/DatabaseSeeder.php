@@ -20,49 +20,55 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create();
-        $unit = Unit::factory()->create();
-        $category = Category::factory()->create();
-        $supplier = Supplier::factory()->create();
-        $medicine = Medicine::factory()->count(10)->state(function (array $attributes){
-            return [
-                'stock' => 5,
-                'purchase_price' => 150000,
-                'selling_price' => 200000,
-            ];
-        })
-        ->for($unit)
-        ->for($category)
-        ->for($supplier)->create();
+        $units = Unit::factory(5)->create();
+        $categories = Category::factory(5)->create();
+        $suppliers = Supplier::factory(5)->create();
+        $iteration = 0;
+        while ($iteration < 5) {
+            $unit = $units[$iteration];
+            $category = $categories[$iteration];
+            $supplier = $suppliers[$iteration];
 
-        Purchase::factory()
-        ->state(function (array $attributes) use($medicine){
-            return [
-                'total_purchase' => (float) 5 * 150000
-            ];
-        })
-        ->for($supplier)
-        ->hasAttached($medicine,
-        ['quantity' => 5, 'purchase_price' => 150000]
-        )->create();
+            $medicine = Medicine::factory()->count(10)->state(function (array $attributes){
+                return [
+                    'stock' => 5,
+                    'purchase_price' => 150000,
+                    'selling_price' => 200000,
+                ];
+            })
+            ->for($unit)
+            ->for($category)
+            ->for($supplier)->create();
 
-        Sell::factory()
-        ->state(function (array $attributes) use($medicine){
-            return [
-                'total_sell' => (float) 2 * $medicine->first()->selling_price
-            ];
-        })
-        ->hasAttached($medicine->first(),
-            [
-                'selling_price' => $medicine->first()->selling_price,
-                'quantity' => 2
-            ])->create();
+            Purchase::factory()
+            ->state(function (array $attributes) use($medicine){
+                return [
+                    'total_purchase' => (float) ( (int) count($medicine) * 5 ) * 150000 // 10 item, 5 quantity
+                ];
+            })
+            ->for($supplier)
+            ->hasAttached($medicine,
+            ['quantity' => 5, 'purchase_price' => 150000]
+            )->create();
 
-        $medicine->first()->update([
-            'stock' => 3
-        ]);
+            Sell::factory()
+            ->state(function (array $attributes) use($medicine){
+                return [
+                    'total_sell' => (float) 2 * $medicine->first()->selling_price
+                ];
+            })
+            ->hasAttached($medicine->first(),
+                [
+                    'selling_price' => $medicine->first()->selling_price,
+                    'quantity' => 2
+                ])->create();
 
-        Unit::factory()->create();
-        Category::factory()->create();
+            $medicine->first()->update([
+                'stock' => 3
+            ]);
+            $iteration++;
+        }
+
     }
 
 }
