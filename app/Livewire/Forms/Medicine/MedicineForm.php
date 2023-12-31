@@ -168,10 +168,14 @@ class MedicineForm extends Form
 
     public function storeMedicineForCompleteUpdate($shouldReturn = false) : null|object
     {
-        $this->validate();
         try{
-            $updated_medicine = DB::transaction( function() : object|null {
-                $medicine_to_update = tap(Medicine::where( 'id' , $this->medicineId )->with( 'purchases' )->first() , function( Medicine $medicine ) : object|null {
+            $medicine = tap(Medicine::where( 'id' , $this->medicineId )->with( 'purchases' )->first(), function (Medicine $medicine) use($shouldReturn) {
+
+                if(empty($medicine)) return null;
+
+                if(!$this->validateForUpdate(medicine: $medicine)) return null;
+
+                DB::transaction( function() use($medicine) : void {
                     $updated_stock = ( $this->stock != $medicine->stock ) ? $this->stock : $medicine->stock; // fixed value, cannot be modified anymore
                     $updated_selling_price = ( $this->selling_price != $medicine->selling_price ) ? $this->selling_price : $medicine->selling_price; // initial value for selling_price in medicine data
                     $updated_purchase_price = ( $this->purchase_price != $medicine->purchase_price ) ? $this->purchase_price : $medicine->purchase_price ;    // initial value for purchase price in purchase and medicine data
@@ -180,9 +184,6 @@ class MedicineForm extends Form
 
                     $updated_quantity = 0; // initial value for quantity in purchase data
                     $updated_total_purchase = $purchase->total_purchase;
-
-                    // guard clause
-                    if($this->stock > $medicine->stock || $this->purchase_price > $this->selling_price || $this->selling_price < $this->purchase_price) return null;
 
                     // prepare stock value in case the quantity in purchase data need to be updated
                     // subtract the old quantity be the old stock value, and then add the subtracted value with the new stock value
@@ -195,6 +196,7 @@ class MedicineForm extends Form
                     // prepare selling_price value in case the selling_price in medicine data need to be updated
                     $updated_selling_price = $this->selling_price;
 
+                    // update the medicine
                     $medicine->update([
                         'name' => $this->name,
                         'storage' => $this->storage,
@@ -206,29 +208,66 @@ class MedicineForm extends Form
                         'purchase_price' => $updated_purchase_price,
                         'stock' => $updated_stock
                     ]);
+
                     // $purchase_to_update = Purchase::where('id', $purchase->id)->first();
                     $purchase->update([
                         'total_purchase' => $updated_total_purchase,
                     ]);
-                    $purchase->medicines()->syncWithoutDetaching([
-                        $medicine->id => [
-                            'quantity' => $updated_quantity != 0 ? $updated_quantity : $purchase->pivot->quantity,
-                            'purchase_price' => $updated_purchase_price
-                        ]
-                    ]);
+
+                    // update the pivot table of medicine and purchase
+                    (bool) $updated_pivot = $medicine->purchases()->updateExistingPivot(
+                        $purchase->id,
+                            ['quantity' => $updated_quantity != 0 ? $updated_quantity : $purchase->pivot->quantity,
+                            'purchase_price' => $updated_purchase_price]
+                    );
+
+                    // manipulate the updated pivot value
+                    // cheating, need to improve
+                    if($updated_pivot) {
+                        $purchase->pivot->quantity = $updated_quantity != 0 ? $updated_quantity : $purchase->pivot->quantity;
+                        $purchase->pivot->purchase_price = $updated_purchase_price;
+                    }
 
                 });
-                return $medicine_to_update;
             });
-            // dd($updated_medicine);
+
             if($shouldReturn){
-                $pivot_value = $updated_medicine->purchases->first()->pivot->toArray();     // not the best approach, only work when the medicine only has one purchase
-                $updated_medicine->pivot = $pivot_value;
-                return $updated_medicine;
+                if($medicine == null) return null;
+                $pivot_value = $medicine->purchases->first()->pivot->toArray();     // not the best approach, only work when the medicine only has one purchase
+                $medicine->pivot = $pivot_value;
+                return $medicine;
             }
+
         }catch (\Exception $e){
             throw($e);
         }
         $this->reset();         // always reset the prop
+    }
+
+    private function validateForUpdate(object $medicine) : bool
+    {
+        // normal validation
+        $this->validate();
+
+        // validation status
+        (bool) $validated = true;
+
+        // guard clause, update only validation
+        // check if the updated stock is more than the current stock
+        if($this->stock > $medicine->stock) {
+            $this->addError('stock', 'Stock cannot be more than it is currently, if you want to add stock, please consider make a new purchase');
+            $validated =  false;
+        }
+        // check if the purchase price if higher than the selling price
+        if($this->purchase_price > $this->selling_price) {
+            $this->addError('purchase_price', 'Purchase price cannot be higher than the selling price');
+            $validated = false;
+        }
+        // check if the selling price if lower than the purchase price
+        if($this->selling_price < $this->purchase_price) {
+            $this->addError('selling_price', 'selling price cannot be lower than the purchase price');
+            $validated = false;
+        }
+        return $validated;
     }
 }

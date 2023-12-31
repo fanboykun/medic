@@ -91,7 +91,7 @@ class EditPurchase extends Component
         try {
             // actions
             $updated_medicine =  $this->medicineForm->storeMedicineForCompleteUpdate(shouldReturn: true);
-            dd($updated_medicine);
+            // dd($updated_medicine);
             if($updated_medicine == null) {
                 $this->dispatch('notify', ['message' => 'Error Updating Medicine and Purchase!', 'status' => 'error']);
                 return;
