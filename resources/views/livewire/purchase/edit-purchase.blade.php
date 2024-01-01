@@ -7,16 +7,11 @@
 
         <div x-data="{
                 currentTab: 'purchase_form',
-                medicineFormButtonText: 'Add Medicine',
                 changeTab(tab){
                     this.currentTab = tab
                 },
-                changeMedicineFormButtonLabel(l) {
-                    this.medicineFormButtonText = l
-                }
             }"
             x-on:set-tab.window="changeTab($event.detail)"
-            x-on:change-form-label.window="changeMedicineFormButtonLabel($event.detail)"
             >
             <!-- Tabs -->
             <div class="flex justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 dark:bg-slate-900">
@@ -24,8 +19,8 @@
                     <li class="mr-2">
                         <button x-on:click="currentTab = 'purchase_form'" :class="currentTab == 'purchase_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-linear">Purchase Form</button>
                     </li>
-                    <li class="mr-2">
-                        <button x-on:click="currentTab = 'medicine_form'" :class="currentTab == 'medicine_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-linear">Medicines Form</button>
+                    <li x-cloak x-show="currentTab == 'medicine_form'" class="mr-2">
+                        <button disabled x-on:click="currentTab = 'medicine_form'" :class="currentTab == 'medicine_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg disabled:opacity-70 transition-all duration-200 ease-linear">Medicines Form</button>
                     </li>
                 </ul>
             </div>
@@ -116,7 +111,7 @@
                     <div class="pt-8">
                         <div class="flex justify-between items-center pb-4">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Medicine Data</h2>
-                            <button type="button" wire:click="addNewMedicine" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="addNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                            <button type="button" wire:click="addNewMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="addNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
                                 Add New Medicine
                             </button>
                         </div>
@@ -173,6 +168,7 @@
 
                         <div class="grid gap-y-2 bg-white dark:bg-slate-900 p-4  rounded-xl">
                             <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 ">
+
                                 <div class="lg:col-span-2 col-span-3">
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name <span class="text-red-500">*</span> </label>
                                     <input type="text" wire:model="medicineForm.name" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Medicine Name" required="">
@@ -180,6 +176,7 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock <span class="text-red-500">*</span></label>
                                     <input type="number" wire:model="medicineForm.stock" min="1" minlength="1" max="9999" maxlength="4" name="stock" id="stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="input stock with min value is 1" required="">
@@ -187,6 +184,28 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                {{-- @if($medicine_form_mode == 'add')
+                                <div class="w-full lg:col-span-1 col-span-3">
+                                    <label for="unit_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier <span class="text-red-500">*</span></label>
+                                    <div class="flex">
+                                        <select wire:model="medicineForm.supplier_id" required id="supplier_id" class="flex w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option value="" disabled>Select Supplier</option>
+                                            @forelse ($suppliers as $supplier)
+
+                                            <option value="{{$supplier->id}}"> {{$supplier->name}} </option>
+
+                                            @empty
+                                            No data!
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                    @error('medicineForm.unit_id')
+                                    <span class="block text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @endif --}}
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="unit_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit <span class="text-red-500">*</span></label>
                                     <div class="flex">
@@ -200,17 +219,12 @@
                                             No data!
                                             @endforelse
                                         </select>
-                                        {{-- <button x-on:click="$dispatch('open-modal', 'add-unit')" class="flex bg-indigo-600 hover:bg-indigo-800 text-white rounded-lg px-2 py-1 text-sm ml-2 items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
-                                            </svg>
-
-                                        </button> --}}
                                     </div>
                                     @error('medicineForm.unit_id')
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category <span class="text-red-500">*</span></label>
                                     <div class="flex">
@@ -224,17 +238,11 @@
                                             No data!
                                             @endforelse
                                         </select>
-                                        {{-- <button x-on:click="$dispatch('open-modal', 'add-category')" class="flex bg-indigo-600 hover:bg-indigo-800 text-white rounded-lg px-2 py-1 text-sm ml-2 items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
-                                            </svg>
-
-                                        </button> --}}
                                     </div>
                                     @error('medicineForm.category_id')
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
-                                </div class="w-full lg:col-span-1 col-span-3">
+                                </div>
 
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="purchase_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Purchase Price <span class="text-red-500">*</span></label>
@@ -248,6 +256,7 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="selling_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selling Price <span class="text-red-500">*</span></label>
                                     <div class="relative">
@@ -260,6 +269,7 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="expired" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expired <span class="text-red-500">*</span></label>
                                     <div class="relative w-full">
@@ -274,6 +284,7 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
+
                                 <div class="w-full lg:col-span-1 col-span-3">
                                     <label for="storage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Storage</label>
                                     <input type="text" wire:model="medicineForm.storage" name="storage" id="storage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="input storage">
@@ -281,7 +292,8 @@
                                     <span class="block text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="w-full col-span-3">
+
+                                <div class="w-full {{ $medicine_form_mode == 'add' ?  'col-span-2' : 'col-span-3'}}">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                     <input type="text" wire:model="medicineForm.description" name="description" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="input description">
                                     @error('medicineForm.description')
@@ -291,12 +303,11 @@
                             </div>
                             <div class="flex items-center justify-end">
                                 <div>
-                                    <template x-if="medicineFormButtonText == 'Add Medicine'">
-                                        <x-secondary-button class="py-3 mx-1 capitalize" wire:click="clearForm">
-                                            Clear
-                                        </x-secondary-button>
-                                    </template>
-                                    <button type="submit" x-text="medicineFormButtonText" wire:click="updateMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="updateMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800"> </button>
+                                    @if($medicine_form_mode == 'edit')
+                                        <button type="submit" wire:click="updateMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="updateMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800"> Update Medicine </button>
+                                    @elseif($medicine_form_mode == 'add')
+                                        <button type="submit" wire:click="saveNewMedicine()" wire:loading.attr="disabled" wire:loading.class="bg-indigo-400 opacity-50" wire:target="saveNewMedicine" class="inline-flex mx-2 items-center px-5 py-3 text-sm font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800"> Save Medicine </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -3,10 +3,8 @@
 namespace App\Livewire\Forms\Medicine;
 
 use App\Models\Medicine;
-use App\Models\Purchase;
 use App\Models\Supplier;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Form;
@@ -22,7 +20,7 @@ class MedicineForm extends Form
      * see the livewire v3 documentation.
      */
     #[Locked]
-    public ?int $medicineId;                // for update and delete (or interacting with existing record, use this)
+    public null|int $medicineId = null;                // for update and delete (or interacting with existing record, use this)
 
     public ?Medicine $medicine;         // for making new instance (create, or even select use this)
 
@@ -50,17 +48,17 @@ class MedicineForm extends Form
     #[Validate('required', message: 'please select one unit')]
     #[Validate('integer')]
     #[Validate('exists:App\Models\Unit,id', message: 'the unit does not exists, please create one then select it')]
-    public int|null $unit_id;
+    public int|string $unit_id = '';
 
     #[Validate('required', message : 'please select one category')]
     #[Validate('integer')]
     #[Validate('exists:App\Models\Category,id', message : 'the category does not exists, please create one')]
-    public int|null $category_id;
+    public int|string $category_id = '';
 
     #[Validate('required', message : 'please select one supplier')]
     #[Validate('integer')]
     #[Validate('exists:App\Models\Supplier,id', message : 'the supplier does not exists, please create one')]
-    public int|null $supplier_id;
+    public int|string $supplier_id = '';
 
     #[Validate('required', message : 'please enter the stock amount, min amount is 1')]
     #[Validate('integer')]
@@ -168,6 +166,7 @@ class MedicineForm extends Form
 
     public function storeMedicineForCompleteUpdate($shouldReturn = false) : null|object
     {
+        if($this->medicineId == null) return null;
         try{
             $medicine = tap(Medicine::where( 'id' , $this->medicineId )->with( 'purchases' )->first(), function (Medicine $medicine) use($shouldReturn) {
 
@@ -269,5 +268,37 @@ class MedicineForm extends Form
             $validated = false;
         }
         return $validated;
+    }
+
+    public function storeMedicine() : mixed
+    {
+        $this->validate();
+        try {
+            $new_medicine = DB::transaction(function() {
+                $medicine_created = Medicine::create([
+                    'name' => $this->name,
+                    'supplier_id' => $this->supplier_id,
+                    'category_id' => (int) $this->category_id,
+                    'unit_id' => (int) $this->unit_id,
+                    'storage' => $this->storage,
+                    'description' => $this->description,
+                    'stock' => (int) $this->stock,
+                    'expired' => $this->expired,
+                    'purchase_price' => $this->purchase_price,
+                    'selling_price' => $this->selling_price
+                ]);
+                return $medicine_created;
+            });
+        } catch(\Exception $e) {
+            throw($e);
+            return null;
+        }
+        $this->reset();
+        return $new_medicine;
+    }
+
+    public function clearForm() : void
+    {
+        $this->reset();
     }
 }

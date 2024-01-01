@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms\Purchase;
 
+use App\Models\Medicine;
 use App\Models\Purchase;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -63,14 +64,34 @@ class PurchaseForm extends Form
         }
     }
 
-    public function updatePurchase() : void
-    {
-
-    }
-
     public function getUpdatedTotalPurchase() {
         if($this->purchase_id === null) return;
         $this->total_purchase = (Purchase::select('total_purchase')->where('id', $this->purchase_id)->first())->total_purchase;
+    }
+
+    public function storeMedicineToPurchase(Medicine $medicine) : object|null
+    {
+        try {
+            $updated_purchase = tap(Purchase::where('id', $this->purchase_id)->first(), function( Purchase $purchase ) use($medicine) {
+                DB::transaction(function() use ($purchase, $medicine) {
+                    $purchase->update([
+                        'total_purchase' => $purchase->total_purchase + ($medicine->purchase_price * $medicine->stock),
+                    ]);
+                    $purchase->medicines()->syncWithoutDetaching([
+                        $medicine->id => [
+                            'quantity' => $medicine->stock,
+                            'purchase_price' => $medicine->purchase_price,
+                        ]
+                    ]);
+                    return $purchase;
+                });
+            });
+            return $updated_purchase;
+        } catch(\Exception $e) {
+            throw($e);
+            return null;
+        }
+        $this->reset();
     }
 
 }

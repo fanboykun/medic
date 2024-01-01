@@ -28,6 +28,8 @@ class EditPurchase extends Component
     public ?int $total_medicine;
     public ?int $total_quantity;
 
+    public string $medicine_form_mode = 'add';
+
     public function  mount(Purchase $purchase) : void
     {
         $purchase_data = $purchase->load(['medicines']);
@@ -82,8 +84,8 @@ class EditPurchase extends Component
     {
         (object) $medicine_to_update = collect($this->purchase_medicine)->filter(fn($value) : bool => $value['id'] == $id)->first();
         $this->medicineForm->setMedicineForUpdate($medicine_to_update);
+        $this->medicine_form_mode = 'edit';
         $this->dispatch('set-tab', 'medicine_form');
-        $this->dispatch('change-form-label', 'Update Medicine');
     }
 
     public function updateMedicine() : void
@@ -128,8 +130,37 @@ class EditPurchase extends Component
 
     public function addNewMedicine() : void
     {
-
+        $this->medicineForm->clearForm();
+        $this->medicineForm->supplier_id = $this->purchaseForm->supplier_id;
+        $this->medicine_form_mode = 'add';
+        $this->dispatch('set-tab', 'medicine_form');
     }
 
+    public function saveNewMedicine() : void
+    {
+        $newly_created_medicine = $this->medicineForm->storeMedicine();
+        if($newly_created_medicine == null) {
+            $this->dispatch('notify', ['message' => 'Error! Something wrong when creating medicine!', 'status' => 'error']);
+            return;
+        }
+
+        $updated_purchase = $this->purchaseForm->storeMedicineToPurchase($newly_created_medicine);
+        if($updated_purchase == null) {
+            $this->dispatch('notify', ['message' => 'Error! Something wrong when updating purchase!', 'status' => 'error']);
+            return;
+        }
+
+        // push newly created medicine to medicines table/list
+        $updated_purchase_medicine = collect((object) $this->purchase_medicine)->push($newly_created_medicine);
+        // sorting
+        $this->purchase_medicine = array_values(Arr::sortDesc($updated_purchase_medicine, fn($arr) => $arr['updated_at'] ));
+
+        // update the displayed info of purchase data
+        dd($updated_purchase);
+
+
+        $this->dispatch('notify', ['message' => 'Medicine Created, Purchase has been updated!', 'status' => 'success']);
+        $this->dispatch('set-tab', 'purchase_form');
+    }
 
 }
