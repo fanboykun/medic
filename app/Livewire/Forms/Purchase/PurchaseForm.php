@@ -83,12 +83,20 @@ class PurchaseForm extends Form
                     $purchase->update([
                         'total_purchase' => $purchase->total_purchase + ($medicine->purchase_price * $medicine->stock),
                     ]);
-                    $purchase->medicines()->syncWithoutDetaching([
+                    $is_updated = $purchase->medicines()->syncWithoutDetaching([
                         $medicine->id => [
                             'quantity' => $medicine->stock,
                             'purchase_price' => $medicine->purchase_price,
                         ]
                     ]);
+                    if($is_updated) {
+                        $purchase['pivot'] = [
+                            'quantity' => $medicine->stock,
+                            'purchase_price' => $medicine->purchase_price,
+                        ];
+                    } else {
+                        $purchase['pivot'] = ['quantity' => 0, 'purchase_price' => 0];
+                    }
                     return $purchase;
                 });
             });

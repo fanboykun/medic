@@ -57,8 +57,7 @@ class EditPurchase extends Component
      *  belongsto the currently selected purchase
      *
      * @param int|array $data
-     * int for the id only
-     * array for the whole medicine data
+     * int for the id only, array for the whole medicine data
      */
     public function deleteMedicine( int|array $data ) : void
     {
@@ -93,6 +92,14 @@ class EditPurchase extends Component
         }
     }
 
+    /**
+     * Find the existing medicine data from initial medicines data that already queried,
+     * select it by the retrieved id agrument, then assign thoose selected medicine to
+     * the form object. finally set the form tab to medicine_form
+     *
+     * @param integer $id
+     * @return void
+     */
     public function editMedicine(int $id) : void
     {
         (object) $medicine_to_update = collect($this->purchase_medicine)->filter(fn($value) : bool => $value['id'] == $id)->first();
@@ -106,7 +113,6 @@ class EditPurchase extends Component
         try {
             // actions
             $updated_medicine =  $this->medicineForm->storeMedicineForCompleteUpdate(shouldReturn: true);
-            // dd($updated_medicine);
             if($updated_medicine == null) {
                 $this->dispatch('notify', ['message' => 'Error Updating Medicine and Purchase!', 'status' => 'error']);
                 return;
@@ -115,7 +121,6 @@ class EditPurchase extends Component
             $updated_purchase_medicine = collect( (object) $this->purchase_medicine)->filter( function( $item ) use ( $updated_medicine ): bool {
                 return (is_array($item) == true) ? $item['id'] != $updated_medicine->id : $item->id != $updated_medicine->id;
             })->push($updated_medicine)->toArray();
-
 
             // sorting
             $this->purchase_medicine = array_values(Arr::sortDesc($updated_purchase_medicine, fn($arr) => $arr['updated_at'] ));
@@ -139,14 +144,15 @@ class EditPurchase extends Component
         try {
             // we should re-query the relation, do not rely on public modifiable data. but will do for now
             $medicine_id_to_update = !empty($this->purchase_medicine) ? Arr::pluck($this->purchase_medicine, 'id') : [];
+
+            // action
             $this->purchaseForm->updatePurchaseOnly($medicine_id_to_update);
+
             $this->dispatch('notify', ['message' => 'Purchase has been updated!', 'status' => 'success']);
         } catch(\Exception $e) {
             $this->dispatch('notify', ['message' => 'Error! Purchase cannot be updated!', 'status' => 'error']);
             throw($e);
         }
-
-        // $total_purchase_amount  = $this->purchase_medicine;
     }
 
     public function addNewMedicine() : void
@@ -171,20 +177,29 @@ class EditPurchase extends Component
             return;
         }
 
+        // transfrom data to array, so it can be assigned and accessed as an array
+        $newly_created_medicine = $newly_created_medicine->toArray();
+        $updated_purchase = $updated_purchase->toArray();
+
+        // assign pivot value from updated purchase to the newly created medicine
+        $newly_created_medicine['pivot'] = $updated_purchase['pivot'];
+
         // push newly created medicine to medicines table/list
         $updated_purchase_medicine = collect((object) $this->purchase_medicine)->push($newly_created_medicine);
+
         // sorting
         $this->purchase_medicine = array_values(Arr::sortDesc($updated_purchase_medicine, fn($arr) => $arr['updated_at'] ));
 
-        // update the displayed info of purchase data
-        dd($updated_purchase);
-
+        // update the displayed purchase data
+        $this->total_medicine = count($updated_purchase_medicine);
+        $this->total_quantity = array_sum( (array) Arr::pluck($updated_purchase_medicine, 'pivot.quantity'));
+        $this->purchaseForm->getUpdatedTotalPurchase();
 
         $this->dispatch('notify', ['message' => 'Medicine Created, Purchase has been updated!', 'status' => 'success']);
         $this->dispatch('set-tab', 'purchase_form');
     }
 
-    public function clearFormAfterChangeTab()
+    public function clearFormAfterChangeTab() : void
     {
         $this->medicineForm->clearValidatedState();
     }
