@@ -301,4 +301,9 @@ class MedicineForm extends Form
     {
         $this->reset();
     }
+
+    public function clearValidatedState() : void
+    {
+        $this->resetValidation();
+    }
 }

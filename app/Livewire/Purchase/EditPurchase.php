@@ -30,6 +30,7 @@ class EditPurchase extends Component
 
     public string $medicine_form_mode = 'add';
 
+    /** Load the inital data */
     public function  mount(Purchase $purchase) : void
     {
         $purchase_data = $purchase->load(['medicines']);
@@ -44,14 +45,24 @@ class EditPurchase extends Component
         $this->units = Unit::latest()->get();
     }
 
+    /** Render the view component */
     public function render() : View
     {
         return view('livewire.purchase.edit-purchase');
     }
 
+    /**
+     * delete the selected mediicine data that passed from the client,
+     * must be validated to verify that the received medicine data is
+     *  belongsto the currently selected purchase
+     *
+     * @param int|array $data
+     * int for the id only
+     * array for the whole medicine data
+     */
     public function deleteMedicine( int|array $data ) : void
     {
-        // return;
+        // checking andvalidating the arguments
         if(is_array($data) && array_key_exists('id', $data)) {
             $id = $data['id'];
         } else if(is_int($data)) {
@@ -59,16 +70,18 @@ class EditPurchase extends Component
         } else {
             return;
         }
+
         try {
+            // action
             if($this->medicineForm->destroyMedicineWithSoftDelete($id, shouldUpdatePurchase: true)) {
                 try{
+                    // updating displayed data
                     $filtered_old_medicine =  Arr::where($this->purchase_medicine, fn($arr) : bool => $arr['id'] != $id);
                     $this->purchase_medicine = $filtered_old_medicine;
                     $this->total_medicine = count($filtered_old_medicine);
                     $this->total_quantity = array_sum( (array) Arr::pluck($this->purchase_medicine, 'pivot.quantity'));
                     $this->purchaseForm->getUpdatedTotalPurchase();
                 }catch(\Exception $e) {
-                    // if( env('APP_DEBUG') === true )
                     throw($e);
                     $this->dispatch('notify', ['message' => 'Error! Failed Updating Purchase Data', 'status' => 'error']);
                 }
@@ -103,8 +116,14 @@ class EditPurchase extends Component
                 return (is_array($item) == true) ? $item['id'] != $updated_medicine->id : $item->id != $updated_medicine->id;
             })->push($updated_medicine)->toArray();
 
+
             // sorting
             $this->purchase_medicine = array_values(Arr::sortDesc($updated_purchase_medicine, fn($arr) => $arr['updated_at'] ));
+
+            // update the displayed purchase data
+            $this->total_medicine = count($updated_purchase_medicine);
+            $this->total_quantity = array_sum( (array) Arr::pluck($updated_purchase_medicine, 'pivot.quantity'));
+            $this->purchaseForm->getUpdatedTotalPurchase();
 
             // event dispacther to browser
             $this->dispatch('notify', ['message' => 'Medicine has been updated!', 'status' => 'success']);
@@ -118,7 +137,9 @@ class EditPurchase extends Component
     public function updatePurchase() : void
     {
         try {
-            $this->purchaseForm->updatePurchaseOnly();
+            // we should re-query the relation, do not rely on public modifiable data. but will do for now
+            $medicine_id_to_update = !empty($this->purchase_medicine) ? Arr::pluck($this->purchase_medicine, 'id') : [];
+            $this->purchaseForm->updatePurchaseOnly($medicine_id_to_update);
             $this->dispatch('notify', ['message' => 'Purchase has been updated!', 'status' => 'success']);
         } catch(\Exception $e) {
             $this->dispatch('notify', ['message' => 'Error! Purchase cannot be updated!', 'status' => 'error']);
@@ -161,6 +182,11 @@ class EditPurchase extends Component
 
         $this->dispatch('notify', ['message' => 'Medicine Created, Purchase has been updated!', 'status' => 'success']);
         $this->dispatch('set-tab', 'purchase_form');
+    }
+
+    public function clearFormAfterChangeTab()
+    {
+        $this->medicineForm->clearValidatedState();
     }
 
 }

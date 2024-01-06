@@ -5,6 +5,7 @@ namespace App\Livewire\Forms\Purchase;
 use App\Models\Medicine;
 use App\Models\Purchase;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -48,16 +49,21 @@ class PurchaseForm extends Form
         if( is_callable( $callback ) ) call_user_func( $callback );
     }
 
-    public function updatePurchaseOnly() : void
+    public function updatePurchaseOnly(array|null $medicine_ids = []) : void
     {
         $this->validate();
         try {
-            DB::transaction(function () {
+            DB::transaction(function () use($medicine_ids) {
                 Purchase::where('id', $this->purchase_id)->update([
                     'supplier_id' => $this->supplier_id,
                     'purchase_date' => $this->purchase_date,
                     // 'total_purchase' => $this->total_purchase,   // no update total_purchase here, since purchase can only be modified if the medicine that attached to it is been updated
                 ]);
+                if(!empty($medicine_ids)) {
+                    Medicine::whereIn('id', $medicine_ids)->update([
+                        'supplier_id' => $this->supplier_id
+                    ]);
+                }
             });
         } catch(\Exception $e) {
             throw($e);

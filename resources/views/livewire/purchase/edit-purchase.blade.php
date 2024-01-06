@@ -7,8 +7,9 @@
 
         <div x-data="{
                 currentTab: 'purchase_form',
-                changeTab(tab){
+                async changeTab(tab){
                     this.currentTab = tab
+                    await $wire.clearFormAfterChangeTab()
                 },
             }"
             x-on:set-tab.window="changeTab($event.detail)"
@@ -17,10 +18,10 @@
             <div class="flex justify-center text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 dark:bg-slate-900">
                 <ul class="flex flex-wrap -mb-px">
                     <li class="mr-2">
-                        <button x-on:click="currentTab = 'purchase_form'" :class="currentTab == 'purchase_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-linear">Purchase Form</button>
+                        <button x-on:click="await changeTab('purchase_form')" :class="currentTab == 'purchase_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-linear">Purchase Form</button>
                     </li>
                     <li x-cloak x-show="currentTab == 'medicine_form'" class="mr-2">
-                        <button disabled x-on:click="currentTab = 'medicine_form'" :class="currentTab == 'medicine_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg disabled:opacity-70 transition-all duration-200 ease-linear">Medicines Form</button>
+                        <button disabled x-on:click="await changeTab('medicine_form')" :class="currentTab == 'medicine_form' ? 'text-blue-600 border-blue-600  dark:text-blue-500 dark:border-blue-500' : 'border-transparent  hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'" class="inline-block p-4 border-b-2 rounded-t-lg disabled:opacity-70 transition-all duration-200 ease-linear">Medicines Form</button>
                     </li>
                 </ul>
             </div>
