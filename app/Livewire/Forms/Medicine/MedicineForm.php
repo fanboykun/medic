@@ -5,6 +5,7 @@ namespace App\Livewire\Forms\Medicine;
 use App\Models\Medicine;
 use App\Models\Supplier;
 use Carbon\Carbon;
+use Faker\Provider\Medical;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Form;
@@ -164,17 +165,16 @@ class MedicineForm extends Form
         }
     }
 
-    public function storeMedicineForCompleteUpdate($shouldReturn = false) : null|object
+    public function storeMedicineForCompleteUpdate($shouldReturn = false) : mixed
     {
         if($this->medicineId == null) return null;
         try{
-            $medicine = tap(Medicine::where( 'id' , $this->medicineId )->with( 'purchases' )->first(), function (Medicine $medicine) use($shouldReturn) {
+            $medicine_to_update = Medicine::where( 'id' , $this->medicineId )->with( 'purchases' )->first();
+            if(empty($medicine_to_update)) return null;
+            if(!$this->validateForUpdate($medicine_to_update)) return null;
 
-                if(empty($medicine)) return null;
-
-                if(!$this->validateForUpdate(medicine: $medicine)) return null;
-
-                DB::transaction( function() use($medicine) : void {
+            tap($medicine_to_update, function(Medicine $medicine) {
+                DB::transaction( function() use( $medicine ) : void {
                     $updated_stock = ( $this->stock != $medicine->stock ) ? $this->stock : $medicine->stock; // fixed value, cannot be modified anymore
                     $updated_selling_price = ( $this->selling_price != $medicine->selling_price ) ? $this->selling_price : $medicine->selling_price; // initial value for selling_price in medicine data
                     $updated_purchase_price = ( $this->purchase_price != $medicine->purchase_price ) ? $this->purchase_price : $medicine->purchase_price ;    // initial value for purchase price in purchase and medicine data
@@ -184,6 +184,14 @@ class MedicineForm extends Form
                     $updated_quantity = 0; // initial value for quantity in purchase data
                     $updated_total_purchase = $purchase->total_purchase;
 
+                    if($this->stock > $medicine->stock) {
+                        // increase stock
+                    } elseif($this->stock < $medicine->stock) {
+                        // decrease
+                    } else {
+                        // same
+                    }
+                    
                     // prepare stock value in case the quantity in purchase data need to be updated
                     // subtract the old quantity be the old stock value, and then add the subtracted value with the new stock value
                     $updated_quantity = ($purchase->pivot->quantity - $medicine->stock) + $this->stock;
@@ -231,10 +239,10 @@ class MedicineForm extends Form
             });
 
             if($shouldReturn){
-                if($medicine == null) return null;
-                $pivot_value = $medicine->purchases->first()->pivot->toArray();     // not the best approach, only work when the medicine only has one purchase
-                $medicine->pivot = $pivot_value;
-                return $medicine;
+                // if($medicine == null) return null;
+                $pivot_value = $medicine_to_update->purchases->first()->pivot->toArray();     // not the best approach, only work when the medicine only has one purchase
+                $medicine_to_update->pivot = $pivot_value;
+                return $medicine_to_update;
             }
 
         }catch (\Exception $e){
@@ -245,7 +253,6 @@ class MedicineForm extends Form
 
     private function validateForUpdate(object $medicine) : bool
     {
-        // normal validation
         $this->validate();
 
         // validation status
@@ -267,6 +274,7 @@ class MedicineForm extends Form
             $this->addError('selling_price', 'selling price cannot be lower than the purchase price');
             $validated = false;
         }
+        // normal validation
         return $validated;
     }
 
