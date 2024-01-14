@@ -5,13 +5,16 @@ namespace App\Livewire\Purchase;
 use App\Livewire\Forms\Medicine\MedicineForm;
 use App\Livewire\Forms\Purchase\PurchaseForm;
 use App\Models\Category;
+use App\Models\Medicine;
 use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Unit;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class EditPurchase extends Component
@@ -30,12 +33,26 @@ class EditPurchase extends Component
 
     public string $medicine_form_mode = 'add';
 
+    public bool $medicine_query_exists = false;
+
     /** Load the inital data */
     public function  mount(Purchase $purchase) : void
     {
+        // load medicine id from query string, in case the user coming from edit medicine form
+        $m_id = request('medicine');
+
         $purchase_data = $purchase->load(['medicines']);
+
         $this->purchase_medicine = $purchase_data->medicines->toArray();
         $this->purchaseForm->fillInput( $purchase_data );
+
+        if($m_id != null) {
+            $filtered_medicine = $purchase_data->medicines->where('id', $m_id);
+            if(!empty($filtered_medicine)) {
+                $this->medicine_query_exists = true;
+                $this->medicineForm->setMedicineForUpdate($filtered_medicine->first());
+            }
+        }
 
         $this->total_medicine = count($this->purchase_medicine);
         $this->total_quantity = array_sum( (array) Arr::pluck($this->purchase_medicine, 'pivot.quantity'));

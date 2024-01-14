@@ -184,14 +184,6 @@ class MedicineForm extends Form
                     $updated_quantity = 0; // initial value for quantity in purchase data
                     $updated_total_purchase = $purchase->total_purchase;
 
-                    if($this->stock > $medicine->stock) {
-                        // increase stock
-                    } elseif($this->stock < $medicine->stock) {
-                        // decrease
-                    } else {
-                        // same
-                    }
-                    
                     // prepare stock value in case the quantity in purchase data need to be updated
                     // subtract the old quantity be the old stock value, and then add the subtracted value with the new stock value
                     $updated_quantity = ($purchase->pivot->quantity - $medicine->stock) + $this->stock;
@@ -224,8 +216,10 @@ class MedicineForm extends Form
                     // update the pivot table of medicine and purchase
                     (bool) $updated_pivot = $medicine->purchases()->updateExistingPivot(
                         $purchase->id,
-                            ['quantity' => $updated_quantity != 0 ? $updated_quantity : $purchase->pivot->quantity,
-                            'purchase_price' => $updated_purchase_price]
+                        [
+                            'quantity' => $updated_quantity != 0 ? $updated_quantity : $purchase->pivot->quantity,
+                            'purchase_price' => $updated_purchase_price
+                        ]
                     );
 
                     // manipulate the updated pivot value
@@ -260,10 +254,10 @@ class MedicineForm extends Form
 
         // guard clause, update only validation
         // check if the updated stock is more than the current stock
-        if($this->stock > $medicine->stock) {
-            $this->addError('stock', 'Stock cannot be more than it is currently, if you want to add stock, please consider make a new purchase');
-            $validated =  false;
-        }
+        // if($this->stock > $medicine->stock) {
+        //     $this->addError('stock', 'Stock cannot be more than it is currently, if you want to add stock, please consider make a new purchase');
+        //     $validated =  false;
+        // }
         // check if the purchase price if higher than the selling price
         if($this->purchase_price > $this->selling_price) {
             $this->addError('purchase_price', 'Purchase price cannot be higher than the selling price');

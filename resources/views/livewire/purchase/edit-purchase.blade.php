@@ -11,6 +11,11 @@
                     this.currentTab = tab
                     await $wire.clearFormAfterChangeTab()
                 },
+                init() {
+                    if($wire.get('medicine_query_exists') == true) {
+                        this.currentTab = 'medicine_form'
+                    }
+                }
             }"
             x-on:set-tab.window="changeTab($event.detail)"
             >

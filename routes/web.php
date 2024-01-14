@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/purchases', IndexPurchase::class)->name('purchases.index');
     Route::get('/purchases/create', AddPurchase::class)->name('purchases.create');
+
+    // query string => ?{medicine:id}
     Route::get('/purchases/{purchase}/edit', EditPurchase::class)->name('purchases.edit');
 });
 

@@ -5,9 +5,11 @@ namespace App\Livewire\Medicine;
 use App\Livewire\Forms\Medicine\MedicineForm;
 use App\Models\Category;
 use App\Models\Medicine;
+use App\Models\Purchase;
 use App\Models\Unit;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EditMedicine extends Component
@@ -39,5 +41,12 @@ class EditMedicine extends Component
             route('medicines.index'),
             navigate: true
         );
+    }
+
+    public function goToFullUpdate()
+    {
+        $purchase = DB::table('medicine_purchase')->select('purchase_id')
+        ->where('medicine_id', $this->form->medicineId)->first();
+        $this->redirectRoute('purchases.edit', ['purchase' => $purchase->purchase_id, 'medicine' => $this->form->medicineId], navigate: true);
     }
 }
