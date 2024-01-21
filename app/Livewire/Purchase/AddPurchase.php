@@ -7,8 +7,10 @@ use App\Models\Medicine;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\Category;
+use App\Models\MedicineItem;
 use App\Models\Purchase;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +33,12 @@ class AddPurchase extends Component
 
     // model medicine that being selected
     // the feature is tbd
-    // public $selectedMedicine;
+    public $selectedMedicine;
+
+    // state to hold the selected medicine data
+    public $medicine_stock;
+    public $medicine_purchase_price;
+    public $medicine_selling_price;
 
     // column model for new purchase data
     // i think this var(s) better should be in the newPurchase instead
@@ -89,9 +96,8 @@ class AddPurchase extends Component
         $this->units = Unit::latest()->get();
         $this->suppliers = Supplier::latest()->get();
         // $this->purchases = Purchase::with('supplier')->latest()->get();
-        // $this->medicines = Medicine::with('supplier')->latest()->get();
 
-        return view('livewire.purchase.add-purchase');
+        return view('livewire.purchase.add-purchase', ['medicines' => Medicine::with('purchases')->latest()->paginate(20)]);
     }
 
     public function appendNewPurchase() : void
@@ -264,6 +270,35 @@ class AddPurchase extends Component
     public function regenerateInvoiceCode() : void
     {
         $this->invoice = Str::random(7);
+    }
+
+    public function appendSelectedMedicine(Medicine $medicine)
+    {
+        $this->selectedMedicine = $medicine;
+        $this->dispatch('open-modal', 'select-medicine');
+    }
+
+    public function saveSelectedMedicine()
+    {
+        $this->validate([
+            'selectedMedicine' =>'required',
+            'stock' => 'required|integer|min:1|max:9999|min_digits:1|max_digits:4',
+            'medicine_purchase_price' => 'required|integer|min_digits:2|max_digits:8',
+            'medicine_selling_price' => 'required|integer|min_digits:2|max_digits:8|min:'. $this->medicine_purchase_price,
+        ]);
+        $data = [
+            'medicine_stock' => $this->medicine_stock,
+            'purchase_price' => $this->medicine_purchase_price,
+            'selling_price' => $this->medicine_selling_price
+        ];
+        MedicineItem::create([
+            'medicine_id' => $this->selectedMedicine->id,
+            'stock' => $data['medicine_stock'],
+            'purchase_price' => $data['medicine_purchase_price'],
+            'selling_price' => $data['medicine_selling_price']
+        ]);
+        $this->reset('selectedMedicine');
+        $this->dispatch('close-modal', 'select-medicine');
     }
 
     public function saveUnit() :void

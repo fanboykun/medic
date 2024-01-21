@@ -233,7 +233,44 @@
                 </div>
 
                 <div x-cloak x-show="m_tab == 'select_medicine'" class="w-full">
-                    
+                    <div class="mt-4 relative overflow-x-auto sm:rounded-lg shadow-lg">
+                        <div class=" max-h-[80vh]">
+                            <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3"> ID </th>
+                                        <th scope="col" class="px-6 py-3"> Name</th>
+                                        <th scope="col" class="px-6 py-3"> Current Stock</th>
+                                        <th scope="col" class="px-6 py-3"> Expired</th>
+                                        <th scope="col" class="px-6 py-3"> Purchase Price</th>
+                                        <th scope="col" class="px-6 py-3"> Selling Price</th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($medicines as $key => $medicine)
+                                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                            <td class="px-6 py-4">{{ $medicine->id }}</td>
+                                            <td class="px-6 py-4">{{ $medicine->name }}</td>
+                                            <td class="px-6 py-4">{{ $medicine->stock }}</td>
+                                            <td class="px-6 py-4">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $medicine->expired)->format('d M Y') }}</td>
+                                            <td class="px-6 py-4">Rp {{number_format($medicine->purchase_price, 0, ',','.')}}</td>
+                                            <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
+                                            <td class="px-6 py-4">
+                                                <button wire:click="appendSelectedMedicine({{ json_encode($medicine) }})" type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add</button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                    <tr>
+                                        <td>No Data</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -351,6 +388,61 @@
                     </x-secondary-button>
                     <button type="submit" wire:loading.attr="disabled" wire:target="saveUnit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
                 </div>
+            </div>
+        </div>
+    </x-modal>
+    <x-modal x-data name="select-medicine" focusable>
+        <div x-on:close-modal.window="$dispatch('close', 'select-medicine')" class="bg-gray-50 dark:bg-gray-900 shadow-md rounded-lg py-2 px-4 h-fit">
+            <div class="flex bg-gray-400 text-gray-50 dark:bg-gray-700 dark:text-gray-400 py-2 rounded-xl item-center justify-center">
+                Assign New Medicine
+            </div>
+            <div class="py-2 mt-4">
+                <div class="relative z-0 mb-6 group p-2">
+                    <div class="flex w-full items-center gap-4 justify-center text-gray-400">
+                        <p>
+                            Name : {{ $selectedMedicine?->name }}
+                        </p>
+                        <p>
+                            Current Stock : {{ $selectedMedicine?->stock }}
+                        </p>
+                    </div>
+                </div>
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="number" min="1" name="medicine_stock" id="medicine_stock" wire:model="medicine_stock" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        New Stock For This Item <span class="text-xs font-light text-red-500">*</span>
+                    </label>
+                    @error('medicine_stock')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="text" name="medicine_purchase_price" id="medicine_purchase_price" wire:model="medicine_purchase_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        Purchase Price <span class="text-xs font-light text-red-500">*</span>
+                    </label>
+                    @error('medicine_purchase_price')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+
+                <div class="relative z-0 w-full mb-6 group p-2">
+                    <input type="text" name="medicine_selling_price" id="medicine_selling_price" wire:model="medicine_selling_price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                        Selling Price <span class="text-xs font-light text-red-500">*</span>
+                    </label>
+                    @error('medicine_selling_price')
+                    <x-input-error :messages="$message" class="mt-2" />
+                    @enderror
+                </div>
+
+                <div class="flex justify-end">
+                    <x-secondary-button class="mx-4 px-5 py-2.5 capitalize" x-on:click="$dispatch('close')">
+                        Cancel
+                    </x-secondary-button>
+                    <button type="submit" wire:click="saveSelectedMedicine" wire:loading.attr="disabled" wire:target="saveSelectedMedicine" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                </div>
+
             </div>
         </div>
     </x-modal>
