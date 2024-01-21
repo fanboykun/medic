@@ -9,7 +9,7 @@
                 <x-slot name="search">
                     <x-search>
                         <x-slot name="input">
-                            <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by purchase invoice name"/>
+                            <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by purchase invoice"/>
                         </x-slot>
                     </x-search>
                 </x-slot>
@@ -88,8 +88,10 @@
                 <td class="px-6 py-4"><button wire:click="openPurchaseMedicine({{ $purchase }})" class="text-green-400">Details</button></td>
                 <td class="px-6 py-4">{{ $purchase->updated_at->diffForHumans() }}</td>
                 <td class="px-6 py-4">
-                    <a href="{{ route('purchases.edit', $purchase->id) }}" wire:navigate class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    <button wire:click="deletePurchase({{ $purchase->id }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                    <div class="flex gap-4 items-center w-full">
+                        <a href="{{ route('purchases.edit', $purchase->id) }}" wire:navigate class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <button wire:click="deletePurchase({{ $purchase->id }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -109,7 +111,7 @@
                     </span>
                 </x-slot>
                 <x-slot name="nav_link">
-                    <button type="button" wire:click="loadMore()" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
+                    <button type="button" class="text-sm font-normal text-indigo-600 dark:text-indigo-400">
                         Load More ...
                     </button>
                 </x-slot>

@@ -147,9 +147,11 @@
                         <td class="px-6 py-4">Rp {{number_format($medicine->selling_price, 0, ',','.')}}</td>
                         <td class="px-6 py-4">{{ $medicine->supplier->name}}</td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('medicines.show', ['medicine' => $medicine ]) }}" wire:navigate class="block font-medium text-green-600 dark:text-green-400 hover:underline">Details</a>
-                            <a href="{{ route('medicines.edit', $medicine->id) }}" wire:navigate class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <button wire:click="deleteMedicine({{ $medicine }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                            <div class="flex gap-4 items-center">
+                                <a href="{{ route('medicines.show', ['medicine' => $medicine ]) }}" wire:navigate class="font-medium text-green-600 dark:text-green-400 hover:underline text-center">Details</a>
+                                <a href="{{ route('medicines.edit', $medicine->id) }}" wire:navigate class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <button wire:click="deleteMedicine({{ $medicine }})" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

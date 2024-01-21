@@ -11,7 +11,7 @@
                         <x-slot name="search">
                             <x-search smbtn=true>
                                 <x-slot name="input">
-                                    <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by medicine name"/>
+                                    <x-search-input wire:model.live.debounce.500ms="search" placeholder="Search by category name"/>
                                 </x-slot>
                                 <x-slot name="btn">
                                     <x-secondary-button x-on:click="$dispatch('open-modal', 'add-category')">Add New</x-secondary-button>
@@ -53,17 +53,18 @@
                 <x-slot name="tbody">
                     @forelse ($categories as $category)
                     <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td scope="row" class="px-6 py-4 whitespace-nowrap ">
                            {{ $category->name }}
-                        </th>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </td>
+                        <td scope="row" class="px-6 py-4 whitespace-nowrap ">
                             {{ $category->created_at->format('d M Y') }}
-                        </th>
+                        </td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('categories.show', ['category' => $category ]) }}" wire:navigate class="block font-medium text-green-600 dark:text-green-400 hover:underline">Details</a>
-                            {{-- <button type="button" wire:click="editCategory({{ $category }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button> --}}
-                            <button type="button" x-on:click="$dispatch('open-edit-category-modal', {{ $category->id }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                            <button wire:click="deleteCategory({{ $category }})" class="block font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                            <div class="flex gap-4 items-center">
+                                <a href="{{ route('categories.show', ['category' => $category ]) }}" wire:navigate class="font-medium text-green-600 dark:text-green-400 hover:underline">Details</a>
+                                <button type="button" x-on:click="$dispatch('open-edit-category-modal', {{ $category->id }})" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                                <button wire:click="deleteCategory({{ $category }})" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                            </div>
                         </td>
                     </tr>
                     @empty
